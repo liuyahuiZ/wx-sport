@@ -67,7 +67,7 @@ class MyRouter extends Component{
     <Router history={hashHistory}>
       <Route path={'/'} component={LayOut} >
         {/* <IndexRoute component={ListDoc} /> */}
-        <IndexRedirect to="/Home"/>
+        <IndexRedirect to="/Tab"/>
         <Route path={'Home'} component={Home} />
         <Route path={'Lists'} component={ListDoc} />
         <Route path={'Demo'} getComponent={DomeDoc} />

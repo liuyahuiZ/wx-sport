@@ -70,7 +70,6 @@ export default {
     width: '100%',
     minHeight: '90vh',
     boxSizing: 'border-box',
-    backgroundColor: '#f5f5f5',
     overflow: 'auto',
   },
   borderNone: {

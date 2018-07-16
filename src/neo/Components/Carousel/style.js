@@ -10,7 +10,7 @@ export default {
     boxSizing: 'border-box',
     overflow: 'hidden',
     position: 'absolute',
-    bottom: '1%',
+    bottom: '6%',
     justifyContent: 'center',
     left: '0px',
     zIndex: '99'
@@ -51,7 +51,6 @@ export default {
     display: 'inline-block',
     width: '20px',
     height: '5px',
-    backgroundColor: 'rgba(65, 150, 252, 0.6)',
     marginRight: '5px',
     boxSizing: 'border-box',
     cursor: 'pointer',
@@ -59,7 +58,6 @@ export default {
   },
   dotActive: {
     width: '25px',
-    backgroundColor: 'rgba(65, 150, 252, 1)',
   },
   tabActive: {
     color: 'rgb(65, 150, 252)'

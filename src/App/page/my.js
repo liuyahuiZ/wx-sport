@@ -73,10 +73,10 @@ class OcrDoc extends Component {
 
     render() {
         return(
-          <section className="bg-f5f5f5">
+          <section className="padding-all bg-000">
             <Row justify="center">
               <Col span={24} >
-                <Row justify="center" className="padding-all-1r bg-6E9EFB">
+                <Row justify="center" className="padding-all-1r bg-6E9EFB border-radius-5f">
                   <Col span={12} className="text-align-left">
                     <Icon iconName={'quote '} size={'150%'} iconColor={'#fff'}   />
                   </Col>
@@ -91,38 +91,72 @@ class OcrDoc extends Component {
                   <Col className="text-align-center margin-top-1r">
                     <span className="textclolor-white">UserName</span>
                   </Col>
+                  {/* <Col className="text-align-center margin-top-1r">
+                    <Row>
+                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
+                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
+                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
+                    </Row>
+                  </Col> */}
                 </Row>
               </Col>
-              <Col span={24} className="bg-show margin-top-2">
+              <Col>
+              <Row className="padding-all bg-1B1B1B margin-top-3 border-radius-5f">
+                  <Col span={8} onClick={()=>{this.goCreateArticle('/CreateArticle')}}>
+                    <Row className="" justify="center">
+                      <Col className="text-align-center">
+                        <span className="display-inline-block line-height-2r">
+                          <Icon iconName={'pie-graph '} size={'180%'} iconColor={'#fff'} />
+                        </span>
+                      </Col>
+                      <Col className="text-align-center textclolor-white">正在进行</Col>
+                    </Row>
+                  </Col>
+                  <Col span={8}>
+                    <Row className="" justify="center">
+                      <Col className="text-align-center">
+                        <span className="display-inline-block line-height-2r">
+                        <Icon iconName={'ios-stopwatch'} size={'180%'} iconColor={'#fff'} />
+                        </span>
+                      </Col>
+                      <Col className="text-align-center textclolor-white">已完成</Col>
+                    </Row>
+                  </Col>
+                  <Col span={8}>
+                    <Row className="" justify="center">
+                      <Col className="text-align-center">
+                        <span className="display-inline-block line-height-2r">
+                        <Icon iconName={'paper-airplane'} size={'180%'} iconColor={'#fff'} />
+                        </span>
+                      </Col>
+                      <Col className="text-align-center textclolor-white">动态</Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+              <Col span={24} className="bg-1B1B1B margin-top-2 border-radius-5f">
                 <Item
-                    leftContent={{text: (<Row><Col>
-                        <Icon iconName={'card'} size={'150%'} iconColor={'#4698F9'}  />我的银行卡
-                        </Col></Row>), style: {flex: '5'}}} 
-                    rightContent={{text: '银行信用 当日起息', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
-                    showRight />
-                <Item
-                    leftContent={{text: (<Row><Col>
-                        <Icon iconName={'social-bitcoin '} size={'150%'} iconColor={'#4698F9'}  />我的存款
-                        </Col></Row>), style: {flex: '5'}}} 
+                    leftContent={{text: (<Row>
+                        <Col span={4}>
+                        <Icon iconName={'card'} size={'150%'} iconColor={'#4698F9'}  />
+                        </Col>
+                        <Col span={20}>我的银行卡</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
                     rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
                     showRight />
                 <Item
-                    leftContent={{text: (<Row><Col>
-                        <Icon iconName={'document-text '} size={'150%'} iconColor={'#4698F9'}  />我的账单
-                        </Col></Row>), style: {flex: '5'}}} 
+                    leftContent={{text: (<Row><Col span={4}>
+                        <Icon iconName={'social-bitcoin '} size={'150%'} iconColor={'#4698F9'}  />
+                        </Col><Col span={20}>我的银行卡</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
+                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
+                    showRight />
+                <Item
+                    leftContent={{text: (<Row><Col span={4}>
+                        <Icon iconName={'document-text '} size={'150%'} iconColor={'#4698F9'}  />
+                        </Col><Col span={20}>我的银行卡</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
                     rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
                     showRight />
               </Col>
 
-              <Col span={24} className="bg-show margin-top-2">
-               <Item
-                    leftContent={{text:'setting', style: {flex: '7'}}} 
-                    rightContent={{text: (<Switch checkedText={'-'} unCheckText={'o'} onchange={this.switchChange} />), style: {flex: '1'}}} />
-                <Item
-                    leftContent={{text:'coder', style: {flex: '7'}}} 
-                    rightContent={{text: (<Switch checkedText={0} unCheckText={1} bgColor={'#4BD963'} value={true} />), style: {flex: '1'}}} />
-              </Col>
-              
               <Col className="margin-top-2r" span={20}>
                 <Buttons
                   text="submit"

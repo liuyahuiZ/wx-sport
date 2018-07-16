@@ -42,12 +42,13 @@ class MenuTab extends Component {
     this.setState({ options: arr });
   }
   render() {
-    let containerHead = styles.containerHead;
+    const { typeOption, options, active } = this.state;
+    let containerHead = arrayUtils.merge([styles.containerHead, typeOption.headStyle ]);
     let tabContentStyle = styles.tabContent;
     let tabItem = styles.tabItem;
     let activeStyle = styles.tabActive;
     let tabSpan = styles.tabSpan
-    const { typeOption, options, active } = this.state;
+    
     const tabHeader = options.map((itm) => {
       let tabStyle = '';
       let colors = typeOption.defaultColor
@@ -108,7 +109,8 @@ MenuTab.defaultProps = {
   typeOption: {
     showIcon: false,
     activeColor: '#999',
-    defaultColor: 'rgb(70, 152, 249)'
+    defaultColor: 'rgb(70, 152, 249)',
+    headStyle: {}
   }
 };
 

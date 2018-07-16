@@ -151,7 +151,7 @@ class Carousel extends Component {
     this.setState({ options: arr });
   }
   render() {
-    const { showDots, showHeight } = this.props;
+    const { showDots, showHeight, containerStyle,dotDefaultStyle, dotActiveStyle } = this.props;
     const containerHead = styles.containerHead;
     const tabContentStyle = this.state.tabContentStyle;
     const height = showHeight ? { height: `${this.state.height}vh` } : '';
@@ -162,14 +162,15 @@ class Carousel extends Component {
     const tabHeader = showDots ? this.state.options.map((itm) => {
       let span = '';
       if (this.props.showDotsText) {
-        const tabStyle = itm.isActive ? styles.tabActive : '';
+        const tabStyle = itm.isActive ?  (dotActiveStyle || styles.tabActive ): dotDefaultStyle;
         span = (<div
           style={arrayUtils.merge([styles.tabItem, tabStyle])} key={itm.tabName}
           data-content={itm.tabName}
         >{itm.tabName}</div>);
       } else {
         const dotStyle = itm.isActive ? styles.dotActive : '';
-        span = (<div
+        const dotClass = itm.isActive ? 'active' : 'default';
+        span = (<div className={`carousel-dot ${dotClass}`}
           style={arrayUtils.merge([styles.dot, dotStyle])} key={itm.tabName}
           data-content={itm.tabName}
         />);
@@ -184,7 +185,7 @@ class Carousel extends Component {
       return span;
     });
     return (
-      <div style={styles.container}>
+      <div className="carousel-container" style={arrayUtils.merge([styles.container, containerStyle])}>
         <div
           style={arrayUtils.merge([containerHead, itmWidth])}
           ref={(r) => { this.$$tabHeader = r; }}
@@ -206,7 +207,10 @@ Carousel.propTypes = {
   autoPlay: PropTypes.bool,
   dragAble: PropTypes.bool,
   showDots: PropTypes.bool,
-  showHeight: PropTypes.bool
+  showHeight: PropTypes.bool,
+  containerStyle: PropTypes.shape({}),
+  dotDefaultStyle: PropTypes.shape({}),
+  dotActiveStyle: PropTypes.shape({}),
 };
 
 Carousel.defaultProps = {
@@ -216,6 +220,10 @@ Carousel.defaultProps = {
   dragAble: false,
   showDots: true,
   showHeight: true,
+  containerStyle: {},
+  dotDefaultStyle: {},
+  dotActiveStyle: {}
+
 };
 
 

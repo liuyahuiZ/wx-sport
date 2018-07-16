@@ -76,3 +76,24 @@ body{
         width: 100%;
     }
 }
+.menu-tab{
+    .tab-header{
+        border-top: 0;
+    }
+}
+
+.carousel-container{
+    .carousel-dot{
+        width: 0.4rem!important;
+        height: 0.4rem!important;
+        border-radius: 0.5rem!important;
+        &.active{
+            background: #333;
+            border: 1px solid #fff;
+        }
+        &.default{
+            background: #fff;
+        }
+
+    }
+}

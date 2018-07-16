@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.pro.js --progress --profile --colors",
-    "dev": "webpack-dev-server --host localhost  --port 3030 --mode development"
+    "dev": "webpack-dev-server --host localhost  --port 8080 --mode development"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
