@@ -9,16 +9,22 @@ class Rate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: this.props.value||0,
       startLength: 5,
       allCount: 10,
       normalColor: this.props.normalColor,
       activeColor: this.props.activeColor,
     };
-    this.getValue = this.getValue.bind(this);
   }
-  getValue() {
-    this.props.back();
+
+  handleClick(i){
+    const { allCode } = this.props;
+    const { startLength } = this.state;
+    let newValue = i/startLength * allCode;
+    this.setState({
+      value: newValue
+    })
+    this.props.onChange(newValue);
   }
   runderStart(length, checkedLength) {
     let icons = [];
@@ -32,13 +38,16 @@ class Rate extends Component {
          iconNames  ='android-star-half';
          iconColor = this.state.activeColor;
       }
-      icons.push((<Icon  key={`${i}-icon`} iconName={iconNames} size={this.props.fontSize} iconColor={iconColor} />))
+      icons.push((<Icon  key={`${i}-icon`} iconName={iconNames} size={this.props.fontSize} iconColor={iconColor}
+      onClick={()=>{
+        this.handleClick(i);
+      }} />))
     }
     return icons;
   }
   render() {
-    const { value, allCode, style} = this.props;
-    const { startLength, allCount } = this.state;
+    const { allCode, style} = this.props;
+    const { value, startLength, allCount } = this.state;
     const _rate = value / allCode * startLength;
     const com = this.runderStart(startLength, _rate);
     return (
@@ -56,6 +65,7 @@ Rate.propTypes = {
   allCode: PropTypes.number,
   normalColor: PropTypes.string,
   activeColor: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 Rate.defaultProps = {
@@ -64,7 +74,8 @@ Rate.defaultProps = {
   allCode: 100,
   fontSize: '100%',
   normalColor: '#EBEBEB',
-  activeColor: '#EFCB47'
+  activeColor: '#EFCB47',
+  onChange: () => {},
 };
 
 

@@ -58,6 +58,54 @@ const Trans = (location, cb) => {
   },'Trans')
 };
 
+const ClassDetail = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/classDetail').default)
+  },'ClassDetail')
+};
+
+const TeacherRate = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/teacherRate').default)
+  },'TeacherRate')
+};
+
+const Ranking = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/ranking').default)
+  },'Ranking')
+};
+
+const PersonalFiles = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/personalFiles').default)
+  },'PersonalFiles')
+};
+
+const MyClassDetail = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/myClassDetail').default)
+  },'MyClassDetail')
+};
+
+const ClassList = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/classList').default)
+  },'ClassList')
+};
+
+const ClassAppointment = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/classAppointment').default)
+  },'ClassAppointment')
+};
+
+const TrainResult = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/trainResult').default)
+  },'TrainResult')
+};
+
 class MyRouter extends Component{
   constructor(props) {
     super(props);
@@ -79,6 +127,14 @@ class MyRouter extends Component{
         <Route path={'ArticleDetail'} getComponent={ArticleDetail} />
         <Route path={'Pictures'} getComponent={Pictures} />
         <Route path={'Trans'} getComponent={Trans} />
+        <Route path={'ClassList'} getComponent={ClassList} />
+        <Route path={'ClassDetail'} getComponent={ClassDetail} />
+        <Route path={'TeacherRate'} getComponent={TeacherRate} />
+        <Route path={'Ranking'} getComponent={Ranking} />
+        <Route path={'PersonalFiles'} getComponent={PersonalFiles} />
+        <Route path={'MyClassDetail'} getComponent={MyClassDetail} />
+        <Route path={'ClassAppointment'} getComponent={ClassAppointment} />
+        <Route path={'TrainResult'} getComponent={TrainResult} />
       </Route>
     </Router>
     )

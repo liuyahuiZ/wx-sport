@@ -48,6 +48,8 @@ import Header from './Header';
 import MenuTab from './MenuTab';
 import LoadMore from './LoadMore';
 import TransAnimal from './TransAnimal';
+import ProgressCircle from './ProgressCircle';
+import TimeRunner from './TimeRunner';
 import * as Tables from './Table';
 
 const { Table, TableRowColumn, TableRow, TableHeaderRow } = Tables;
@@ -106,5 +108,7 @@ export {
   PullRefresh,
   MenuTab,
   LoadMore,
-  TransAnimal
+  TransAnimal,
+  ProgressCircle,
+  TimeRunner
 };

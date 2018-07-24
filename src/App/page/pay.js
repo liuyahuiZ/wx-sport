@@ -102,10 +102,10 @@ class PayDoc extends Component {
             </Col>
             <Col className="padding-all">
             {itm.imgGroup ? <img className='width-100'
-        src={`http://localhost:2019/files/getTheImage?path=${(itm.imgGroup.filePath + '/'+itm.imgGroup.fileName)}`}
+        src={`${config.ROOT_URL}files/getTheImage?path=${(itm.imgGroup.filePath + '/'+itm.imgGroup.fileName)}`}
       /> : ''}
             {itm.img_group ? <img className='width-100'
-        src={`http://localhost:2019/files/getTheImage?path=${'/uploads/'+itm.img_group[0].photopath}`}
+        src={`${config.ROOT_URL}files/getTheImage?path=${'/uploads/'+itm.img_group[0].photopath}`}
           /> : ''}</Col>
             <Col  className="padding-all font-size-8">{itm.info}</Col>
           </Row>)

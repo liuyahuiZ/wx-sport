@@ -79,7 +79,7 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-2 ">
               {article.imgGroup ? <img className='width-100'
-                    src={`http://localhost:2019/files/getTheImage?path=${(article.imgGroup.filePath + '/'+article.imgGroup.fileName)}`}
+                    src={`${config.ROOT_URL}files/getTheImage?path=${(article.imgGroup.filePath + '/'+article.imgGroup.fileName)}`}
                 /> : ''}
               </Col>
               

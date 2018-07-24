@@ -17,10 +17,11 @@ class Row extends Component {
     this.props.onClick(event);
   }
   render() {
-    const { justify, align, style, gutter, className } = this.props;
+    const { justify, align, style, gutter, className, content } = this.props;
     const styleJustyfy = justify ? `flex-justify-${justify}` : '';
     const styleAlign = align ? `flex-items-${align}` : '';
-    const ClassName = `row flex-wrap ${styleJustyfy} ${styleAlign} ${className}`;
+    const styleContent = content ? `flex-content-${content}` : '';
+    const ClassName = `row flex-wrap ${styleJustyfy} ${styleAlign} ${styleContent} ${className}`;
     const gutterStyle = gutter ? { margin: `0 ${0 - (gutter / 2)}px` } : '';
     const Children = this.props.children;
     let child = '';
@@ -50,6 +51,7 @@ Row.propTypes = {
   gutter: PropTypes.number,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  content: PropTypes.string,
 };
 
 Row.defaultProps = {
@@ -59,6 +61,7 @@ Row.defaultProps = {
   style: {},
   gutter: 0,
   className: '',
+  content: '',
   onClick: () => {},
 };
 

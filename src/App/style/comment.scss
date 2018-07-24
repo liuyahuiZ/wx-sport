@@ -88,12 +88,118 @@ body{
         height: 0.4rem!important;
         border-radius: 0.5rem!important;
         &.active{
-            background: #333;
+            background: transparent;
             border: 1px solid #fff;
         }
         &.default{
             background: #fff;
         }
 
+    }
+}
+.icon{
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-block;
+    &.small{
+        width: 2rem;
+        height: 2rem;
+    }
+    &.trophy{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    &.middle{
+        width: 4rem;
+        height: 4rem;
+    }
+    &.icon-sport{
+        background: url('./images/syei24.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-trophy-0{
+        background: url('./images/syei7.png');
+        background-repeat: no-repeat;
+        background-size: 2rem;
+    }
+    &.icon-trophy-1{
+        background: url('./images/syei8.png');
+        background-repeat: no-repeat;
+        background-size: 2rem;
+    }
+    &.icon-trophy-2{
+        background: url('./images/syei9.png');
+        background-repeat: no-repeat;
+        background-size: 2rem;
+    }
+
+    &.icon-result{
+        background: url('./images/syei18.png');
+        background-repeat: no-repeat;
+        background-size: 4rem;
+    }
+
+    &.icon-camera{
+        background: url('./images/syei19.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+
+    &.icon-video{
+        background: url('./images/syei20.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+
+    &.icon-home{
+        background: url('./images/syei1.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-home-a{
+        background: url('./images/syei1-a.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-rating{
+        background: url('./images/syei2.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-rating-a{
+        background: url('./images/syei2-a.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-my{
+        background: url('./images/syei3.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-my-a{
+        background: url('./images/syei3-a.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-working{
+        background: url('./images/syei4.png');
+        background-repeat: no-repeat;
+        background-size: 2rem;
+    }
+    &.icon-working-a{
+        background: url('./images/syei4-a.png');
+        background-repeat: no-repeat;
+        background-size: 2rem;
+    }
+    &.icon-complate{
+        background: url('./images/syei5.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
+    }
+    &.icon-complate-a{
+        background: url('./images/syei5-a.png');
+        background-repeat: no-repeat;
+        background-size: 1.4rem;
     }
 }

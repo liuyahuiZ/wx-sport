@@ -17,14 +17,28 @@ class Carousel extends Component {
       aboveX: 0,
       aboveLimit: 100,
       lock: false,
-      screenWidth: ''
+      screenWidth: '',
+      show: this.props.show||true,
     };
     this.changeActive = this.changeActive.bind(this);
   }
-  componentDidMount() {
+  componentDidMount(){
+    this.init();
+  }
+  componentWillReceiveProps(nextProps){
+    this.setState({
+        show: nextProps.show,
+    },()=>{
+        if(nextProps.show) {
+            this.init();
+        }
+    })
+  }
+
+  init(){
     const self = this;
     const arr = this.props.options;
-    self.setState({ options: arr, screenWidth:this.$$tabHeader.clientWidth  });
+    self.setState({ options: arr, screenWidth:this.$$container.clientWidth  });
     self.$$tabHeader.onclick = function (ev) {
       let itm = {};
       if (ev.target.children.length > 0) {
@@ -43,6 +57,7 @@ class Carousel extends Component {
     if (this.props.dragAble) {
       self.drag(self, arr);
     }
+    
   }
   drag(self, arr) {
     let dotNum = self.state.dotNum;
@@ -71,7 +86,7 @@ class Carousel extends Component {
         self.setState({ aboveX: charge });
         self.setState({ tabContentStyle: { 
           // marginLeft: `${(marginLeft + charge)/self.state.screenWidth * self.state.width}vw` 
-          transform: `translate3d(${(marginLeft + charge)/self.state.screenWidth * self.state.width}vw, 0px, 0px)`
+          transform: `translate3d(${(marginLeft + charge)/self.state.screenWidth * self.state.screenWidth}px, 0px, 0px)`
         } 
         });
       }
@@ -142,7 +157,7 @@ class Carousel extends Component {
         this.setState({ dotNum: i });
         this.setState({ tabContentStyle: { 
           // marginLeft: `${0 - (this.state.width * i)}vw` 
-          transform: `translate3d(${0 - (this.state.width * i)}vw, 0px, 0px)`
+          transform: `translate3d(${0 - (this.state.screenWidth * i)}px, 0px, 0px)`
         } });
       } else {
         arr[i].isActive = false;
@@ -151,13 +166,13 @@ class Carousel extends Component {
     this.setState({ options: arr });
   }
   render() {
-    const { showDots, showHeight, containerStyle,dotDefaultStyle, dotActiveStyle } = this.props;
+    const { show, showDots, showHeight, containerStyle,dotDefaultStyle, dotActiveStyle } = this.props;
     const containerHead = styles.containerHead;
     const tabContentStyle = this.state.tabContentStyle;
     const height = showHeight ? { height: `${this.state.height}vh` } : '';
-    const width = this.state.width;
-    const itmWidth = { width: `${width}vw` };
-    const contentWidth = { width: `${this.state.options.length * width}vw` };
+    const width = this.state.screenWidth;
+    const itmWidth = { width: `${width}px` };
+    const contentWidth = { width: `${this.state.options.length * width}px` };
 
     const tabHeader = showDots ? this.state.options.map((itm) => {
       let span = '';
@@ -184,8 +199,8 @@ class Carousel extends Component {
       > {itm.content}</div>);
       return span;
     });
-    return (
-      <div className="carousel-container" style={arrayUtils.merge([styles.container, containerStyle])}>
+    return show ? (
+      <div className="carousel-container" ref={(r) => { this.$$container = r; }} style={arrayUtils.merge([styles.container, containerStyle])}>
         <div
           style={arrayUtils.merge([containerHead, itmWidth])}
           ref={(r) => { this.$$tabHeader = r; }}
@@ -197,7 +212,7 @@ class Carousel extends Component {
             {tabContent}</div>
         </div>
       </div>
-    );
+    ): '';
   }
 }
 
@@ -211,6 +226,7 @@ Carousel.propTypes = {
   containerStyle: PropTypes.shape({}),
   dotDefaultStyle: PropTypes.shape({}),
   dotActiveStyle: PropTypes.shape({}),
+  show: PropTypes.bool,
 };
 
 Carousel.defaultProps = {
@@ -222,8 +238,8 @@ Carousel.defaultProps = {
   showHeight: true,
   containerStyle: {},
   dotDefaultStyle: {},
-  dotActiveStyle: {}
-
+  dotActiveStyle: {},
+  show: true
 };
 
 

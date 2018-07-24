@@ -1,9 +1,9 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import Home from './home';
 import My from './my';
-import Pay from './pay';
+import Ranking from './ranking';
 
 const {
     Buttons,
@@ -15,13 +15,14 @@ const {
     Icon,
     MenuTab
   } = Components;
+const { sessions } = utils;
   
 class TabDoc extends Component {
     constructor(props) {
       super(props);
       this.state = {
         liveInfo: null,
-        resourceKey: '1'
+        resourceKey: sessions.getStorage('resourceKey') || '1'
       };
     }
 
@@ -30,14 +31,29 @@ class TabDoc extends Component {
         self.setState({
           'resourceKey': v
         });
+        sessions.setStorage('resourceKey', v)
     }
 
     render() {
-        const tabOptions = [{ tabName: '首页', iconName: 'ios-home-outline ', keyword: '1', content:(<Home />)},
-        { tabName: '排名', iconName: 'ios-filing ', keyword: '2', content:(<Pay />)},
-        { tabName: '我的', iconName: 'android-person  ', keyword: '3', content:(<My />)}];
+        const { resourceKey } = this.state;
+
+        const tabOptions = [
+        {tabName: (<Row><Col style={{'height': '0.8rem'}} className="relative">
+            <div className={`icon ${resourceKey ==='1' ? 'icon-home-a': 'icon-home'}`} />
+          </Col>
+          <Col className="font-size-8">首页</Col></Row>), iconName: 'ios-home-outline ', keyword: '1', content:(<Home status={resourceKey== '1'} />)},
+        
+        { tabName: (<Row><Col style={{'height': '0.8rem'}} className="relative">
+          <div className={`icon ${resourceKey ==='2' ? 'icon-rating-a': 'icon-rating'}`} />
+        </Col>
+        <Col className="font-size-8">排名</Col></Row>), iconName: 'ios-filing ', keyword: '2', content:(<Ranking status={resourceKey== '2'}/>)},
+        
+        { tabName: (<Row><Col style={{'height': '0.8rem'}} className="relative">
+        <div className={`icon ${resourceKey ==='3' ? 'icon-my-a': 'icon-my'}`} />
+      </Col>
+      <Col className="font-size-8">我的</Col></Row>), iconName: 'android-person  ', keyword: '3', content:(<My status={resourceKey== '3'} />)}];
         const typeOption = {
-          showIcon: true,
+          showIcon: false,
           activeColor: '#8FBF66',
           defaultColor: '#444444',
           headStyle: {

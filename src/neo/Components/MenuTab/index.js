@@ -56,19 +56,19 @@ class MenuTab extends Component {
         tabStyle = activeStyle;
         colors = typeOption.activeColor
       }
-      const span = typeOption.showIcon ? (<div style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={itm.tabName}
+      const span = typeOption.showIcon ? (<div style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={itm.keyword}
       data-content={itm.keyword} className={'tab-item'} onClick={()=>{
         this.changeActive(itm.keyword)
       }}>
         <div className="tab-icon"><Icon iconName={itm.iconName} size={'150%'} iconColor={colors} /> </div>
-        <div className="tab-title" style={{'color': colors}}>{itm.tabName}</div>
+        <div className="tab-title" style={{'color': colors}}>{itm.keyword}</div>
       </div>) :(<div
-        style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={itm.tabName}
+        style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={`${itm.keyword}-noicon`}
         data-content={itm.keyword} className={'tab-item'} onClick={()=>{
           this.changeActive(itm.keyword)
         }}
       >
-        <div style={tabSpan} className={'tab-span flex-1'} >{itm.tabName}</div>
+        <div style={arrayUtils.merge([tabSpan, {'color': colors}])} className={'tab-span flex-1'} >{itm.tabName}</div>
       </div>);
       return span;
     });
@@ -77,7 +77,7 @@ class MenuTab extends Component {
       if (itm.keyword === active) {
         tabStyle = styles.show;
       }
-      const span = (<div style={tabStyle} key={itm.tabName}>{itm.content}</div>);
+      const span = (<div style={tabStyle} key={`${itm.keyword}-cont`}>{itm.content}</div>);
       return span;
     });
     return (

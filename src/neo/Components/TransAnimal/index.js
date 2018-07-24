@@ -39,7 +39,7 @@ class TransAnimal extends Component {
     content.addEventListener('touchstart', (e) => {
       // e.preventDefault();
       if(self.state.refresh) {
-        e.preventDefault()
+        // e.preventDefault()
         return;
       }
       const touch = e.touches[0];
@@ -61,7 +61,7 @@ class TransAnimal extends Component {
       })
     }, false);
     content.addEventListener('touchend', (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       self.setState({
         styles: ''
       })

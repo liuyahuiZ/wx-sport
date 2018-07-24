@@ -1,6 +1,6 @@
 export default {
   primary: '#4196FC',
-  primaryRgb: '65, 150, 252',
+  primaryRgb: '143, 191, 102',
   success: '#4BD963',
   warning: '#f7ba2a',
   error: '#ff4949',

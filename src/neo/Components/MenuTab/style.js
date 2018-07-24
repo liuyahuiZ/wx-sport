@@ -44,7 +44,6 @@ export default {
     display: 'inline-block',
     boxSizing: 'border-box',
     cursor: 'pointer',
-    borderBottom: '1px solid #E0E0E0',
     flex: 1,
     textAlign: 'center',
     color: '#999',

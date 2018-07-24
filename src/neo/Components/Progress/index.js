@@ -14,11 +14,11 @@ class Progress extends Component {
   }
 
   render() {
-    const { percent, barColor, radius } = this.props;
-    const borderRadius = { borderRadius: radius };
-    const barWidth = { width: `${percent}%`, backgroundColor: barColor, borderRadius: radius };
+    const { percent, barColor, bgColor, radius, style } = this.props;
+    const borderRadius = { borderRadius: radius,  backgroundColor: bgColor };
+    const barWidth = { width: `${percent}%`, background: barColor, borderRadius: radius };
     return (
-      <div style={arrayUtils.merge([styles.container, borderRadius])}>
+      <div style={arrayUtils.merge([styles.container, borderRadius, style])}>
         <div style={arrayUtils.merge([styles.bar, barWidth])} />
       </div>
     );
@@ -34,6 +34,7 @@ Progress.propTypes = {
 Progress.defaultProps = {
   percent: 0,
   barColor: 'rgb(65, 150, 252)',
+  bgColor: '#f5f5f5',
   radius: 0
 };
 

@@ -24,17 +24,17 @@ class Tab extends Component {
   componentDidMount() {
     const self = this;
     self.setState({ options: this.props.options });
-    self.$$tabHeader.onclick = function (ev) {
-      let itm = {};
-      if (ev.target.children.length > 0) {
-        itm = ev.target.firstChild.dataset;
-      } else {
-        itm = ev.target.dataset;
-      }
-      if (itm.content) {
-        self.changeActive(itm.content);
-      }
-    };
+    // self.$$tabHeader.onclick = function (ev) {
+    //   let itm = {};
+    //   if (ev.target.children.length > 0) {
+    //     itm = ev.target.firstChild.dataset;
+    //   } else {
+    //     itm = ev.target.dataset;
+    //   }
+    //   if (itm.content) {
+    //     self.changeActive(itm.content);
+    //   }
+    // };
   }
   changeActive(itm) {
     const arr = this.state.options;
@@ -69,8 +69,10 @@ class Tab extends Component {
         tabStyle = activeStyle;
       }
       const span = (<div
-        style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={itm.tabName}
-        data-content={itm.keyword} className={'tab-item'}
+        style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={itm.keyword}
+        data-content={itm.keyword} className={'tab-item'} onClick={()=>{
+          this.changeActive(itm.keyword)
+        }}
       >
         <div style={tabSpan} data-content={itm.keyword} className={'tab-span flex-1'}>{itm.tabName}</div>
       </div>);
@@ -81,7 +83,7 @@ class Tab extends Component {
       if (itm.keyword === this.state.active) {
         tabStyle = styles.show;
       }
-      const span = (<div style={tabStyle} key={itm.tabName}>{itm.content}</div>);
+      const span = (<div style={tabStyle} key={itm.keyword}>{itm.content}</div>);
       return span;
     });
     return (
@@ -89,7 +91,7 @@ class Tab extends Component {
         <div style={containerHead} className={`row ${ this.props.modal === 'MENULEFT' ? 'menu-left' : ''}`} ref={(r) => { this.$$tabHeader = r; }}>
           {tabHeader}
         </div>
-        <div className="trans" style={tabContentStyle}>
+        <div className="trans" style={ this.state.active? tabContentStyle: {}}>
           {tabContent}
         </div>
       </div>

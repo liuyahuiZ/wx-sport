@@ -18,7 +18,9 @@ class Item extends Component {
     if(link) {
       hashHistory.push(link);
     }
+    this.props.onClick();
   }
+
 
   render() {
     const { link, title, leftContent, style, showRight, rightContent  } = this.props;
@@ -42,6 +44,7 @@ Item.propTypes = {
     style: PropTypes.shape({}),
     showRight: PropTypes.bool,
     rightContent: PropTypes.shape({}),
+    onClick: PropTypes.func
 };
 
 Item.defaultProps = {
@@ -50,6 +53,7 @@ Item.defaultProps = {
     style: {},
     showRight: false,
     rightContent: {},
+    onClick: ()=>{}
 };
 
 

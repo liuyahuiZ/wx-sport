@@ -15,7 +15,8 @@ const {
     Carousel,
     Modal,
     Collapse,
-    Panel
+    Panel,
+    TransAnimal
   } = Components;
   
 class HomeDoc extends BaseView {
@@ -24,13 +25,21 @@ class HomeDoc extends BaseView {
       this.state = {
           confirmDirty: false,
           refreshed: false,
-          productList: [{name: 'query'},{name: 'gets'},{name: 'gets1'},{name: 'gets1'},{name: 'gets1'}]
+          status: this.props.status,
+          productList: [{name: 'query'},{name: 'gets'},{name: 'gets1'}]
       };
     }
 
     _viewAppear(){
       console.log('indemo');
     }
+
+    componentWillReceiveProps(nextProps){
+      this.setState({
+        status: nextProps.status
+      })
+    }
+
     loadFunc(){
       setTimeout(() => {
         this.setState({
@@ -46,18 +55,18 @@ class HomeDoc extends BaseView {
 
   
     render() {
-        const {refreshed, productList} = this.state;
-        const carouselMap = [{ tabName: 'first', content: (<img alt="text" src="http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png" />), isActive: true },
-        { tabName: 'second', content: (<img alt="text" src="http://47.88.2.72:2016/getphotoPal/2017-4-13/14920532977814.jpg" />), isActive: false },
-        { tabName: 'thired', content: (<img alt="text" src="http://47.88.2.72:2016/getphotoPal/2017-3-28/14906636798813.jpg" />), isActive: false }];
-        const listMap = [{ tabName: 'first', content: (<div className="padding-all-15x bg-show"><div className="padding-all-10x bg-FECAAD textclolor-gray-red border-radius-100 ">抢100优惠券</div></div>), isActive: true },
-        { tabName: 'second', content: (<div className="padding-all-15x bg-show"><div className="padding-all-10x bg-F1F8FD textclolor-alink border-radius-100 ">1元秒杀24期免息</div></div>), isActive: false },
-        { tabName: 'thired', content: (<div className="padding-all-15x bg-show"><div className="padding-all-10x bg-F1F8FD textclolor-alink border-radius-100 ">小白卡满1000减30</div></div>), isActive: false }]
-
+        const {status, productList} = this.state;
+        const carouselMap = [{ tabName: 'first', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/14/1522133980415_375x375.jpg" />), isActive: true },
+        { tabName: 'second', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/15/1522134154187_750x700.jpg" />), isActive: false },
+        { tabName: 'thired', content: (<img alt="text" src="https://static1.keepcdn.com/2018/02/24/14/1519455021015_750x700.jpg" />), isActive: false }];
+        
+        let imgArr = ['http://47.88.2.72:2016/getphotoPal/2018-7-23/15323156729698.png',
+      'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg',
+    'https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png']
         const productListDom = productList.map((itm, idx)=>{
           return (
-          <Row className="margin-top-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`}>
-            <Col><img alt="text" src="http://47.88.2.72:2016/getphotoPal/2017-3-28/14906636798813.jpg" /></Col>
+          <Row className="margin-top-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`} onClick={()=>{this.goCreateArticle('/ClassList')}}>
+            <Col><img alt="text" src={imgArr[idx]} /></Col>
             <Col className="absolute bottom-5 left-5">
               <Row>
                   <Col span={19}>
@@ -70,7 +79,6 @@ class HomeDoc extends BaseView {
             </Col>
           </Row>)
         });
-
       return(
           <section className="padding-all bg-000">
               <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'5rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />

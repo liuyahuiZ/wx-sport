@@ -6,7 +6,6 @@ export default {
     height: '15px',
     overflow: 'hidden',
     zIndex: '1',
-    backgroundColor: '#f5f5f5'
   },
   bar: {
     position: 'absolute',

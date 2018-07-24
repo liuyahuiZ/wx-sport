@@ -47,7 +47,10 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'file-loader',
-          options: {}
+          options: {
+            outputPath: './images/',
+            publicPath: 'images/'
+          }
         }
       }, 
       {
@@ -57,7 +60,9 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 10000,
-              name: 'fonts/[name].[hash:7].[ext]'
+              name: '[name].[hash:7].[ext]',
+              outputPath: './css/fonts/',
+              publicPath: 'fonts/'
             },
           },
         ],

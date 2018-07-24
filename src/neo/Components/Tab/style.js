@@ -11,7 +11,7 @@ export default {
     boxSizing: 'border-box',
     overflow: 'hidden',
     display: 'flex',
-    backgroundColor: '#fff'
+    borderBottom: '1px solid #333',
   },
   floatLeft: {
     float: 'left',
@@ -41,7 +41,6 @@ export default {
     display: 'inline-block',
     boxSizing: 'border-box',
     cursor: 'pointer',
-    borderBottom: '1px solid #E0E0E0',
     flex: 1,
     textAlign: 'center',
     color: '#999'
@@ -52,24 +51,18 @@ export default {
     height: '2rem',
     lineHeight: '2rem',
     display: 'inline-block',
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
-    borderRight: '1px solid #E0E0E0',
   },
   tabActive: {
-    borderBottom: '2px solid rgb(65, 150, 252)',
-    color: 'rgb(65, 150, 252)'
+    color: '#9CD36D'
   },
   leftTabActive: {
-    color: 'rgb(65, 150, 252)',
-    backgroundColor: '#f5f5f5'
+    color: '#9CD36D',
   },
   tabContent: {
     display: 'inline-block',
     width: '100%',
     minHeight: '50vh',
     boxSizing: 'border-box',
-    backgroundColor: '#f5f5f5'
   },
   borderNone: {
     border: 0,
