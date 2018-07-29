@@ -39,7 +39,7 @@ class OcrDoc extends BaseView {
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
-              <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30">
+              <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-12 textclolor-white">牛油果体适能训练营第36期</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">07月19日 下午14:40-15:40</Col>
@@ -47,7 +47,7 @@ class OcrDoc extends BaseView {
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
-                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
+                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/1532141519697.png`} />
               </Col>
 

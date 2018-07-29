@@ -12,8 +12,14 @@ class ProgressCircle extends Component {
       offsetStyle: 0,
       screenWidth: 245,
       show: this.props.show,
-      innerText: this.props.innerText
+      innerText: this.props.innerText,
+      site: {}
     };
+  }
+  componentDidMount(){
+    if(this.props.show) {
+      this.init();
+    }
   }
   componentWillReceiveProps(nextProps){
     this.setState({
@@ -28,7 +34,6 @@ class ProgressCircle extends Component {
   }
 
   init(){
-    console.log(this.$$progressContainer.clientWidth);
     this.setState({
         screenWidth: this.$$progressContainer.clientWidth||245,
         radius: this.$$progressContainer.clientWidth/2
@@ -40,29 +45,31 @@ class ProgressCircle extends Component {
 
   calcDashOffset() {
     const {radius, percent} = this.state;
-    console.log(radius)
+    // console.log(radius)
     let circumference = (Math.PI * (2 * radius));
     return Math.floor(circumference - ((percent / 100) * circumference));
   }
 
   createCSS() {
-    const {radius} = this.state;
+    const {radius, percent, screenWidth} = this.state;
     let circumference = (Math.PI * (2 * radius));
     let strokeDashoffset = this.calcDashOffset();
+    // console.log(percent, screenWidth/2);
+    let site = this.calculateCoordinate(percent, screenWidth/2);
     this.setState({
         offsetStyle: strokeDashoffset,
-        strokeDasharray: circumference
+        strokeDasharray: circumference,
+        site: site
     })
   }
 
   // 根据分数计算坐标
   calculateCoordinate(score, rs){
-    let degree = (360 *  Number(score))/100;
+    let degree = (360 *  Number(score)/100);
     let r=rs;
     let x = 0, y =0;
     let Xsite = 0, Ysite =0;
 
-    // console.log(degree);
 
     if(degree <= 90) {
       y = Math.sin(Math.PI * ( degree) / 180) * r;
@@ -83,8 +90,8 @@ class ProgressCircle extends Component {
       Ysite = r - y;
    
     } else if(degree > 270 && degree <= 360){
-      y = Math.sin(Math.PI * ( degree - 225 ) / 180) * r;
-      x = Math.cos(Math.PI * ( degree - 225) / 180) * r;
+      y = Math.sin(Math.PI * ( 360- degree) / 180) * r;
+      x = Math.cos(Math.PI * ( 360 -degree) / 180) * r;
       Xsite = r + x;
       Ysite = r - y;
     }
@@ -92,11 +99,11 @@ class ProgressCircle extends Component {
   }
 
   render(){
-      const { offsetStyle, screenWidth, strokeDasharray, show, percent, innerText } = this.state;
+      const { offsetStyle, screenWidth, strokeDasharray, show, percent, innerText, site } = this.state;
       let r = screenWidth/2;
       let cr = r * 0.75;
-      let site = this.calculateCoordinate(percent, r);
-      return show ? (<div className="donut" ref={(r) => { this.$$progressContainer = r; }}>
+
+      return show ? (<div className="donut" ref={(s) => { this.$$progressContainer = s; }}>
           <svg width={screenWidth} height={screenWidth} xmlns="http://www.w3.org/2000/svg" className="donut__svg">
             <circle id="donut-graph-x" className="donut__svg__scrim" r={r} cy={r} cx={r} strokeWidth="3" stroke="#333" fill="none" />
             <circle id="donut-graph" className="donut__svg__circle--one" r={r} cy={r} cx={r} strokeWidth="4" stroke="url(#purple)" 

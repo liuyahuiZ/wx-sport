@@ -1,5 +1,5 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
@@ -18,7 +18,8 @@ const {
     Tab,
     Progress
   } = Components;
-  
+const { sessions, storage } = utils;
+
 class OcrDoc extends Component {
     constructor(props) {
       super(props);
@@ -26,15 +27,66 @@ class OcrDoc extends Component {
           userInfo: {},
           status: this.props.status,
           resourceKey: '',
+          userInfo: storage.getStorage('userInfo') ||{},
           myClassList:[{name: '增强体制训练', progress: 60},
           {name: '塑形基本训练', progress: 20},
           {name: '瑜伽基本训练', progress: 40}]
       };
     }
+    componentDidMount(){
+      console.log('obg', storage.getStorage('userInfo'), UrlSearch());
+      let obg = UrlSearch();
+      let userInfo = storage.getStorage('userInfo')
+      if(obg.code&&obg.code!==''){
+        if(!userInfo.nickname||userInfo.nickname==''){
+          this.getUserinfo(obg.code);
+        }
+      }
+    }
+
     componentWillReceiveProps(nextProps){
       this.setState({
         status: nextProps.status
       })
+    }
+
+    getUserinfo(code){
+      const self = this;
+      fetch( config.ROOT_URL+ 'wx/getWebAccessToken', { method: 'POST', data: {
+          code: code
+      }}).then(data => {
+        console.log(data)
+
+        Modal.alert({ title: '用户信息',
+            content: JSON.stringify(data),
+            btn: {
+              text: '确定',
+              type: 'link',
+              style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+            }, 
+            type: 'large'
+          },
+        () => { console.log('nult callback'); });
+      //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
+
+        let resp = JSON.parse(data.respBody);
+        if(!resp.errcode){
+          storage.setStorage('userInfo', JSON.parse(data.respBody));
+          self.setState({
+            userInfo: JSON.parse(data.respBody)
+          })
+        }
+        
+      })
+    }
+
+    checkUser(){
+      console.log(storage.getStorage('userInfo'));
+      if (storage.getStorage('userInfo')) {
+        this.goLink('/PersonalFiles');
+      } else {
+        window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx15145e4f7b434571&redirect_uri=http%3A%2F%2Fwww.wetalks.cn%2Fwx-sport%2F%23%2FTab&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect';
+      }
     }
 
     switchChange(date){
@@ -93,7 +145,7 @@ class OcrDoc extends Component {
     }
 
     render() {
-        const { status, myClassList, resourceKey } = this.state;
+        const { status, myClassList, resourceKey, userInfo } = this.state;
         const myClassListDom = myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
             this.goLink('/MyClassDetail')
@@ -152,7 +204,7 @@ class OcrDoc extends Component {
                 <ProgressCircle score={60} show={status} innerText={`${60}%`} />
               </Col>
               <Col span={8} className="padding-all">
-                <ProgressCircle score={20} show={status} innerText={`${20}%`} />
+                <ProgressCircle score={100} show={status} innerText={`${100}%`} />
               </Col>
             </Row>
           )
@@ -179,20 +231,25 @@ class OcrDoc extends Component {
             <Row >
               <Col span={24} >
               <TransAnimal >
-                <Row justify="center" className="padding-all-1r bg-6E9EFB border-radius-5f overflow-hide relative">
+                <Row justify="center" className="padding-all-1r bg-1B1B1B border-radius-5f overflow-hide relative">
                   {/* <Col span={12} className="text-align-left">
                     <Icon iconName={'quote '} size={'150%'} iconColor={'#fff'}   />
                   </Col>
                   <Col span={12} className="text-align-right">
                     <Icon iconName={'android-settings '} size={'150%'} iconColor={'#fff'}   />
                   </Col> */}
-                  <Col className="margin-top-1r text-align-center zindex-10" onClick={()=>{console.log('123');this.goLink('/PersonalFiles')}}>
-                    <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r" >
+
+                  <Col className="margin-top-1r text-align-center zindex-10" onClick={()=>{ this.checkUser()}}>
+                    <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
+                        {
+
+                        }
+                        <img src={userInfo.headimgurl} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
-                    <span className="textclolor-white">UserName1</span>
+                    <span className="textclolor-white">{userInfo.nickname || '请登陆'}</span>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     <Row>
@@ -201,7 +258,7 @@ class OcrDoc extends Component {
                       <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
                     </Row>
                   </Col>
-                  <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
+                  <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                   <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/1532141519697.png`} />
                 </Row>
                 </TransAnimal>
@@ -231,17 +288,6 @@ class OcrDoc extends Component {
                     rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
                     showRight />
               </Col>
-
-              {/* <Col className="margin-top-2r" span={20}>
-                <Buttons
-                  text="submit"
-                  type={'primary'}
-                  size={'large'}
-                  onClick={()=>{
-                    this.submitClick()
-                  }}
-                />
-              </Col> */}
             </Row>
           </section>
         );

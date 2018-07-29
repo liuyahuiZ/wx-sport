@@ -13,7 +13,7 @@ const {
     Row,
     Col,
     Icon,
-    Progress
+    ProgressDrag
   } = Components;
   
 class OcrDoc extends BaseView {
@@ -64,7 +64,12 @@ class OcrDoc extends BaseView {
               <Col span={24} className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
                   <Col className="text-align-center textclolor-white">今天训练强度</Col>
-                  <Col><Progress percent={87} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'} bgColor={'#333'} style={{height: '7px'}} radius={20} /></Col>
+                  <Col>
+                  <ProgressDrag percent={50} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
+                 bgColor={'#333'} style={{height: '7px'}} barRoundStyle={{ 'width': '1.3rem','height': '1.3rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20} onChange={(v)=>{ console.log(v)}} barWidthDisable />
+                  </Col>
+                  <Col span={12} className="textclolor-white font-size-8">吃力</Col>
+                  <Col span={12} className="text-align-right font-size-8 textclolor-white">轻松</Col>
                 </Row>
               </Col>
 

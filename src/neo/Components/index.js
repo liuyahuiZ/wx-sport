@@ -50,6 +50,7 @@ import LoadMore from './LoadMore';
 import TransAnimal from './TransAnimal';
 import ProgressCircle from './ProgressCircle';
 import TimeRunner from './TimeRunner';
+import ProgressDrag from './ProgressDrag';
 import * as Tables from './Table';
 
 const { Table, TableRowColumn, TableRow, TableHeaderRow } = Tables;
@@ -110,5 +111,6 @@ export {
   LoadMore,
   TransAnimal,
   ProgressCircle,
-  TimeRunner
+  TimeRunner,
+  ProgressDrag
 };

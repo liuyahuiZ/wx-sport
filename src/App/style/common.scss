@@ -214,6 +214,6 @@ $position-map: (
  .#{$bgname}{background-color: $color;}
 }
 /*border-color*/
-@each $colorname,$color in (fff,#fff),(999,#999),(e5e5e5,#e5e5e5),(333,#333),(666,#666),(ddd,#ddd),(f4e6e3,#f4e6e3),(d9d8d8,#d9d8d8),(bfbfbf,#bfbfbf),(ff8e70,#ff8e70),(6ad1fa,#6ad1fa),(51b0d6,#51b0d6),(f5f5f5,#f5f5f5),(ea3a3a,#ea3a3a){
+@each $colorname,$color in (fff,#fff),(999,#999),(000,#000),(e5e5e5,#e5e5e5),(333,#333),(666,#666),(ddd,#ddd),(f4e6e3,#f4e6e3),(d9d8d8,#d9d8d8),(bfbfbf,#bfbfbf),(ff8e70,#ff8e70),(6ad1fa,#6ad1fa),(51b0d6,#51b0d6),(f5f5f5,#f5f5f5),(ea3a3a,#ea3a3a){
  .border-color-#{$colorname}{border-color: $color;}
 }

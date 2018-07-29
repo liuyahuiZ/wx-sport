@@ -217,7 +217,11 @@ class PullRefresh extends Component {
     this.setState({ 
         lock: false, 
         loadingIconStyle: 'transroute',
-        tabContentStyle: { marginTop: 0 }
+        tabContentStyle: { marginTop: 0 },
+        aboveX: 0,
+        startX: 0,
+        startY: 0,
+        scrollTop: 0,
     });
     setTimeout(() => {
         self.setState({

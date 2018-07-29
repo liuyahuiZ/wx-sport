@@ -70,6 +70,8 @@ class OcrDoc extends BaseView {
 
         //B 106  p 4766 4775
         //book: 108,  page: 4803,
+
+        //  118 5387
         const imgDom = this.renderBook();
         return(
           <section className="bg-show">

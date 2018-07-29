@@ -4,7 +4,8 @@ import {Components, Parts, utils} from 'neo';
 import { Router, Route, hashHistory, IndexRedirect, History } from 'react-router';
 import '../style/comment.scss';
 import '../style/common.scss';
-import Static from './static';
+import wx from 'weixin-js-sdk';
+import config from '../config/config';
 
 const { Button, PageTransition } = Components;
 const { HeaderPart } = Parts
@@ -32,7 +33,9 @@ class LayOut extends Component {
             titleArr: histArr,
             moving: false
         })
+        this.getSign();
     }
+    
     componentWillReceiveProps(nextProps, nextContext) {
         const { moving, historyArr } = this.state;
         if(moving) {
@@ -59,6 +62,78 @@ class LayOut extends Component {
         }
     }
     
+    getSign(){
+      const self = this;
+        let url =  encodeURIComponent(window.location.href.split('#')[0])
+        let reqbody={
+        "url" : url
+        }
+        fetch( config.ROOT_URL+ 'wx/sign', { method: 'POST', data: reqbody})
+        .then(data => {
+          console.log(data)
+          // alert(JSON.stringify(data.respBody));
+           wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: 'wx15145e4f7b434571', // 必填，公众号的唯一标识
+              timestamp: data.respBody.timestamp, // 必填，生成签名的时间戳
+              nonceStr: data.respBody.noncestr, // 必填，生成签名的随机串
+              signature: data.respBody.signature,// 必填，签名，见附录1
+              jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'chooseImage',
+                'scanQRCode',
+                'getLocation'
+              ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          });
+          wx.ready(()=>{
+            console.log('wx.ready');
+            // alert('wx.ready')
+          });
+
+          wx.error(function(res){
+
+            console.log('wx err',res);
+            // alert('wx.err'+JSON.stringify(res));
+
+            //可以更新签名
+          });
+          wx.onMenuShareTimeline({
+              title: 'shareTest', // 分享标题
+              link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
+              success: function () { 
+                  // 用户确认分享后执行的回调函数
+                  alert('分享成功')
+              },
+              cancel: function () { 
+                  // 用户取消分享后执行的回调函数
+                  alert('用户取消分享')
+              }
+          });
+          wx.onMenuShareAppMessage({
+              title: 'shareTest', // 分享标题
+              desc: 'shareTestshareTestshareTest,', // 分享描述
+              link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
+              type: 'link', // 分享类型,music、video或link，不填默认为link
+              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+              success: function () { 
+                  // 用户确认分享后执行的回调函数
+                  alert('分享成功')
+              },
+              cancel: function () { 
+                  // 用户取消分享后执行的回调函数
+                  alert('用户取消分享')
+              }
+          });
+        })
+        .catch(error => console.log(error))
+    }
+
     changeContent(action, nextProps){
         const self = this;
         const arr = this.state.compontArr;

@@ -61,7 +61,7 @@ class MenuTab extends Component {
         this.changeActive(itm.keyword)
       }}>
         <div className="tab-icon"><Icon iconName={itm.iconName} size={'150%'} iconColor={colors} /> </div>
-        <div className="tab-title" style={{'color': colors}}>{itm.keyword}</div>
+        <div className="tab-title" style={{'color': colors}}>{itm.tabName}</div>
       </div>) :(<div
         style={arrayUtils.merge([tabItem, tabStyle, itm.headStyle])} key={`${itm.keyword}-noicon`}
         data-content={itm.keyword} className={'tab-item'} onClick={()=>{

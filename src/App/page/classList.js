@@ -105,8 +105,8 @@ class ClassList extends BaseView {
               <Col className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B">
                 <Row className="padding-all">{clenderDom}</Row>
                 <Row className="margin-top-2 bg-0D0D0D">
-                <Col span={12} className="textclolor-black-low text-align-center">地区 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
-                <Col span={12} className="textclolor-black-low text-align-center">课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
+                <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center">地区 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
+                <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center">课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
                 </Row>
               </Col>
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
