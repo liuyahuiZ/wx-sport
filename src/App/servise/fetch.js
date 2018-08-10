@@ -5,11 +5,12 @@ export default function (url, options = {}) {
   const content = {
     method: options.method || 'GET',
     // body: JSON.stringify(options.data || {}),
-    headers: Object.assign({}, {
-      'Content-Type': 'application/json'
-    }, options.headers),
+    // headers: Object.assign({}, {
+    //   'Content-Type': 'application/json'
+    // }, options.headers),
     credentials: 'same-origin'
   };
+
   if (options.method === 'POST') {
     content.body = JSON.stringify(options.data || {});
   } else if (options.method === 'GET') {

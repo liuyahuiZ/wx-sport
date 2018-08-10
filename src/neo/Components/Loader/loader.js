@@ -29,7 +29,7 @@ class Loader extends Component {
       contbg = (<div style={styles.boxbg} onClick={() => { this.hide(); }}>1</div>);
       cell = (
         <div style={styles.loadContainer}>
-          <div className="loader">Loading...</div>
+          <div className="spinner"></div>
         </div>
       );
     }

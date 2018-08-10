@@ -84,22 +84,20 @@ class OcrDoc extends Component {
             <Row >
               <Col span={24} >
               <TransAnimal >
-                <Row justify="center" className="padding-all-1r bg-6E9EFB border-radius-5f">
-                  <Col className="text-align-center margin-top-1r">
+                <Row justify="center" className="padding-all-1r bg-8EBF66 border-radius-5f  overflow-hide relative">
+                  <Col className="zindex-10 text-align-center margin-top-1r">
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r">
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
                   </Col>
-                  <Col className="text-align-center margin-top-1r">
-                    <span className="textclolor-white">UserName</span>
+                  <Col className="zindex-10 text-align-center margin-top-1r">
+                    <span className="zindex-10 textclolor-white">UserName</span>
                   </Col>
-                  {/* <Col className="text-align-center margin-top-1r">
-                    <Row>
-                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
-                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
-                      <Col span={8} className=""><span className="font-size-8 textclolor-white">UserName</span></Col>
-                    </Row>
-                  </Col> */}
+                  <Col className="zindex-10 text-align-center ">
+                    <span className="zindex-10 font-size-8 textclolor-white">深圳</span>
+                  </Col>
+                  <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
+                  <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328575406788.png`} />
                 </Row>
                 </TransAnimal>
               </Col>
@@ -116,14 +114,14 @@ class OcrDoc extends Component {
                         onChange={(v)=>{console.log(v)}} />
                       </Col>
                       <Col span={4}>
-                        <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">教授</div>
+                        <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">表达</div>
                       </Col>
                       <Col span={18}>
                         <Rate value={3} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
                         onChange={(v)=>{console.log(v)}} />  
                       </Col>
                       <Col span={4}>
-                        <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">教授</div>
+                        <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">外观</div>
                       </Col>
                       <Col span={18}>
                         <Rate value={4} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}

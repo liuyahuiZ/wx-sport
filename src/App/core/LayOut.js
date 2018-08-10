@@ -6,10 +6,11 @@ import '../style/comment.scss';
 import '../style/common.scss';
 import wx from 'weixin-js-sdk';
 import config from '../config/config';
+import fetch from '../servise/fetch';
 
 const { Button, PageTransition } = Components;
 const { HeaderPart } = Parts
-const { sessions } = utils;
+const { sessions, storage } = utils;
 
 class LayOut extends Component {
     constructor(props, context) {
@@ -34,6 +35,7 @@ class LayOut extends Component {
             moving: false
         })
         this.getSign();
+        storage.setStorage('userInfo', {"openid":"o7vpA1s0OLLSrPK47Y5sLNDI7NKs","nickname":"MR.Andsen","sex":1,"language":"zh_CN","city":"浦东新区","province":"上海","country":"中国","headimgurl":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTITVMkZP6mtUU1WAxOSa9nyquS9ho7QInmlFhrckhRgtmNTSsZVwuInbu1CjBAAvH7faR7SV4LeTg/132","privilege":[]});
     }
     
     componentWillReceiveProps(nextProps, nextContext) {
@@ -70,8 +72,8 @@ class LayOut extends Component {
         }
         fetch( config.ROOT_URL+ 'wx/sign', { method: 'POST', data: reqbody})
         .then(data => {
-          console.log(data)
-          // alert(JSON.stringify(data.respBody));
+        //   console.log(data)
+        //   alert(JSON.stringify(data.respBody));
            wx.config({
               debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
               appId: 'wx15145e4f7b434571', // 必填，公众号的唯一标识
@@ -86,7 +88,9 @@ class LayOut extends Component {
                 'onMenuShareQZone',
                 'chooseImage',
                 'scanQRCode',
-                'getLocation'
+                'getLocation',
+                'openLocation',
+                'chooseWXPay'
               ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           wx.ready(()=>{

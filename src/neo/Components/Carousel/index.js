@@ -64,7 +64,7 @@ class Carousel extends Component {
     const content = self.$$tabContent;
     this.arr = arr;
     content.addEventListener('touchstart', (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       const touch = e.touches[0];
       // console.log(touch.pageX, self);
       self.setState({ startX: touch.pageX });
@@ -93,6 +93,7 @@ class Carousel extends Component {
     }, false);
     content.addEventListener("touchend",(e) => {
       e.preventDefault();
+      const arr = self.state.options;
       // const touch = e.touches[0];
       // self.setState({ startX: touch.pageX });
       if (self.state.aboveX > self.state.aboveLimit) {
@@ -167,8 +168,8 @@ class Carousel extends Component {
   }
   render() {
     const { show, showDots, showHeight, containerStyle,dotDefaultStyle, dotActiveStyle } = this.props;
+    const { options, tabContentStyle } = this.state;
     const containerHead = styles.containerHead;
-    const tabContentStyle = this.state.tabContentStyle;
     const height = showHeight ? { height: `${this.state.height}vh` } : '';
     const width = this.state.screenWidth;
     const itmWidth = { width: `${width}px` };
@@ -199,7 +200,7 @@ class Carousel extends Component {
       > {itm.content}</div>);
       return span;
     });
-    return show ? (
+    return (
       <div className="carousel-container" ref={(r) => { this.$$container = r; }} style={arrayUtils.merge([styles.container, containerStyle])}>
         <div
           style={arrayUtils.merge([containerHead, itmWidth])}
@@ -209,10 +210,12 @@ class Carousel extends Component {
         </div>
         <div className="trans" style={arrayUtils.merge([styles.tabContent, styles.floatLeft, itmWidth, height])}>
           <div className="trans" ref={(r) => { this.$$tabContent = r; }} style={arrayUtils.merge([styles.tabContent, tabContentStyle, styles.floatLeft, contentWidth, height])} >
-            {tabContent}</div>
+            { tabContent}
+          </div>
         </div>
+        
       </div>
-    ): '';
+    )
   }
 }
 

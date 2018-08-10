@@ -5,6 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
+import wx from 'weixin-js-sdk';
 
 const {
     Buttons,
@@ -31,7 +32,17 @@ class OcrDoc extends BaseView {
         hashHistory.push(link);
       }
     }
-
+    choseImage(){
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+        console.log(res);
+        }
+      });
+    }
     render() {
         const {article} = this.state;
 
@@ -58,8 +69,8 @@ class OcrDoc extends BaseView {
                     <Col className="zindex-10 text-align-right textclolor-white font-size-8">3千卡</Col></Row>
                   </Col>
                 </Row>
-                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/1532141519697.png`} />
+                <div className="width-100 bg-000 opacity-1 heightp-100 absolute-left zindex-9"></div>
+                <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581691046.png`} />
               </Col>
               <Col span={24} className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
@@ -73,7 +84,7 @@ class OcrDoc extends BaseView {
                 </Row>
               </Col>
 
-              <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D">
+              <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D" onClick={()=>{this.choseImage()}}>
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
                   <Col className="border-radius-6r font-size-8 overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={6}>
                    <Row>
@@ -82,7 +93,7 @@ class OcrDoc extends BaseView {
                   </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'} />
+                <img className="width-100 absolute-left zindex-6 " alt="text" src={'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'} />
               </Col>
 
               <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D">
@@ -94,7 +105,7 @@ class OcrDoc extends BaseView {
                   </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'} />
+                <img className="width-100 absolute-left zindex-6 " alt="text" src={'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'} />
               </Col>
 
               <Col className="margin-top-3">

@@ -26,8 +26,8 @@ class OcrDoc extends BaseView {
       super(props);
       this.state = {
           article: {},
-          book: 43,
-          page: 2013,
+          book: 57,
+          page: 2824,
       };
     }
 
@@ -72,6 +72,10 @@ class OcrDoc extends BaseView {
         //book: 108,  page: 4803,
 
         //  118 5387
+
+        // 57 2824
+
+        // 132 5970
         const imgDom = this.renderBook();
         return(
           <section className="bg-show">

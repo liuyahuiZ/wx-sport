@@ -14,6 +14,7 @@ import Modal from './Modal';
 import Loading from './Loading';
 import Dynamic from './Dynamic';
 import Loader from './Loader';
+import Loade from './Loader/loade';
 import Tab from './Tab';
 import Grid from './Grid';
 import Row from './Grid/Row';
@@ -76,6 +77,7 @@ export {
   Loading,
   Dynamic,
   Loader,
+  Loade,
   Tab,
   Grid,
   Row,

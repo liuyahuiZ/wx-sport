@@ -9,8 +9,6 @@ import BaseView from '../core/app';
 const {
     Buttons,
     Toaster,
-    Header,
-    Item,
     Row,
     Col,
     Icon,
@@ -60,12 +58,12 @@ class MyClassDetail extends BaseView {
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
-                <Row content="flex-start">
+                <Row className="padding-top-2" content="flex-start">
                   <Col span={1}></Col>
                   <Col span={15} className="font-size-10 textclolor-white ">第一周第一天</Col>
                   <Col span={8} className="textclolor-333"><Icon iconName={'android-time '} size={'120%'} iconColor={'#333'} /> 00:39:20 </Col>
                   <Col className="bg-1B1B1B">
-                    <Row>
+                    <Row >
                       <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
                         <Row >
                           <Col className="text-align-center">
@@ -106,7 +104,7 @@ class MyClassDetail extends BaseView {
               <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <img className='width-100' src={'http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg'} />
               </Col>
-              <Col className="textclolor-white text-align-center">
+              <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
               </Col>
               {

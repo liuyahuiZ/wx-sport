@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
+import { myClass } from '../api/classes';
 
 const {
     Buttons,
@@ -16,7 +17,8 @@ const {
     TransAnimal,
     ProgressCircle,
     Tab,
-    Progress
+    Progress,
+    Loade
   } = Components;
 const { sessions, storage } = utils;
 
@@ -34,14 +36,39 @@ class OcrDoc extends Component {
       };
     }
     componentDidMount(){
-      console.log('obg', storage.getStorage('userInfo'), UrlSearch());
+      // console.log('obg', storage.getStorage('userInfo'), UrlSearch());
       let obg = UrlSearch();
       let userInfo = storage.getStorage('userInfo')
       if(obg.code&&obg.code!==''){
-        if(!userInfo.nickname||userInfo.nickname==''){
+        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
           this.getUserinfo(obg.code);
         }
       }
+      if((userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        this.getMyClass(userInfo)
+      }
+    }
+
+    getMyClass(userInfo){
+      console.log(userInfo);
+      const self = this;
+      Loade.show();
+      myClass({userId: userInfo.openid}).then((data)=>{
+        console.log(data);
+        Loade.hide();
+        if(data && data.length > 0){
+          self.setState({
+            myClassList: data
+          })
+        } else {
+          self.setState({
+            loadText: '暂无数据'
+          })
+        }
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
     }
 
     componentWillReceiveProps(nextProps){
@@ -72,6 +99,7 @@ class OcrDoc extends Component {
         let resp = JSON.parse(data.respBody);
         if(!resp.errcode){
           storage.setStorage('userInfo', JSON.parse(data.respBody));
+          self.getMyClass(data.respBody)
           self.setState({
             userInfo: JSON.parse(data.respBody)
           })
@@ -152,9 +180,9 @@ class OcrDoc extends Component {
           }}>
           <Col className="text-align-center textclolor-white">{itm.name}</Col>
           <Col className="margin-top-3" span={15}>
-            <Progress percent={itm.progress} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'} bgColor={'#333'} style={{height: '7px'}} radius={20} />
+            <Progress percent={itm.nowSection/itm.allSection * 100} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'} bgColor={'#333'} style={{height: '7px'}} radius={20} />
           </Col>
-          <Col className="margin-top-3 text-align-center textcolor-8EBF66" span={6}>共21天</Col>
+          <Col className="margin-top-3 text-align-center textcolor-8EBF66" span={6}>共{itm.allSection}天</Col>
         </Row>)
         })
         const tabOptions = [{
@@ -258,8 +286,8 @@ class OcrDoc extends Component {
                       <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
                     </Row>
                   </Col>
-                  <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                  <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/1532141519697.png`} />
+                  <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
+                  <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328575406788.png`} />
                 </Row>
                 </TransAnimal>
               </Col>

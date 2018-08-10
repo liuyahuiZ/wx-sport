@@ -15,7 +15,7 @@ class ProgressLoader extends Component {
     };
     this.hide = this.hide.bind(this);
   }
-  show(status) {
+  showProgress(status) {
     if (status && status !== '') {
       this.hide();
     } else {
