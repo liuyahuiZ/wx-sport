@@ -1,11 +1,12 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
+import { transOverUp } from '../api/classes';
 
 const {
     Buttons,
@@ -14,9 +15,11 @@ const {
     Row,
     Col,
     Icon,
-    ProgressDrag
-  } = Components;
-  
+    ProgressDrag,
+    Loade
+} = Components;
+const { sessions, storage } = utils;
+
 class OcrDoc extends BaseView {
     constructor(props) {
       super(props);
@@ -42,6 +45,23 @@ class OcrDoc extends BaseView {
         console.log(res);
         }
       });
+    }
+
+    submitTrain(){
+      let obg = storage.getStorage('userInfo');
+      Loade.show();
+      transOverUp({
+        userId: obg.openid,
+        markName: '',
+        mark: '',
+      }).then((data)=>{
+        console.log(data);
+        Loade.hide();
+        this.goLink('/TeacherRate')
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
     }
     render() {
         const {article} = this.state;
@@ -115,7 +135,7 @@ class OcrDoc extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
                   onClick={()=>{
-                    this.goLink('/TeacherRate')
+                    this.submitTrain()
                   }}
                 />
               </Col>

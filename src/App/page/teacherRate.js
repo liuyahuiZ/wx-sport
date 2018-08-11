@@ -1,9 +1,10 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
+import { userMark } from '../api/classes';
 
 const {
     Buttons,
@@ -14,9 +15,11 @@ const {
     Icon,
     Modal,
     TransAnimal,
-    Rate
-  } = Components;
-  
+    Rate,
+    Loade
+} = Components;
+const { sessions, storage } = utils;
+
 class OcrDoc extends Component {
     constructor(props) {
       super(props);
@@ -73,6 +76,25 @@ class OcrDoc extends Component {
           type: 'large'
         },
         () => { console.log('nult callback'); });
+    }
+
+    submitMark(){
+      let obg = storage.getStorage('userInfo');
+      Loade.show();
+      userMark({
+        userId: obg.openid,
+        markName: '',
+        mark: '',
+        keepTime: '',
+        qianka: '',
+        createTime: ''
+      }).then((data)=>{
+        console.log(data);
+        Loade.hide();
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
     }
         
 
@@ -139,7 +161,7 @@ class OcrDoc extends Component {
                   size={'large'}
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
                   onClick={()=>{
-                    this.submitClick()
+                    this.submitMark()
                   }}
                 />
               </Col>

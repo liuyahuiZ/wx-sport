@@ -1,10 +1,11 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
+import { transOver, classDetail } from '../api/classes';
 
 const {
     Buttons,
@@ -13,9 +14,11 @@ const {
     Col,
     Icon,
     Carousel,
-    TimeRunner
-  } = Components;
-  
+    TimeRunner,
+    Loade
+} = Components;
+const { sessions, storage } = utils;
+
 class MyClassDetail extends BaseView {
     constructor(props) {
       super(props);
@@ -25,10 +28,38 @@ class MyClassDetail extends BaseView {
           itmStatus: true,
       };
     }
+    _viewAppear(){
+      this.getClassDetail();
+    }
+    getClassDetail(){
+      let obg = UrlSearch();
+      classDetail({
+        courseId: obg.courseId,
+        nowSection: obg.nowSection,
+      }).then((data)=>{
+        console.log(data);
+        Loade.hide();
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
+    }
     setValue(key,val){
         this.setState({[key]: val});
     }
     submitClick(){
+      Loade.show();
+      let obg = storage.getStorage('userInfo');
+      transOver({
+        userId: obg.openid,
+        courseId: '',
+      }).then((data)=>{
+        console.log(data);
+        Loade.hide();
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
       console.log('endding')
     }
 

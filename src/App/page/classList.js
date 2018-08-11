@@ -27,7 +27,8 @@ class ClassList extends BaseView {
           article: {},
           classList: [],
           dateArr: [],
-          loadText: '加载中'
+          loadText: '加载中',
+          selectDay: ''
       };
     }
     _viewAppear(){
@@ -74,7 +75,8 @@ class ClassList extends BaseView {
         })
       }
       this.setState({
-        dateArr: dataArr
+        dateArr: dataArr,
+        selectDay: dataArr[0]
       })
 
     }
@@ -164,11 +166,12 @@ class ClassList extends BaseView {
       
         }
       });
-      
     }
 
+
+
     render() {
-        const {loadText, classList, dateArr} = this.state;
+        const {loadText, classList, dateArr, selectDay} = this.state;
         const self = this;
         const carouselMap = [{ tabName: 'first', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/14/1522133980415_375x375.jpg" />), isActive: true },
         { tabName: 'second', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/15/1522134154187_750x700.jpg" />), isActive: false },
@@ -207,8 +210,12 @@ class ClassList extends BaseView {
         </Row>;
 
         const clenderDom = dateArr.length > 0 ? dateArr.map((itm, idx)=>{
-          return (<Col key={`${idx}-date`} span={24/7}><Row><Col className="font-size-8 textclolor-black-low text-align-center">{itm.dateName}</Col>
-          <Col className="font-size-8 textclolor-black-low text-align-center">{itm.date}</Col></Row></Col>)
+          return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{self.setValue('selectDay', itm)}}>
+          <Row><Col className="font-size-8 textclolor-black-low text-align-center">{itm.dateName}</Col>
+          <Col className="font-size-8 textclolor-black-low text-align-center">
+          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-8 textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
+          </Col></Row>
+          </Col>)
         }) : <Col className="text-align-center font-size-8 textclolor-white line-height-2r">{loadText}</Col>;
         return(
           <section className="padding-all bg-000">

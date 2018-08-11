@@ -166,9 +166,13 @@ class OcrDoc extends Component {
         'resourceKey': v
       });
     }
-    goLink(link){
+    
+    goLink(link, itm){
       if(link) {
-        hashHistory.push(link);
+        hashHistory.push({
+          pathname: link,
+          query: itm || ''
+        });
       }
     }
 
@@ -176,7 +180,10 @@ class OcrDoc extends Component {
         const { status, myClassList, resourceKey, userInfo } = this.state;
         const myClassListDom = myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
-            this.goLink('/MyClassDetail')
+            this.goLink('/MyClassDetail', {
+              courseId : itm.id,
+              nowSection: itm.nowSection
+            })
           }}>
           <Col className="text-align-center textclolor-white">{itm.name}</Col>
           <Col className="margin-top-3" span={15}>

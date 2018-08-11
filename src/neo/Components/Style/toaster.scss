@@ -28,11 +28,11 @@
     height: auto;
     font-size: 16px;
     padding: .5rem 1rem;
-    background-color: rgb(235,248,242);
+    background-color: rgba(0,0,0, 0.9);
     border: solid 1px;
-    border-color: rgb(167,225,196);
+    border-color: rgba(0,0,0, 0.9);
     border-radius: 5px;
-    color: rgba(0,0,0,0.65);
+    color: #fff;
 
     &.success {
       background-color: rgb(235,248,242);
@@ -43,8 +43,8 @@
       border-color: rgb(255,233,167);
     }
     &.error {
-      background-color: rgb(254,243,235);
-      border-color: rgb(252,204,167);
+      background-color: rgba(0,0,0, 0.7);
+      border-color: rgba(0,0,0, 0.7);
     }
     &.normal {
       background-color: rgb(235,244,255);

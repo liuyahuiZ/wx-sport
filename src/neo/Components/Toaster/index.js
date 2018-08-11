@@ -10,7 +10,7 @@ function create() {
     const type = msg.type ? msg.type : 'normal';
     const content = msg.content ? msg.content : '';
     const time = msg.time ? msg.time : 5000;
-    const position = msg.position ? msg.position : 'center';
+    const position = msg.position ? msg.position : 'top';
     ReactDOM.render(<Toaster />, div, function () {
       this.doToaster(type, content, time, closePre, position);
     });
