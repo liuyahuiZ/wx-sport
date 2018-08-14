@@ -162,6 +162,7 @@ class FileUp extends React.Component {
           {addFile}
           {des}
         </div>
+        {this.props.children}
         <input className={'hideenInput'} type="file" id="selFile" accept={accept} onChange={this.change} ref={(r) => { this.$$files = r; }} />
       </div>
     );

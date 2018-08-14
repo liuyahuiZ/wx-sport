@@ -7,6 +7,7 @@ import BaseView from '../core/app';
 import moment from 'moment';
 import wx from 'weixin-js-sdk';
 import { subjectCourses } from '../api/subject';
+import { userOrdeRing } from '../api/classes'
 
 const {
     Buttons,
@@ -33,29 +34,10 @@ class ClassList extends BaseView {
     }
     _viewAppear(){
       this.initClander();
-      console.log(UrlSearch());
-      let obg = UrlSearch();
-      const self = this;
-      Loade.show();
-      subjectCourses(obg.subjectId).then((data)=>{
-        console.log(data);
-        Loade.hide();
-        if(JSON.stringify(data)!=='{}'){
-          self.setState({
-            classList: [data]
-          })
-        } else {
-          self.setState({
-            loadText: '暂无数据'
-          })
-        }
-      }).catch((e)=>{
-        Loade.hide();
-        console.log(e)
-      })
     }
   
     initClander(){
+      const self = this;
       moment.locale('en', {
         weekdays : [
             "周日", "周一", "周二", "周三", "周四", "周五", "周六"
@@ -77,8 +59,37 @@ class ClassList extends BaseView {
       this.setState({
         dateArr: dataArr,
         selectDay: dataArr[0]
-      })
+      },()=>{
+        self.getList()
+      });
 
+    }
+    getList(){
+      let obg = UrlSearch();
+      const self = this;
+      const { selectDay } = this.state;
+      Loade.show();
+      subjectCourses({
+        subjectId:obg.subjectId,
+        datetime: selectDay.dateTime 
+      }).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        Loade.hide();
+        if(JSON.stringify(data)!=='{}'){
+          self.setState({
+            classList: [data]
+          })
+        } else {
+          self.setState({
+            loadText: '暂无数据',
+            classList: []
+          })
+        }
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
     }
     setValue(key,val){
         this.setState({[key]: val});
@@ -91,7 +102,6 @@ class ClassList extends BaseView {
             subjectId : id,
           }
         });
-        
       }
     }
 
@@ -102,25 +112,14 @@ class ClassList extends BaseView {
         content: 'this is a warning',
         options: [
         {
-            "text": "上海",
+            "text": "深圳",
             "value": "1"
         },
         {
-            "text": "北京",
+            "text": "广州",
             "value": "2"
         },
-        {
-            "text": "杭州",
-            "value": "3"
-        },
-        {
-            "text": "广州",
-            "value": "4"
-        },
-        {
-            "text": "南京",
-            "value": "5"
-        }],
+        ],
         btnSure: {
           text: '完成',
           type: 'link'
@@ -168,6 +167,14 @@ class ClassList extends BaseView {
       });
     }
 
+    setData(itm){
+      this.setState({'selectDay': itm},()=>{
+        this.getList();
+      });
+    }
+    ordeRing(it){
+      console.log(it);
+    }
 
 
     render() {
@@ -180,8 +187,8 @@ class ClassList extends BaseView {
         const classListDom = classList.length > 0 ? classList.map((itm, idx) => {
           let itmDom = itm.children.length > 0 ? itm.children.map((it, id)=>{
             let statusDom = it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 border-all bg-D1D5D1 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r">结束</Col>
-          : <Col span={3.5} className="margin-top-2r zindex-10 bg-8EBF66 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r">预约</Col>;
-          return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B" key={`${id}-lit`} onClick={()=>{ console.log('123')}}>
+          : <Col span={3.5} className="margin-top-2r zindex-10 bg-8EBF66 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>;
+          return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B" key={`${id}-lit`} >
             <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >
               <Row className="zindex-10 bg-D1D5D1">
                 <Col span={7}><img className="width-100 heighr-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/15321406954276.png`} /></Col>
@@ -210,7 +217,7 @@ class ClassList extends BaseView {
         </Row>;
 
         const clenderDom = dateArr.length > 0 ? dateArr.map((itm, idx)=>{
-          return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{self.setValue('selectDay', itm)}}>
+          return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ self.setData(itm); console.log(itm);}}>
           <Row><Col className="font-size-8 textclolor-black-low text-align-center">{itm.dateName}</Col>
           <Col className="font-size-8 textclolor-black-low text-align-center">
           <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-8 textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>

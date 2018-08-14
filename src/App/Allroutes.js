@@ -10,16 +10,16 @@ const DomeDoc = (location, cb) => {
   },'DomeDoc')
 };
 
-const OcrDoc = (location, cb) => {
+const ServiceTitle = (location, cb) => {
   require.ensure([], require => {
-      cb(null, require('./page/ocr').default)
-  },'OcrDoc')
+      cb(null, require('./page/serviceTitle').default)
+  },'ServiceTitle')
 };
 
-const OcrLiveDoc = (location, cb) => {
+const About = (location, cb) => {
   require.ensure([], require => {
-      cb(null, require('./page/ocrLive').default)
-  },'OcrLiveDoc')
+      cb(null, require('./page/about').default)
+  },'About')
 };
 
 const AccessAuthor = (location, cb) => {
@@ -119,8 +119,8 @@ class MyRouter extends Component{
         <Route path={'Home'} component={Home} />
         <Route path={'Lists'} component={ListDoc} />
         <Route path={'Demo'} getComponent={DomeDoc} />
-        <Route path={'Ocr'} getComponent={OcrDoc} />
-        <Route path={'OcrLive'} getComponent={OcrLiveDoc} />
+        <Route path={'About'} getComponent={About} />
+        <Route path={'ServiceTitle'} getComponent={ServiceTitle} />
         <Route path={'AccessAuthor'} getComponent={AccessAuthor} />
         <Route path={'Tab'} getComponent={TabDoc} />
         <Route path={'CreateArticle'} getComponent={CreateArticleDoc} />

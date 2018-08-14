@@ -5,17 +5,17 @@ export default function (url, options = {}) {
   const content = {
     method: options.method || 'GET',
     // body: JSON.stringify(options.data || {}),
-    // headers: Object.assign({}, {
-    //   'Content-Type': 'application/json'
-    // }, options.headers),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     credentials: 'same-origin'
   };
 
   if (options.method === 'POST') {
-    content.body = JSON.stringify(options.data || {});
+    content.body = Object.entries(options.data).filter(param => param[1] !== '').map(param => `${param[0]}=${param[1]}`).join('&');
   } else if (options.method === 'GET') {
     // 如果发送字段为空 则不发该字段，此处处理为了兼容后端。可能会有坑
-    const params = Object.entries(options.data).filter(param => param[1] !== '').map(param => `${param[0]}=${param[1]}`).join('&');
+    const params = options.data ? Object.entries(options.data).filter(param => param[1] !== '').map(param => `${param[0]}=${param[1]}`).join('&') : '';
     // const params = Object.entries(options.data).map(para
     // m => `${param[0]}=${param[1]}`).join('&');
     if (params !== '') {

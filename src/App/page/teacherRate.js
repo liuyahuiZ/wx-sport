@@ -27,6 +27,9 @@ class OcrDoc extends Component {
           userInfo: {},
           status: this.props.status,
           resourceKey: '1',
+          js: 5,
+          bd: 5,
+          wg: 4
       };
     }
     componentWillReceiveProps(nextProps){
@@ -35,8 +38,8 @@ class OcrDoc extends Component {
       })
     }
 
-    switchChange(date){
-        console.log(date);
+    setValue(key,val){
+        this.setState({[key]: val});
     }
 
     submitClick(){
@@ -79,15 +82,14 @@ class OcrDoc extends Component {
     }
 
     submitMark(){
-      let obg = storage.getStorage('userInfo');
+      let userId = storage.getStorage('userId');
+      const {js, bd, wg} = this.state;
       Loade.show();
       userMark({
-        userId: obg.openid,
-        markName: '',
-        mark: '',
-        keepTime: '',
-        qianka: '',
-        createTime: ''
+        userId: userId,
+        js: js,
+        bd: bd,
+        wg: wg
       }).then((data)=>{
         console.log(data);
         Loade.hide();
@@ -99,8 +101,9 @@ class OcrDoc extends Component {
         
 
     render() {
-        const { status } = this.state;
-        console.log(status);
+        const { status, js, bd, wg } = this.state;
+        const self = this;
+
         return(
           <section className="padding-all bg-000 minheight-100">
             <Row >
@@ -132,22 +135,31 @@ class OcrDoc extends Component {
                         <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">教授</div>
                       </Col>
                       <Col span={18}>
-                        <Rate value={5} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
-                        onChange={(v)=>{console.log(v)}} />
+                        <Rate value={js} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
+                        onChange={(v)=>{
+                          console.log(v)
+                          self.setValue('js', v)
+                        }} />
                       </Col>
                       <Col span={4}>
                         <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">表达</div>
                       </Col>
                       <Col span={18}>
-                        <Rate value={3} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
-                        onChange={(v)=>{console.log(v)}} />  
+                        <Rate value={bd} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
+                        onChange={(v)=>{
+                          console.log(v)
+                          self.setValue('bd', v)
+                        }} />  
                       </Col>
                       <Col span={4}>
                         <div className="margin-top-p4r bg-8EBF66 font-size-8 textclolor-333 text-align-center border-radius-6r line-height-20">外观</div>
                       </Col>
                       <Col span={18}>
-                        <Rate value={4} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
-                        onChange={(v)=>{console.log(v)}} />
+                        <Rate value={wg} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
+                        onChange={(v)=>{
+                          console.log(v)
+                          self.setValue('wg', v)
+                        }} />
                       </Col>
                     </Row>
                   </Col>

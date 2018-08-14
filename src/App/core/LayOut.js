@@ -35,7 +35,8 @@ class LayOut extends Component {
             moving: false
         })
         this.getSign();
-        storage.setStorage('userInfo', {"openid":"o7vpA1s0OLLSrPK47Y5sLNDI7NKs","nickname":"MR.Andsen","sex":1,"language":"zh_CN","city":"浦东新区","province":"上海","country":"中国","headimgurl":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTITVMkZP6mtUU1WAxOSa9nyquS9ho7QInmlFhrckhRgtmNTSsZVwuInbu1CjBAAvH7faR7SV4LeTg/132","privilege":[]});
+        // storage.setStorage('userInfo', {"openid":"o7vpA1s0OLLSrPK47Y5sLNDI7NKs","nickname":"MR.Andsen","sex":1,"language":"zh_CN","city":"浦东新区","province":"上海","country":"中国","headimgurl":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTITVMkZP6mtUU1WAxOSa9nyquS9ho7QInmlFhrckhRgtmNTSsZVwuInbu1CjBAAvH7faR7SV4LeTg/132","privilege":[]});
+        // storage.setStorage('userId', 3);
     }
     
     componentWillReceiveProps(nextProps, nextContext) {

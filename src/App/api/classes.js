@@ -1,5 +1,18 @@
 import fetch from '../servise/fetch';
+// import Service from '../servise/service';
 import config from '../config/config';
+
+
+export function userRegistry(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `user/registry`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
 
 export function myClass(req){
     return new Promise((resolve, reject)=>{
@@ -16,7 +29,7 @@ export function myClass(req){
 export function classDetail(req){
     return new Promise((resolve, reject)=>{
         let reqbody=req
-        fetch(config.API_URL+ `user/courses/detail`,{ method: 'POST', data: reqbody})
+        fetch(config.API_URL+ `user/course/detail`, { method: 'POST', data: reqbody})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -40,7 +53,7 @@ export function userMark(req){
 export function transOver(req){
     return new Promise((resolve, reject)=>{
         let reqbody=req
-        fetch(config.API_URL+ `user/courses/transOver`,{ method: 'POST', data: reqbody})
+        fetch(config.API_URL+ `user/course/transOver`,{ method: 'POST', data: reqbody})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -52,7 +65,18 @@ export function transOver(req){
 export function transOverUp(req){
     return new Promise((resolve, reject)=>{
         let reqbody=req
-        fetch(config.API_URL+ `user/courses/transOverUpload`,{ method: 'POST', data: reqbody})
+        fetch(config.API_URL+ `user/course/transOverUpload`,{ method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function userOrdeRing(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `user/ordering`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

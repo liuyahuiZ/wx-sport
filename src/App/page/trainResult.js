@@ -3,6 +3,7 @@ import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
+import {fileUp} from '../servise/qiniuUp';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
@@ -16,7 +17,8 @@ const {
     Col,
     Icon,
     ProgressDrag,
-    Loade
+    Loade,
+    FileUp
 } = Components;
 const { sessions, storage } = utils;
 
@@ -47,13 +49,34 @@ class OcrDoc extends BaseView {
       });
     }
 
+    fileUps(v, name){
+      const self = this;
+      console.log(v);
+      fileUp(v).then((res)=>{
+        console.log(res);
+        self.setValue(name, res);
+      }).catch((e)=>{
+        console.log(e);
+      })
+    }
+
     submitTrain(){
-      let obg = storage.getStorage('userInfo');
+      let userId = storage.getStorage('userId');
+      const { picture, theVieo } = this.state;
       Loade.show();
       transOverUp({
-        userId: obg.openid,
-        markName: '',
-        mark: '',
+        userId: userId,
+        teacherId: '',
+        orderId: '',
+        keepDate: '',
+        keepDays: '',
+        section: '',
+        feel: '',
+        imgUrl: picture,
+        mvUrl: theVieo,
+        question: '',
+        revert: '',
+        signId: ''
       }).then((data)=>{
         console.log(data);
         Loade.hide();
@@ -104,28 +127,59 @@ class OcrDoc extends BaseView {
                 </Row>
               </Col>
 
-              <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D" onClick={()=>{this.choseImage()}}>
+              <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D" >
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
                   <Col className="border-radius-6r font-size-8 overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={6}>
-                   <Row>
+                   <Row onClick={()=>{
+                     this.$$img1.EditImg()
+                   }}>
                      <Col span={12} className="margin-top-3"><i className="icon icon-camera margin-top-3" /></Col>
-                     <Col span={12} className="text-align-left">添加</Col></Row>
+                     <Col span={12} className="text-align-left">添加</Col>
+                    </Row>
                   </Col>
+                  <Col className={'zindex-6 absolute-left zindex-9'}>
+                  <FileUp
+                  description={''}
+                  defaultSrc={'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'}
+                  ref={(r) => {
+                    this.$$img1 = r;
+                  }}
+                  fileReady={(v)=>{
+                    this.fileUps(v, 'picture')
+                  }}
+                  fileType={'blob'}
+                  callType={'H5'}
+                  maxSize={10}
+                  ></FileUp> </Col>
                 </Row>
-                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 " alt="text" src={'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'} />
+                {/* <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div> */}
               </Col>
 
               <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D">
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
                   <Col className="border-radius-6r font-size-8 overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={6}>
-                   <Row>
+                   <Row onClick={()=>{
+                     this.$$img2.EditImg()
+                   }}>
                      <Col span={12} className="margin-top-3"><i className="icon icon-video margin-top-3" /></Col>
                      <Col span={12} className="text-align-left">添加</Col></Row>
                   </Col>
+                  <Col className={'zindex-6 absolute-left zindex-9'}>
+                  <FileUp
+                  description={''}
+                  defaultSrc={'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'}
+                  ref={(r) => {
+                    this.$$img2 = r;
+                  }}
+                  fileReady={(v)=>{
+                    this.fileUps(v, 'theVieo')
+                  }}
+                  fileType={'blob'}
+                  callType={'H5'}
+                  maxSize={10}
+                  accept="video/*"
+                  ></FileUp> </Col>
                 </Row>
-                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 " alt="text" src={'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'} />
               </Col>
 
               <Col className="margin-top-3">

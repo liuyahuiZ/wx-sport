@@ -13,7 +13,8 @@ const {
     Header,
     Carousel,
     Modal,
-    Loade
+    Loade,
+    Toaster
   } = Components;
   
 class HomeDoc extends BaseView {
@@ -31,8 +32,10 @@ class HomeDoc extends BaseView {
 
     _viewAppear(){
       const self = this;
-      getAds({}).then((data) => {
+      getAds({}).then((res) => {
         // console.log(data);
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); }
+        let data = res.result;
         const list = [];
         for(let i=0;i<data.length;i++){
           list.push({
@@ -52,8 +55,11 @@ class HomeDoc extends BaseView {
         console.log(e)
       })
       Loade.show();
-      getSubjects({}).then((data)=>{
+      getSubjects({}).then((res)=>{
         Loade.hide();
+        console.log(res);
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); }
+        let data = res.result;
         // console.log(data);
         if(data.length > 0){
           self.setState({

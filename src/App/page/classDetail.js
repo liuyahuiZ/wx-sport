@@ -1,12 +1,12 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
-import { subjectDetail } from '../api/subject';
+import { subjectDetail, createOrder } from '../api/subject';
 
 const {
     Buttons,
@@ -18,23 +18,27 @@ const {
     Icon,
     Carousel,
     Loade
-  } = Components;
-  
+} = Components;
+const { sessions, storage } = utils;
+
 class OcrDoc extends BaseView {
     constructor(props) {
       super(props);
+      let obg = UrlSearch();
       this.state = {
           dataDetail: {},
-
+          subjectId: obg.subjectId
       };
     }
     _viewAppear(){
       let obg = UrlSearch();
+      console.log(obg)
       const self = this;
       Loade.show();
-      subjectDetail(obg.subjectId).then((data)=>{
-        console.log(data);
+      subjectDetail(obg.subjectId).then((res)=>{
         Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
         if(JSON.stringify(data)!=='{}'){
           self.setState({
             dataDetail: data
@@ -62,26 +66,55 @@ class OcrDoc extends BaseView {
         });
       }
     }
+    undefindOrder(){
+      const { subjectId } = this.state;
+      let userId = storage.getStorage('userId');
+      let authCode = storage.getStorage('authCode');
+      let obg = UrlSearch();
+      this.goLink('/ClassList', obg.subjectId)
+      Loade.show();
+      createOrder({
+        "authCode": authCode,
+        "clientIP": '192.168.3.1',
+        "subjectId": subjectId,
+        "userId": userId
+      }).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        console.log(res);
+      }).catch((err)=>{
+        Loade.hide();
+        console.log(res);
+      })
+    }
     bought(){
+      const self = this;
       let obg = UrlSearch();
       wx.chooseWXPay({
         timestamp: 1414723227,
         nonceStr: 'noncestr',
         package: 'addition=action_id%3dgaby1234%26limit_pay%3d&bank_type=WX&body=innertest&fee_type=1&input_charset=GBK&notify_url=http%3A%2F%2F120.204.206.246%2Fcgi-bin%2Fmmsupport-bin%2Fnotifypay&out_trade_no=1414723227818375338&partner=1900000109&spbill_create_ip=127.0.0.1&total_fee=1&sign=432B647FE95C7BF73BCD177CEECBEF8D',
         signType: 'SHA1', // 注意：新版支付接口使用 MD5 加密
-        paySign: 'bd5b1933cda6e9548862944836a9b52e8c9a2b69'
+        paySign: 'bd5b1933cda6e9548862944836a9b52e8c9a2b69',
+        success: function (res) {
+          self.goLink('/ClassList', obg.subjectId)
+        }
       });
-      this.goLink('/ClassList', obg.subjectId)
+      
     }
+
 
     render() {
         const { dataDetail } = this.state;
-        const carouselMap = [{ tabName: 'first', content: (<img alt="text" src={dataDetail.slideImgUrl} />), isActive: true },
-        { tabName: 'second', content: (<img alt="text" src={`${config.IMG_URL}getphotoPal/2017-6-9/14969914014459.jpg`} />), isActive: false },
-        { tabName: 'thired', content: (<img alt="text" src={`${config.IMG_URL}getphotoPal/2017-4-1/14910395145549.jpg`} />), isActive: false }];
-        
+        const carouselMap = [];
+        if(dataDetail&&dataDetail.slideImgUrlList) {
+          for (let i=0; i< dataDetail.slideImgUrlList.length;i++){
+            carouselMap.push({tabName: `f-${i}`, content: (<img alt="text" src={dataDetail.slideImgUrlList[i]} />), isActive: true })
+          }
+        }
         const stepArr = JSON.stringify(dataDetail)!=='{}' ? dataDetail.step.split('|'): [];
-        console.log(stepArr);
+
         const stepDom = stepArr.length > 0 ? stepArr.map((itm, idx)=>{
           const botIcon = idx === (stepArr.length-1) ? '' : 
           (<Icon iconName={'android-arrow-dropdown '} className="nopadding" size={'150%'} iconColor={'#000'} />)
@@ -97,7 +130,7 @@ class OcrDoc extends BaseView {
           <Col className="text-align-center heighr-1 line-height-1r margin-bottom-1">{botIcon} </Col>
         </Row>)
         }) : <div />;
-        console.log(stepDom);
+    
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
@@ -116,12 +149,6 @@ class OcrDoc extends BaseView {
                       </Col>
                       <Col span={8}>
                         <img className='width-100' src={dataDetail.introImgUrl} />
-                      </Col>
-                      <Col span={8}>
-                        <img className='width-100' src={`${config.IMG_URL}getphotoPal/2017-4-1/14910395145549.jpg`} />
-                      </Col>
-                      <Col span={8}>
-                        <img className='width-100' src={`${config.IMG_URL}getphotoPal/2017-4-1/14910395145549.jpg`}/>
                       </Col>
                       
                       <Col span={24} className="margin-top-2" >
@@ -160,7 +187,7 @@ class OcrDoc extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
                   onClick={()=>{
-                    this.bought()
+                    this.undefindOrder()
                   }}
                 />
               </Col>
