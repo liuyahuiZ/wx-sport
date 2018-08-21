@@ -3,6 +3,7 @@ import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
+import moment from 'moment';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { transOver, classDetail } from '../api/classes';
@@ -26,6 +27,7 @@ class MyClassDetail extends BaseView {
           article: {},
           status: false,
           itmStatus: true,
+          detailData: {}
       };
     }
     _viewAppear(){
@@ -33,12 +35,17 @@ class MyClassDetail extends BaseView {
     }
     getClassDetail(){
       let obg = UrlSearch();
+      const self = this;
       classDetail({
         courseId: obg.courseId,
         nowSection: obg.nowSection,
-      }).then((data)=>{
-        console.log(data);
+      }).then((res)=>{
         Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        self.setState({
+          detailData: data
+        })
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -49,12 +56,18 @@ class MyClassDetail extends BaseView {
     }
     submitClick(){
       Loade.show();
-      let obg = storage.getStorage('userInfo');
+      const self = this;
+      const keepTime = self.$$TimeRunner.getData();
+      console.log(keepTime);
+      let allKeepTime = Number(keepTime.hour)*60*60 + Number(keepTime.minute)*60 + Number(keepTime.second)
+      let obg = UrlSearch();
+      let userId = storage.getStorage('userId');
       transOver({
-        userId: obg.openid,
-        courseId: '',
+        userId: userId,
+        courseId: obg.courseId,
       }).then((data)=>{
         console.log(data);
+        self.goLink('/TrainResult', {keepTime: allKeepTime, courseId: obg.courseId})
         Loade.hide();
       }).catch((e)=>{
         Loade.hide();
@@ -74,13 +87,36 @@ class MyClassDetail extends BaseView {
       })
     }
 
+    goLink(link, itm){
+      if(link) {
+        hashHistory.push({
+          pathname: link,
+          query: itm || ''
+        });
+      }
+    }
+
     render() {
-        const {article, status, itmStatus} = this.state;
+        const {detailData, status, itmStatus} = this.state;
         const self = this;
-        const carouselMap = [
-        { tabName: 'thired', content: (<img alt="text" src={'https://static1.keepcdn.com/2017/12/27/15/1514360005943_315x315.jpg'} />), isActive: false },
-        { tabName: 'first', content: (<img alt="text" src={'http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg'} />), isActive: true }];
         
+        const carouselMap = [{ tabName: 'thired', content: (<img alt="text" src={detailData.imgUrl} />), isActive: false }];
+        const stepDom = detailData&&detailData.coursePlanDetails&&detailData.coursePlanDetails.length > 0 ? detailData.coursePlanDetails.map((itm, idx)=>{
+          return (<Row key={`${idx}-stp`}>
+            <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
+              <Row >
+                <Col className="text-align-center">
+                  <Row justify="center">
+                    <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">{itm.name}</Col>
+                  </Row>
+                </Col>
+                <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
+                <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">{itm.description}</Col>
+              </Row>
+            </Col>
+        </Row>)
+        }) : <div />;
+
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
@@ -91,49 +127,17 @@ class MyClassDetail extends BaseView {
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row className="padding-top-2" content="flex-start">
                   <Col span={1}></Col>
-                  <Col span={15} className="font-size-10 textclolor-white ">第一周第一天</Col>
-                  <Col span={8} className="textclolor-333"><Icon iconName={'android-time '} size={'120%'} iconColor={'#333'} /> 00:39:20 </Col>
+                  <Col span={12} className="font-size-10 textclolor-white ">{detailData.name}</Col>
+                  <Col span={10} className="textclolor-333 text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#333'} /> {moment(detailData.createTime).format('YYYY-MM-DD')} </Col>
                   <Col className="bg-1B1B1B">
-                    <Row >
-                      <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
-                        <Row >
-                          <Col className="text-align-center">
-                            <Row justify="center">
-                              <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">热身</Col>
-                            </Row>
-                          </Col>
-                          <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
-                          <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">xxxxxxxxxx</Col>
-                        </Row>
-                      </Col>
-                      <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
-                        <Row >
-                          <Col className="text-align-center">
-                            <Row justify="center">
-                              <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">热身</Col>
-                            </Row>
-                          </Col>
-                          <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
-                          <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">xxxxxxxxxx</Col>
-                        </Row>
-                      </Col>
-                      <Col span={24} className="margin-top-2 padding-top-3 padding-bottom-3" >
-                        <Row >
-                          <Col className="text-align-center">
-                            <Row justify="center">
-                              <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">热身</Col>
-                            </Row>
-                          </Col>
-                          <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
-                          <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">xxxxxxxxxx</Col>
-                        </Row>
-                      </Col>
-                    </Row>
+                    {stepDom}
                   </Col>
                 </Row>
               </Col>
               <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
-                <img className='width-100' src={'http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg'} />
+                {/* <img className='width-100' src={'http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg'} /> */}
+                <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
+                src={detailData.mvUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>
               <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
@@ -148,6 +152,7 @@ class MyClassDetail extends BaseView {
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop();
+                    this.$$videos.pause();
                     self.setValue('itmStatus', false)
                   }}
                 /> : <Buttons
@@ -157,6 +162,7 @@ class MyClassDetail extends BaseView {
                 style={{backgroundColor: '#8EBF66', color:'#333'}}
                 onClick={()=>{
                   this.$$TimeRunner.start();
+                  this.$$videos.play();
                   self.setValue('itmStatus', true)
                 }}
               />}
@@ -183,6 +189,7 @@ class MyClassDetail extends BaseView {
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     this.$$TimeRunner.start();
+                    this.$$videos.play();
                     this.startClass()
                   }}
                 />

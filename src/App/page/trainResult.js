@@ -5,6 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import {fileUp} from '../servise/qiniuUp';
 import { UrlSearch } from '../utils';
+import moment from 'moment';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
 import { transOverUp } from '../api/classes';
@@ -18,7 +19,9 @@ const {
     Icon,
     ProgressDrag,
     Loade,
-    FileUp
+    FileUp,
+    Textarea,
+    Modal
 } = Components;
 const { sessions, storage } = utils;
 
@@ -26,8 +29,17 @@ class OcrDoc extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
-          article: {}
+          article: {},
+          feelCore: 50,
+          picture: 'http://pdc6cusp9.bkt.clouddn.com/1534342816',
+          theVieo: 'http://pdc6cusp9.bkt.clouddn.com/1534342866',
+          query: UrlSearch()
       };
+      moment.locale('en', {
+        weekdays : [
+            "周日", "周一", "周二", "周三", "周四", "周五", "周六"
+          ]
+      });
     }
     setValue(key,val){
         this.setState({[key]: val});
@@ -62,33 +74,44 @@ class OcrDoc extends BaseView {
 
     submitTrain(){
       let userId = storage.getStorage('userId');
-      const { picture, theVieo } = this.state;
+      const { picture, theVieo, question, feelCore } = this.state;
+      const self = this;
       Loade.show();
+      let obg = UrlSearch();
       transOverUp({
         userId: userId,
-        teacherId: '',
-        orderId: '',
-        keepDate: '',
-        keepDays: '',
-        section: '',
-        feel: '',
+        keepTime: obg.keepTime,
+        sectionNames: '3',
+        feel: feelCore,
         imgUrl: picture,
         mvUrl: theVieo,
-        question: '',
-        revert: '',
-        signId: ''
+        question: question,
       }).then((data)=>{
         console.log(data);
+        Modal.alert({ title: '上传成功',
+              content: '训练成功上传成功',
+              btn: {
+                text: '确定',
+                type: 'link',
+                style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+              }, 
+              type: 'large'
+            },
+          () => { self.goLink('/TeacherRate'); });
         Loade.hide();
-        this.goLink('/TeacherRate')
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
       })
     }
     render() {
-        const {article} = this.state;
-
+        const {article, feelCore, query} = this.state;
+        const self = this;
+        let keepTimeM = parseInt(query.keepTime/60);
+        let keepTimeS = parseInt(query.keepTime%60);
+        let time = new Date();
+        let nowTime = moment(time).format('dddd') + ' ' + moment(time).format('MM.DD hh:mm:ss'); // 八月 19日 2018, 5:15:55 下午
+         
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
@@ -98,10 +121,10 @@ class OcrDoc extends BaseView {
                   <div className="icon middle icon-result" />
                   </Col>
                   <Col className="zindex-10 text-align-center textclolor-white margin-top-1r">恭喜你完成训练</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-white">星期五 07月19日 19:40</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-white">{nowTime}</Col>
                   <Col span={8} className="margin-top-3r">
                     <Row><Col className="zindex-10 text-align-left textclolor-black-low">时长</Col>
-                    <Col className="zindex-10 text-align-left textclolor-white font-size-8">20分</Col></Row>
+                    <Col className="zindex-10 text-align-left textclolor-white font-size-8">{keepTimeM}分{keepTimeS}</Col></Row>
                   </Col>
                   <Col span={8} className="margin-top-3r">
                     <Row><Col className="zindex-10 text-align-center textclolor-black-low">动作</Col>
@@ -109,7 +132,7 @@ class OcrDoc extends BaseView {
                   </Col>
                   <Col span={8} className="margin-top-3r">
                     <Row><Col className="zindex-10 text-align-right textclolor-black-low">消耗</Col>
-                    <Col className="zindex-10 text-align-right textclolor-white font-size-8">3千卡</Col></Row>
+                    <Col className="zindex-10 text-align-right textclolor-white font-size-8">{query.keepTime*10}卡</Col></Row>
                   </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-1 heightp-100 absolute-left zindex-9"></div>
@@ -119,8 +142,9 @@ class OcrDoc extends BaseView {
                 <Row>
                   <Col className="text-align-center textclolor-white">今天训练强度</Col>
                   <Col>
-                  <ProgressDrag percent={50} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
-                 bgColor={'#333'} style={{height: '7px'}} barRoundStyle={{ 'width': '1.3rem','height': '1.3rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20} onChange={(v)=>{ console.log(v)}} barWidthDisable />
+                  <ProgressDrag percent={feelCore} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
+                 bgColor={'#333'} style={{height: '7px'}} barRoundStyle={{ 'width': '1.3rem','height': '1.3rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
+                onChange={(v)=>{ console.log(v); self.setValue('feelCore', v)}} barWidthDisable />
                   </Col>
                   <Col span={12} className="textclolor-white font-size-8">吃力</Col>
                   <Col span={12} className="text-align-right font-size-8 textclolor-white">轻松</Col>
@@ -179,6 +203,22 @@ class OcrDoc extends BaseView {
                   maxSize={10}
                   accept="video/*"
                   ></FileUp> </Col>
+                </Row>
+              </Col>
+              <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-1B1B1B">
+                <Row>
+                  <Col className="textclolor-white line-height-3r">训练中的疑问:</Col>
+                </Row>
+                <Row>
+                <Col className="padding-all"><Textarea
+                placeholder="请输入"
+                style={{backgroundColor: '#111', border: '0', color:'#fff'}}
+                maxLength={100}
+                maxLengthShow={false}
+                onChange={(v)=>{
+                  self.setValue('question', v);
+                }}
+                /></Col>
                 </Row>
               </Col>
 

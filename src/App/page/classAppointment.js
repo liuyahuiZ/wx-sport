@@ -1,10 +1,12 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
+import { signedList } from '../api/index';
+import wx from 'weixin-js-sdk';
 
 const {
     Buttons,
@@ -14,16 +16,64 @@ const {
     Row,
     Col,
     Icon,
-    Carousel
-  } = Components;
-  
+    Carousel,
+    Loade
+} = Components;  
+const { sessions, storage } = utils;
+
 class OcrDoc extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
-          article: {}
+          detailData: {
+            course:{},
+            peoples: []
+          }
       };
     }
+
+    _viewAppear(){
+      this.checkRedct();
+      this.getSignedList();
+    }
+
+    checkRedct(){
+      let obg = UrlSearch();
+      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FClassAppointment%3FcourseId%3D" + obg.courseId;
+      const appId = 'wx9a7768b6cd7f33d0';
+      
+      let userInfo = storage.getStorage('userInfo')
+      let userId = storage.getStorage('userId');
+      if(obg.code&&obg.code!==''){
+        storage.setStorage('authCode', obg.code);
+        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+          this.getUserinfo(obg.code);
+        }
+      }else{
+        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+        }
+      }
+    }
+    
+    getSignedList(){
+      const self = this;
+      let obg = UrlSearch();
+      if(!obg.courseId) return;
+      Loade.show();
+      signedList({courseId: obg.courseId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        self.setState({
+          detailData: data
+        })
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
+    }
+
     setValue(key,val){
         this.setState({[key]: val});
     }
@@ -33,17 +83,37 @@ class OcrDoc extends BaseView {
       }
     }
 
-    render() {
-        const {article} = this.state;
+    openMap(latitude, longitude){
+      console.log(latitude, longitude);
+      wx.openLocation({
+        latitude: latitude, // 纬度，浮点数，范围为90 ~ -90
+        longitude: longitude, // 经度，浮点数，范围为180 ~ -180。
+        name: 'test', // 位置名
+        address: 'test', // 地址详情说明
+        scale: 1, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: 'test' // 在查看位置界面底部显示的超链接,可点击跳转
+      });
+    }
 
+    render() {
+        const {detailData} = this.state;
+        let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
+        let personDom = detailData.peoples&&detailData.peoples.length > 0 ?
+        detailData.peoples.map((itm, idx)=>{
+          return (<Row className="middle-round float-left " key={`${idx}-lab`}>
+            <Col className="padding-all-3">
+              <img className='width-100 middle-round-3 overflow-hide border-radius-6r' src={itm} />
+            </Col>
+          </Row>)
+        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">牛油果体适能训练营第36期</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">07月19日 下午14:40-15:40</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src="http://47.88.2.72:2019/files?text=1tes1tyu" /></Col>
+                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
+                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src="http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html" /></Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
@@ -62,31 +132,23 @@ class OcrDoc extends BaseView {
                     </Row>
                   </Col>
                   <Col className="bg-1B1B1B padding-all">
-                    <Row>
-                      
-                      <Col span={8}>
-                        <img className='width-100' src={'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg'} />
-                      </Col>
-                      <Col span={8}>
-                        <img className='width-100' src={'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg'} />
-                      </Col>
-                      <Col span={8}>
-                        <img className='width-100' src={'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg'}/>
-                      </Col>
-                      
+                    {personDom}
+                    <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">课程</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">牛油果体适能力量与塑形训练营-第36期</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“XXX”页面中查看</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title}</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“我的”页面中查看</Col>
                         </Row>
                       </Col>
 
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">xxxxxxxxxx</Col>
-                          <Col span={24} className="font-size-10 textclolor-white">点击查看地图</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address}</Col>
+                          <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
+                            this.openMap(detailData.course.latitude, detailData.course.longitude)
+                          }}>点击查看地图</Col>
                         </Row>
                       </Col>
                     </Row>

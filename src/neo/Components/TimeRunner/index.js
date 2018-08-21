@@ -9,16 +9,15 @@ class TimeRunner extends Component {
   constructor(props) {
     super(props);
     this.state={
-        value: '',
         hour: 0,
         minute: 0,
         second: 0,
         millisecond: 0,
-        timer: '',
         startStatus: 'stop'
     }
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
+    this.getData = this.getData.bind(this);
   }
   componentDidMount() {
     // this.start();
@@ -27,9 +26,6 @@ class TimeRunner extends Component {
     this.setState({
         startStatus: 'stop'
     })
-  }
-  setValue(_value) {
-    this.setState({ value: _value });
   }
   start(){
     const self = this;
@@ -69,6 +65,10 @@ class TimeRunner extends Component {
     setTimeout(function() { 
         self.timer(self) 
     },100);
+  }
+
+  getData(){
+    return this.state;
   }
 
   splitStr(second){
@@ -111,12 +111,10 @@ class TimeRunner extends Component {
 }
 
 TimeRunner.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.string,
 };
 
 TimeRunner.defaultProps = {
-  value: '',
   style: {},
   type: 'text',
 };

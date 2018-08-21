@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { myClass, userRegistry } from '../api/classes';
+import { myClass, userRegistry, courseRatio } from '../api/classes';
 
 const {
     Buttons,
@@ -33,11 +33,13 @@ class OcrDoc extends Component {
           resourceKey: '',
           userInfo: storage.getStorage('userInfo') ||{},
           myClassList:[],
+          ratioList: [],
           loadText: '加载中'
       };
     }
     componentDidMount(){
       // console.log('obg', storage.getStorage('userInfo'), UrlSearch());
+      console.log(storage.getStorage('authCode'))
       let obg = UrlSearch();
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
@@ -52,7 +54,8 @@ class OcrDoc extends Component {
         }
       }
       if((userId&&userId!=='')){
-        this.getMyClass(userId)
+        this.getMyClass(userId);
+        this.getCourseRatio(userId);
       }
       console.log('userId', userId);
       if(userId==''){
@@ -71,6 +74,7 @@ class OcrDoc extends Component {
         storage.setStorage('userId', data);
         console.log(res);
         self.getMyClass(res);
+        self.getCourseRatio(res);
       }).catch((e)=>{
         console.log(e);
       })
@@ -80,12 +84,35 @@ class OcrDoc extends Component {
       console.log(userId);
       const self = this;
       Loade.show();
-      myClass({userId: userId}).then((data)=>{
-        console.log(data);
+      myClass({userId: userId}).then((res)=>{
         Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
         if(data && data.length > 0){
           self.setState({
             myClassList: data
+          })
+        } else {
+          self.setState({
+            loadText: '暂无数据'
+          })
+        }
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
+    }
+
+    getCourseRatio(userId){
+      const self = this;
+      Loade.show();
+      courseRatio({userId: userId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        if(data && data.length > 0){
+          self.setState({
+            ratioList: data
           })
         } else {
           self.setState({
@@ -204,10 +231,11 @@ class OcrDoc extends Component {
     }
 
     render() {
-        const { status, myClassList, resourceKey, userInfo, loadText } = this.state;
+        const { status, myClassList, resourceKey, userInfo, loadText, ratioList } = this.state;
+        const self = this;
         const myClassListDom = myClassList.length > 0 ? myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
-            this.goLink('/MyClassDetail', {
+            self.goLink('/MyClassDetail', {
               courseId : itm.id,
               nowSection: itm.nowSection
             })
@@ -218,7 +246,17 @@ class OcrDoc extends Component {
           </Col>
           <Col className="margin-top-3 text-align-center textcolor-8EBF66" span={6}>共{itm.allSection}天</Col>
         </Row>)
-        }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>)
+        }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>);
+
+        const ratioListDom = ratioList.length > 0 ? ratioList.map((itm, idx)=>{
+          return (<Row className="images-33"><Col key={`ratio-${idx}`}  className="padding-all" onClick={()=>{self.goLink('/TrainResult',{
+            courseId : itm.id,
+            nowSection: itm.nowSection
+          })}}>
+            <ProgressCircle score={itm.nowSection/itm.allSection  * 100} show={true} innerText={`${itm.nowSection/itm.allSection  * 100}%`} />
+          </Col></Row>)
+        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>;
+
         const tabOptions = [{
           tabName: (<Row>
             <Col style={{'height': '1.5rem'}}>
@@ -256,19 +294,9 @@ class OcrDoc extends Component {
             <Col className="font-size-8">已完成</Col></Row>),
             keyword: '2',
             content: (
-            <Row>
-              <Col span={8} className="padding-all" onClick={()=>{
-                this.goLink('/TrainResult')
-              }}>
-                <ProgressCircle score={80} show={status} innerText={`${80}%`} />
-              </Col>
-              <Col span={8} className="padding-all">
-                <ProgressCircle score={60} show={status} innerText={`${60}%`} />
-              </Col>
-              <Col span={8} className="padding-all">
-                <ProgressCircle score={100} show={status} innerText={`${100}%`} />
-              </Col>
-            </Row>
+            <div>
+              {ratioListDom}
+            </div>
           )
         },
         {
@@ -280,9 +308,7 @@ class OcrDoc extends Component {
             keyword: '3',
             content: (
             <Row>
-              <Col span={8} className="padding-all" onClick={()=>{
-                this.goLink('/TrainResult')
-              }}>
+              <Col span={8} className="padding-all">
                 <ProgressCircle score={70} show={resourceKey ==='3'} innerText={`${70}%`} />
               </Col>
             </Row>

@@ -1,4 +1,5 @@
 import fetch from '../servise/fetch';
+import order from '../servise/order';
 import config from '../config/config';
 
 export function subjectCourses(req){
@@ -25,7 +26,7 @@ export function subjectDetail(subjectId){
 
 export function createOrder(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `/api/weChat/unifiedOrder`,{ method: 'POST', data: req})
+        order(config.API_URL+ `api/weChat/unifiedOrder`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

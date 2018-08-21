@@ -38,6 +38,19 @@ export function classDetail(req){
     })
 }
 
+
+export function courseRatio(req){
+    return new Promise((resolve, reject)=>{
+        let reqbody=req
+        fetch(config.API_URL+ `course/ratio`,{ method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
 export function userMark(req){
     return new Promise((resolve, reject)=>{
         let reqbody=req
@@ -65,7 +78,7 @@ export function transOver(req){
 export function transOverUp(req){
     return new Promise((resolve, reject)=>{
         let reqbody=req
-        fetch(config.API_URL+ `user/course/transOverUpload`,{ method: 'POST', data: reqbody})
+        fetch(config.API_URL+ `course/course/upload`,{ method: 'POST', data: reqbody})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -77,6 +90,17 @@ export function transOverUp(req){
 export function userOrdeRing(req){
     return new Promise((resolve, reject)=>{
         fetch(config.API_URL+ `user/ordering`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function userGatherInfo(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/gatherInfo`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

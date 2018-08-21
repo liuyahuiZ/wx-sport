@@ -29,7 +29,7 @@ class OcrDoc extends Component {
           resourceKey: '1',
           js: 5,
           bd: 5,
-          wg: 4
+          wg: 5
       };
     }
     componentWillReceiveProps(nextProps){

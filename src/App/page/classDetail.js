@@ -68,10 +68,11 @@ class OcrDoc extends BaseView {
     }
     undefindOrder(){
       const { subjectId } = this.state;
+      const self = this;
       let userId = storage.getStorage('userId');
       let authCode = storage.getStorage('authCode');
       let obg = UrlSearch();
-      this.goLink('/ClassList', obg.subjectId)
+      console.log(authCode);
       Loade.show();
       createOrder({
         "authCode": authCode,
@@ -81,6 +82,7 @@ class OcrDoc extends BaseView {
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        self.goLink('/ClassList', obg.subjectId);
         let data = res.result;
         console.log(res);
       }).catch((err)=>{
