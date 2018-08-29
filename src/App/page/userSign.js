@@ -6,6 +6,7 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { signedList } from '../api/index';
+import { userSign } from '../api/subject';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -21,7 +22,7 @@ const {
 } = Components;  
 const { sessions, storage } = utils;
 
-class OcrDoc extends BaseView {
+class UserSign extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
@@ -36,6 +37,24 @@ class OcrDoc extends BaseView {
       this.checkRedct();
       this.getSignedList();
     }
+
+    getSignedList(){
+        const self = this;
+        let obg = UrlSearch();
+        if(!obg.courseId) return;
+        Loade.show();
+        signedList({courseId: obg.courseId}).then((res)=>{
+          Loade.hide();
+          if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+          let data = res.result;
+          self.setState({
+            detailData: data
+          })
+        }).catch((e)=>{
+          Loade.hide();
+          console.log(e)
+        })
+      }
 
     checkRedct(){
       let obg = UrlSearch();
@@ -55,24 +74,6 @@ class OcrDoc extends BaseView {
         }
       }
     }
-    
-    getSignedList(){
-      const self = this;
-      let obg = UrlSearch();
-      if(!obg.courseId) return;
-      Loade.show();
-      signedList({courseId: obg.courseId}).then((res)=>{
-        Loade.hide();
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
-        self.setState({
-          detailData: data
-        })
-      }).catch((e)=>{
-        Loade.hide();
-        console.log(e)
-      })
-    }
 
     setValue(key,val){
         this.setState({[key]: val});
@@ -83,6 +84,21 @@ class OcrDoc extends BaseView {
       }
     }
 
+    doSign(){
+        let obg = UrlSearch();
+        let userId = storage.getStorage('userId');
+        if(!obg.courseId) return;
+        Loade.show();
+        userSign({courseId: obg.courseId, userId: userId}).then(()=>{
+            Loade.hide();
+            if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+            Toaster.toaster({ type: 'error', content: '签到成功', time: 3000 });
+        }).catch((e)=>{
+            Loade.hide();
+            Toaster.toaster({ type: 'error', content: e, time: 3000 });
+            console.log(e)
+        })
+    }
     openMap(latitude, longitude){
       console.log(latitude, longitude);
       wx.openLocation({
@@ -99,24 +115,13 @@ class OcrDoc extends BaseView {
         const {detailData} = this.state;
         let obg = UrlSearch();
         let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
-        let personDom = detailData.peoples&&detailData.peoples.length > 0 ?
-        detailData.peoples.map((itm, idx)=>{
-          return (<Row className="middle-round float-left " key={`${idx}-lab`}>
-            <Col className="padding-all-3">
-              <img className='width-100 middle-round-3 overflow-hide border-radius-6r' src={itm} />
-            </Col>
-          </Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>
         return(
           <section className="padding-all bg-000">
-            <Row className="minheight-100" justify="center" content="flex-start">
+            <Row className="minheight-100" justify="center" align="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FUserSign%3FcourseId%3D${obg.courseId}`} /></Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
@@ -124,16 +129,7 @@ class OcrDoc extends BaseView {
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row content="flex-start">
-                  <Col>
-                    <Row content="flex-start">
-                      <Col span={1}></Col>
-                      <Col span={11} className="font-size-10 textclolor-white line-height-2r ">预约人数</Col>
-                      <Col span={10} className="font-size-8 textclolor-white text-align-right line-height-2r ">查看更多</Col>
-                      <Col span={2} className="line-height-2r"><Icon iconName={'chevron-right '} size={'90%'} iconColor={'#333'} /></Col>
-                    </Row>
-                  </Col>
                   <Col className="bg-1B1B1B padding-all">
-                    {personDom}
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
@@ -158,12 +154,12 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text="确认提交"
+                  text="点击签到"
                   type={'primary'}
                   size={'large'}
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
                   onClick={()=>{
-                    
+                    this.doSign()
                   }}
                 />
               </Col>
@@ -173,4 +169,4 @@ class OcrDoc extends BaseView {
         );
     }
 }
-export default OcrDoc;
+export default UserSign;

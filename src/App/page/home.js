@@ -90,13 +90,11 @@ class HomeDoc extends BaseView {
       }, 3000);
     }
 
-    goLinks(link, id){
+    goLinks(link, obg){
       if(link) {
         hashHistory.push({
           pathname: link,
-          query: {
-            subjectId : id,
-          }
+          query: obg
         });
       }
     }
@@ -109,7 +107,10 @@ class HomeDoc extends BaseView {
         const productListDom = productList.length > 0 ? productList.map((itm, idx)=>{
           return (
           <Row className="margin-top-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`} 
-          onClick={()=>{this.goLinks('/ClassDetail', itm.id)}}>
+          onClick={()=>{this.goLinks('/ClassDetail', {
+            subjectId : itm.id,
+            price: itm.price
+          })}}>
             <Col><img alt="text" src={ imgArr[idx]||itm.imgUrl} /></Col>
             <Col className="absolute bottom-5 left-5">
               <Row>

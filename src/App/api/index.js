@@ -35,3 +35,14 @@ export function signedList(reqbody){
         })
     })
 }
+
+export function getToken(reqbody){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `api/token/${reqbody.code}`,{ method: 'GET', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

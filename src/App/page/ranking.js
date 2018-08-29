@@ -29,7 +29,7 @@ class OcrDoc extends Component {
       };
     }
     componentDidMount(){
-      this.getProduct();
+      // this.getProduct();
     }
     componentWillReceiveProps(nextProps){
       this.setState({
@@ -49,7 +49,7 @@ class OcrDoc extends Component {
       self.setState({
         enableLoad: 'loading'
       })
-      self.getProduct();
+      // self.getProduct();
     }
     getProduct(){
       const {currentPage, pageSize, productList} = this.state;

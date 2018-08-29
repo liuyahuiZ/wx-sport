@@ -34,3 +34,14 @@ export function createOrder(req){
         })
     })
 }
+
+export function userSign(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `course/signIn`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

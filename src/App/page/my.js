@@ -5,6 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import { myClass, userRegistry, courseRatio } from '../api/classes';
+import { getToken } from '../api/index';
 
 const {
     Buttons,
@@ -39,11 +40,14 @@ class OcrDoc extends Component {
     }
     componentDidMount(){
       // console.log('obg', storage.getStorage('userInfo'), UrlSearch());
-      console.log(storage.getStorage('authCode'))
+      // console.log(storage.getStorage('authCode'))
       let obg = UrlSearch();
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''){
+          storage.removeStorage('userInfo');
+        }
         storage.setStorage('authCode', obg.code);
         if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
           this.getUserinfo(obg.code);
@@ -58,15 +62,12 @@ class OcrDoc extends Component {
         this.getCourseRatio(userId);
       }
       console.log('userId', userId);
-      if(userId==''){
-        this.registry();
-      }
     }
     registry(){
       let userInfo = storage.getStorage('userInfo');
       userRegistry({
-        wxid: userInfo.openid,
-        wxIcon: userInfo.headimgurl,
+        wxid: userInfo.wechatPid,
+        wxIcon: userInfo.imgUrl,
         nickname: userInfo.nickname
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
@@ -133,10 +134,8 @@ class OcrDoc extends Component {
 
     getUserinfo(code){
       const self = this;
-      fetch( config.ROOT_URL+ 'wx/getWebAccessToken', { method: 'POST', data: {
-          code: code
-      }}).then(data => {
-        console.log(data)
+      getToken({code: code}).then((data)=>{
+        console.log(data);
 
         Modal.alert({ title: '用户信息',
             content: JSON.stringify(data),
@@ -149,17 +148,44 @@ class OcrDoc extends Component {
           },
         () => { console.log('nult callback'); });
       //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
-
-        let resp = JSON.parse(data.respBody);
-        if(!resp.errcode){
-          storage.setStorage('userInfo', resp);
+        if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
           self.registry();
           self.setState({
-            userInfo: JSON.parse(data.respBody)
+            userInfo: data
           })
         }
-        
+      }).catch(()=>{
+
       })
+
+      // fetch( config.ROOT_URL+ 'wx/getWebAccessToken', { method: 'POST', data: {
+      //     code: code
+      // }}).then(data => {
+      //   console.log(data)
+
+      //   Modal.alert({ title: '用户信息',
+      //       content: JSON.stringify(data),
+      //       btn: {
+      //         text: '确定',
+      //         type: 'link',
+      //         style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+      //       }, 
+      //       type: 'large'
+      //     },
+      //   () => { console.log('nult callback'); });
+      // //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
+
+      //   let resp = JSON.parse(data.respBody);
+      //   if(!resp.errcode){
+      //     storage.setStorage('userInfo', resp);
+      //     self.registry();
+      //     self.setState({
+      //       userInfo: JSON.parse(data.respBody)
+      //     })
+      //   }
+        
+      // })
     }
 
     checkUser(){

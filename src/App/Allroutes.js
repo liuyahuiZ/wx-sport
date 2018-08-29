@@ -106,6 +106,12 @@ const TrainResult = (location, cb) => {
   },'TrainResult')
 };
 
+const UserSign = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/userSign').default)
+  },'UserSign')
+};
+
 class MyRouter extends Component{
   constructor(props) {
     super(props);
@@ -135,6 +141,7 @@ class MyRouter extends Component{
         <Route path={'MyClassDetail'} getComponent={MyClassDetail} />
         <Route path={'ClassAppointment'} getComponent={ClassAppointment} />
         <Route path={'TrainResult'} getComponent={TrainResult} />
+        <Route path={'UserSign'} getComponent={UserSign} />
       </Route>
     </Router>
     )

@@ -81,24 +81,23 @@ class OcrDoc extends BaseView {
         "userId": userId
       }).then((res)=>{
         Loade.hide();
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        self.goLink('/ClassList', obg.subjectId);
-        let data = res.result;
         console.log(res);
+        if(!res.prepayId) { Toaster.toaster({ type: 'error', content: '调用支付失败,请稍后重试', time: 3000 }); return; }
+        self.bought(res);
       }).catch((err)=>{
         Loade.hide();
         console.log(res);
       })
     }
-    bought(){
+    bought(res){
       const self = this;
       let obg = UrlSearch();
       wx.chooseWXPay({
-        timestamp: 1414723227,
-        nonceStr: 'noncestr',
-        package: 'addition=action_id%3dgaby1234%26limit_pay%3d&bank_type=WX&body=innertest&fee_type=1&input_charset=GBK&notify_url=http%3A%2F%2F120.204.206.246%2Fcgi-bin%2Fmmsupport-bin%2Fnotifypay&out_trade_no=1414723227818375338&partner=1900000109&spbill_create_ip=127.0.0.1&total_fee=1&sign=432B647FE95C7BF73BCD177CEECBEF8D',
-        signType: 'SHA1', // 注意：新版支付接口使用 MD5 加密
-        paySign: 'bd5b1933cda6e9548862944836a9b52e8c9a2b69',
+        timestamp: res.timeStamp,
+        nonceStr: res.nonceStr,
+        package: 'prepay_id='+res.prepayId,
+        signType: 'MD5', // 注意：新版支付接口使用 MD5 加密
+        paySign: res.paySign,
         success: function (res) {
           self.goLink('/ClassList', obg.subjectId)
         }
@@ -109,6 +108,7 @@ class OcrDoc extends BaseView {
 
     render() {
         const { dataDetail } = this.state;
+        let obg = UrlSearch();
         const carouselMap = [];
         if(dataDetail&&dataDetail.slideImgUrlList) {
           for (let i=0; i< dataDetail.slideImgUrlList.length;i++){
@@ -166,6 +166,12 @@ class OcrDoc extends BaseView {
                           <Col span={24} className="font-size-8 textclolor-black-low ">{dataDetail.difficuity}</Col>
                         </Row>
                       </Col>
+                      <Col span={24} className="margin-top-2" >
+                        <Row>
+                          <Col span={24} className="font-size-10 textclolor-white">训练费用</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">￥{(obg.price/100).toFixed(2)}</Col>
+                        </Row>
+                      </Col>
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
@@ -184,7 +190,7 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text="立即购买"
+                  text={`￥${(obg.price/100).toFixed(2)} 立即购买`}
                   type={'primary'}
                   size={'large'}
                   style={{backgroundColor: '#8EBF66', color:'#333'}}
