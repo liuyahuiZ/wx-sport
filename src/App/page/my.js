@@ -49,11 +49,11 @@ class OcrDoc extends Component {
           storage.removeStorage('userInfo');
         }
         storage.setStorage('authCode', obg.code);
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           this.getUserinfo(obg.code);
         }
       }else{
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
         }
       }
@@ -65,10 +65,11 @@ class OcrDoc extends Component {
     }
     registry(){
       let userInfo = storage.getStorage('userInfo');
+      const self = this;
       userRegistry({
         wxid: userInfo.wechatPid,
         wxIcon: userInfo.imgUrl,
-        nickname: userInfo.nickname
+        nickname: userInfo.nickName
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
@@ -155,8 +156,8 @@ class OcrDoc extends Component {
             userInfo: data
           })
         }
-      }).catch(()=>{
-
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
       })
 
       // fetch( config.ROOT_URL+ 'wx/getWebAccessToken', { method: 'POST', data: {
@@ -355,12 +356,12 @@ class OcrDoc extends Component {
 
                   <Col className="margin-top-1r text-align-center zindex-10" onClick={()=>{ this.checkUser()}}>
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                        <img src={userInfo.headimgurl} className="width-100" />
+                        <img src={userInfo.imgUrl} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
-                    <span className="textclolor-white">{userInfo.nickname || '请登陆'}</span>
+                    <span className="textclolor-white">{userInfo.nickName || '请登陆'}</span>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     {/* <Row>
@@ -370,7 +371,7 @@ class OcrDoc extends Component {
                     </Row> */}
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                  <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328575406788.png`} />
+                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bg1" />
                 </Row>
                 </TransAnimal>
               </Col>

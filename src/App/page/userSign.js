@@ -65,11 +65,11 @@ class UserSign extends BaseView {
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
         storage.setStorage('authCode', obg.code);
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           this.getUserinfo(obg.code);
         }
       }else{
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
         }
       }

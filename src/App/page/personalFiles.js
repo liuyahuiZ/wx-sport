@@ -84,12 +84,12 @@ class PersonalFiles extends BaseView {
 
                   <Col className="margin-top-1r text-align-center zindex-10" >
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                        <img src={userInfo.headimgurl} className="width-100" />
+                        <img src={userInfo.imgUrl} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
-                    <span className="textclolor-white">{userInfo.nickname || '请登陆'}</span>
+                    <span className="textclolor-white">{userInfo.nickName || '请登陆'}</span>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     {/* <Row>
@@ -105,7 +105,7 @@ class PersonalFiles extends BaseView {
               </Col>
               <Col span={24} className="bg-1B1B1B padding-all margin-top-1r border-radius-5f">
                <Row>
-                   <Col className="textclolor-white">总运动{userInfo.totalMinute}分钟</Col>
+                   <Col className="textclolor-white">总运动{trateInfo.totalMinute}分钟</Col>
                    <Col>{topDom}</Col>
                </Row>
               </Col>

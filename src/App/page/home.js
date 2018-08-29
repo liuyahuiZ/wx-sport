@@ -101,9 +101,9 @@ class HomeDoc extends BaseView {
   
     render() {
         const {productList, bannerList, loadText} = this.state;
-        let imgArr = ['http://47.88.2.72:2016/getphotoPal/2018-7-23/15323156729698.png',
-        'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg',
-        'https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png']
+        // let imgArr = ['http://47.88.2.72:2016/getphotoPal/2018-7-23/15323156729698.png',
+        // 'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg',
+        // 'https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png']
         const productListDom = productList.length > 0 ? productList.map((itm, idx)=>{
           return (
           <Row className="margin-top-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`} 
@@ -111,7 +111,7 @@ class HomeDoc extends BaseView {
             subjectId : itm.id,
             price: itm.price
           })}}>
-            <Col><img alt="text" src={ imgArr[idx]||itm.imgUrl} /></Col>
+            <Col><img alt="text" src={ itm.imgUrl} /></Col>
             <Col className="absolute bottom-5 left-5">
               <Row>
                   <Col span={19}>

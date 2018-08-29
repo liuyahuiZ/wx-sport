@@ -136,7 +136,7 @@ class OcrDoc extends BaseView {
                   </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-1 heightp-100 absolute-left zindex-9"></div>
-                <img className="width-100 absolute-left zindex-6 heightp-100" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581691046.png`} />
+                <div className="width-100 absolute-left zindex-6 heightp-100 bg bg2"  />
               </Col>
               <Col span={24} className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>

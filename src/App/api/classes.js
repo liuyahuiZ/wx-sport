@@ -108,3 +108,14 @@ export function userGatherInfo(req){
         })
     })
 }
+
+export function userMarkRate(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `/userMark/markOrder`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

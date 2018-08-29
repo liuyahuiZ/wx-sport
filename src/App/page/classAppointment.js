@@ -46,11 +46,11 @@ class OcrDoc extends BaseView {
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
         storage.setStorage('authCode', obg.code);
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           this.getUserinfo(obg.code);
         }
       }else{
-        if(!(userInfo&&userInfo.nickname&&userInfo.nickname!=='')){
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
         }
       }
@@ -119,7 +119,7 @@ class OcrDoc extends BaseView {
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
+                <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
