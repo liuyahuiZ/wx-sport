@@ -5,7 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
-import { signedList } from '../api/index';
+import { signedList, getToken } from '../api/index';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -54,6 +54,22 @@ class OcrDoc extends BaseView {
           window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
         }
       }
+    }
+    getUserinfo(code){
+      const self = this;
+      getToken({code: code}).then((data)=>{
+        console.log(data);
+      //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
+        if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
+          storage.setStorage('userId', data.id);
+          self.setState({
+            userInfo: data
+          })
+        }
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
     }
     
     getSignedList(){
@@ -114,7 +130,7 @@ class OcrDoc extends BaseView {
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FUserSign%3FcourseId%3D${obg.courseId}`} /></Col>
+                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FUserSign%3FcourseId%3D${obg.courseId}`} /></Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>

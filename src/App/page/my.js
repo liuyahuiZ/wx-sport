@@ -47,6 +47,7 @@ class OcrDoc extends Component {
       if(obg.code&&obg.code!==''){
         if(userInfo&&userInfo!==''){
           storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
         }
         storage.setStorage('authCode', obg.code);
         if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
@@ -137,21 +138,10 @@ class OcrDoc extends Component {
       const self = this;
       getToken({code: code}).then((data)=>{
         console.log(data);
-
-        Modal.alert({ title: '用户信息',
-            content: JSON.stringify(data),
-            btn: {
-              text: '确定',
-              type: 'link',
-              style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
-            }, 
-            type: 'large'
-          },
-        () => { console.log('nult callback'); });
-      //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
-        if(JSON.stringify(data)!=='{}'){
+       if(JSON.stringify(data)!=='{}'){
           storage.setStorage('userInfo', data);
-          self.registry();
+          storage.setStorage('userId', data.id);
+          // self.registry();
           self.setState({
             userInfo: data
           })
@@ -276,7 +266,7 @@ class OcrDoc extends Component {
         }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>);
 
         const ratioListDom = ratioList.length > 0 ? ratioList.map((itm, idx)=>{
-          return (<Row className="images-33"><Col key={`ratio-${idx}`}  className="padding-all" onClick={()=>{self.goLink('/TrainResult',{
+          return (<Row className="images-33 padding-all-2 float-left"><Col key={`ratio-${idx}`}  className="padding-all" onClick={()=>{self.goLink('/TrainResult',{
             courseId : itm.id,
             nowSection: itm.nowSection
           })}}>

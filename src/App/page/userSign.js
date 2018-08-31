@@ -5,7 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
-import { signedList } from '../api/index';
+import { signedList, getToken } from '../api/index';
 import { userSign } from '../api/subject';
 import wx from 'weixin-js-sdk';
 
@@ -58,7 +58,7 @@ class UserSign extends BaseView {
 
     checkRedct(){
       let obg = UrlSearch();
-      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FClassAppointment%3FcourseId%3D" + obg.courseId;
+      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FUserSign%3FcourseId%3D" + obg.courseId;
       const appId = 'wx9a7768b6cd7f33d0';
       
       let userInfo = storage.getStorage('userInfo')
@@ -73,6 +73,22 @@ class UserSign extends BaseView {
           window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
         }
       }
+    }
+    getUserinfo(code){
+      const self = this;
+      getToken({code: code}).then((data)=>{
+        console.log(data);
+      //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
+        if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
+          storage.setStorage('userId', data.id);
+          self.setState({
+            userInfo: data
+          })
+        }
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
     }
 
     setValue(key,val){

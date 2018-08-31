@@ -1,5 +1,5 @@
 import React , { Component }from 'react';
-import { Components } from 'neo';
+import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import config from '../config/config';
 import { UrlSearch } from '../utils';
@@ -20,6 +20,7 @@ const {
     Carousel,
     Loade
   } = Components;
+const { sessions, storage } = utils;
   
 class ClassList extends BaseView {
     constructor(props) {
@@ -175,6 +176,23 @@ class ClassList extends BaseView {
     }
     ordeRing(it){
       console.log(it);
+      let obg = UrlSearch();
+      Loade.show();
+      let userId = storage.getStorage('userId');
+      if(!obg.orderId) {Toaster.toaster({ type: 'error', content: '无效的订单', time: 3000 }); return; }
+      userOrdeRing({
+        userId: userId,
+        orderId: obg.orderId,
+        orderCourseId: it.id
+      }).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        Toaster.toaster({ type: 'error', content: '您已预约成功，请返回我的页面查看', time: 3000 })
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: '系统错误', time: 3000 });
+        Loade.hide();
+      })
     }
 
 
@@ -187,8 +205,8 @@ class ClassList extends BaseView {
         
         const classListDom = classList.length > 0 ? classList.map((itm, idx) => {
           let itmDom = itm.children.length > 0 ? itm.children.map((it, id)=>{
-            let statusDom = it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 border-all bg-D1D5D1 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r">结束</Col>
-          : <Col span={3.5} className="margin-top-2r zindex-10 bg-8EBF66 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>;
+            let statusDom = it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 bg-8EBF66 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
+          : <Col span={3.5} className="margin-top-2r zindex-10 border-all bg-D1D5D1 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r">结束</Col>;
           return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B" key={`${id}-lit`} >
             <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >
               <Row className="zindex-10 bg-D1D5D1">

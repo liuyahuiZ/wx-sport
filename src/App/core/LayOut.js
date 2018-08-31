@@ -5,8 +5,10 @@ import { Router, Route, hashHistory, IndexRedirect, History } from 'react-router
 import '../style/comment.scss';
 import '../style/common.scss';
 import wx from 'weixin-js-sdk';
+import sha1 from 'sha1';
 import config from '../config/config';
 import fetch from '../servise/fetch';
+import {getSigns} from '../api/index';
 
 const { Button, PageTransition } = Components;
 const { HeaderPart } = Parts
@@ -64,79 +66,98 @@ class LayOut extends Component {
             this.changeContent('leave', nextProps)
         }
     }
-    
+    dosign(jsticket, url){
+        const noncestr='Wm3WZYTPz0wzccnW12';
+        const timestamp = Date.parse(new Date)/1000;
+        let data = {
+            noncestr:noncestr,
+            timestamp: timestamp,
+            url: url,
+            jsapi_ticket: jsticket,
+            signature:sha1('jsapi_ticket=' + jsticket + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + url)
+        }
+        return data;
+    }
     getSign(){
       const self = this;
-        let url =  encodeURIComponent(window.location.href.split('#')[0])
-        let reqbody={
-        "url" : url
-        }
-        fetch( config.ROOT_URL+ 'wx/sign', { method: 'POST', data: reqbody})
-        .then(data => {
-        //   console.log(data)
-        //   alert(JSON.stringify(data.respBody));
-           wx.config({
-              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              appId: 'wx9a7768b6cd7f33d0', // 必填，公众号的唯一标识
-              timestamp: data.respBody.timestamp, // 必填，生成签名的时间戳
-              nonceStr: data.respBody.noncestr, // 必填，生成签名的随机串
-              signature: data.respBody.signature,// 必填，签名，见附录1
-              jsApiList: [
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'onMenuShareQZone',
-                'chooseImage',
-                'scanQRCode',
-                'getLocation',
-                'openLocation',
-                'chooseWXPay'
-              ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-          });
-          wx.ready(()=>{
-            console.log('wx.ready');
-            // alert('wx.ready')
-          });
-
-          wx.error(function(res){
-
-            console.log('wx err',res);
-            // alert('wx.err'+JSON.stringify(res));
-
-            //可以更新签名
-          });
-          wx.onMenuShareTimeline({
-              title: 'shareTest', // 分享标题
-              link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
-              success: function () { 
-                  // 用户确认分享后执行的回调函数
-                  alert('分享成功')
-              },
-              cancel: function () { 
-                  // 用户取消分享后执行的回调函数
-                  alert('用户取消分享')
-              }
-          });
-          wx.onMenuShareAppMessage({
-              title: 'shareTest', // 分享标题
-              desc: 'shareTestshareTestshareTest,', // 分享描述
-              link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
-              type: 'link', // 分享类型,music、video或link，不填默认为link
-              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-              success: function () { 
-                  // 用户确认分享后执行的回调函数
-                  alert('分享成功')
-              },
-              cancel: function () { 
-                  // 用户取消分享后执行的回调函数
-                  alert('用户取消分享')
-              }
-          });
+        let url = encodeURIComponent(window.location.href.split('#')[0])
+        console.log('url', url)
+        getSigns(url).then((res)=>{
+            if(res.ticket==''){
+                Toaster.toaster({ type: 'error', content: '获取Token失败', time: 3000 }); return;   
+            }
+            console.log(res)
+            let data = res;
+            wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: 'wx9a7768b6cd7f33d0', // 必填，公众号的唯一标识
+                timestamp: data.timestamp, // 必填，生成签名的时间戳
+                nonceStr: data.noncestr, // 必填，生成签名的随机串
+                signature: data.sign,// 必填，签名，见附录1
+                jsApiList: [
+                  'onMenuShareTimeline',
+                  'onMenuShareAppMessage',
+                  'onMenuShareQQ',
+                  'onMenuShareWeibo',
+                  'onMenuShareQZone',
+                  'chooseImage',
+                  'scanQRCode',
+                  'getLocation',
+                  'openLocation',
+                  'chooseWXPay'
+                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+            wx.ready(()=>{
+              console.log('wx.ready');
+              // alert('wx.ready')
+            });
+  
+            wx.error(function(res){
+  
+              console.log('wx err',res);
+              // alert('wx.err'+JSON.stringify(res));
+  
+              //可以更新签名
+            });
+            wx.onMenuShareTimeline({
+                title: 'shareTest', // 分享标题
+                link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
+                success: function () { 
+                    // 用户确认分享后执行的回调函数
+                    alert('分享成功')
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                    alert('用户取消分享')
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: 'shareTest', // 分享标题
+                desc: 'shareTestshareTestshareTest,', // 分享描述
+                link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://47.88.2.72:2016/getphotoPal/2017-4-13/14920521723196.png', // 分享图标
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+                    // 用户确认分享后执行的回调函数
+                    alert('分享成功')
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                    alert('用户取消分享')
+                }
+            });
+        }).catch((err)=>{
+            console.log(err);
         })
-        .catch(error => console.log(error))
+        // fetch( config.ROOT_URL+ 'wx/sign', { method: 'POST', data: reqbody})
+        // .then(data => {
+        // //   console.log(data)
+        // //   alert(JSON.stringify(data.respBody));
+           
+        // })
+        // .catch(error => console.log(error))
     }
 
     changeContent(action, nextProps){

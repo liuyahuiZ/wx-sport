@@ -56,13 +56,11 @@ class OcrDoc extends BaseView {
     setValue(key,val){
         this.setState({[key]: val});
     }
-    goLink(link, id){
+    goLink(link, obg){
       if(link) {
         hashHistory.push({
           pathname: link,
-          query: {
-            subjectId : id,
-          }
+          query: obg
         });
       }
     }
@@ -98,8 +96,12 @@ class OcrDoc extends BaseView {
         package: 'prepay_id='+res.prepayId,
         signType: 'MD5', // 注意：新版支付接口使用 MD5 加密
         paySign: res.paySign,
-        success: function (res) {
-          self.goLink('/ClassList', obg.subjectId)
+        success: function (respon) {
+          Toaster.toaster({ type: 'error', content: '购买成功，请预约课程', time: 3000 });
+          self.goLink('/ClassList', {
+            subjectId : obg.subjectId,
+            orderId: res.orderId
+          })
         }
       });
       

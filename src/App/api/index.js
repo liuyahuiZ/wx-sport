@@ -46,3 +46,24 @@ export function getToken(reqbody){
         })
     })
 }
+
+export function getTicket(reqbody){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `api/token`,{ method: 'GET', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+export function getSigns(url){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `api/token/sign?url=${url}`,{ method: 'GET', data: ''})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
