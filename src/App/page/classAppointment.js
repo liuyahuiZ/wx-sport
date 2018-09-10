@@ -39,12 +39,16 @@ class OcrDoc extends BaseView {
 
     checkRedct(){
       let obg = UrlSearch();
-      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FClassAppointment%3FcourseId%3D" + obg.courseId;
+      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FClassAppointment%3FcourseId%3D" + obg.courseId + "%26coachId%3D" + obg.coachId;
       const appId = 'wx9a7768b6cd7f33d0';
       
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''){
+          storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
+        }
         storage.setStorage('authCode', obg.code);
         if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           this.getUserinfo(obg.code);
@@ -114,6 +118,7 @@ class OcrDoc extends BaseView {
     render() {
         const {detailData} = this.state;
         let obg = UrlSearch();
+        let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
         let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
         let personDom = detailData.peoples&&detailData.peoples.length > 0 ?
         detailData.peoples.map((itm, idx)=>{
@@ -130,7 +135,7 @@ class OcrDoc extends BaseView {
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FUserSign%3FcourseId%3D${obg.courseId}`} /></Col>
+                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FUserSign%3FcourseId%3D${obg.courseId}%26teacherId%3D${userId}`} /></Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>

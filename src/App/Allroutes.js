@@ -3,6 +3,7 @@ import { Router, Route, hashHistory, IndexRedirect, IndexRoute } from 'react-rou
 import LayOut from './core/LayOut';
 import ListDoc from './page/list';
 import Home from './page/home';
+import PicturePoster from './page/picturePoster';
 
 const DomeDoc = (location, cb) => {
   require.ensure([], require => {
@@ -112,6 +113,12 @@ const UserSign = (location, cb) => {
   },'UserSign')
 };
 
+// const PicturePoster = (location, cb) => {
+//   require.ensure([], require => {
+//       cb(null, require('./page/picturePoster').default)
+//   },'PicturePoster')
+// };
+
 class MyRouter extends Component{
   constructor(props) {
     super(props);
@@ -142,6 +149,7 @@ class MyRouter extends Component{
         <Route path={'ClassAppointment'} getComponent={ClassAppointment} />
         <Route path={'TrainResult'} getComponent={TrainResult} />
         <Route path={'UserSign'} getComponent={UserSign} />
+        <Route path={'PicturePoster'} component={PicturePoster} />
       </Route>
     </Router>
     )

@@ -119,3 +119,13 @@ export function userMarkRate(req){
         })
     })
 }
+export function userInfo(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `/user/info`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

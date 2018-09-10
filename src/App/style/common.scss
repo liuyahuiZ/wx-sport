@@ -110,12 +110,16 @@ $widthr-list:1,2,3,4,5,8,10,13,15,20,25,30;
 @each $widthr in $widthr-list{
 	.width-#{$widthr}r{width:#{$widthr*1rem};}
 }
-$minheight-list:30,40,50,60,90,100;
+$minheight-list:20,25,30,40,50,60,90,100;
 @each $minheight in $minheight-list{
 	.minheight-#{$minheight}{min-height:#{$minheight*1vh};}
 }
+$height-list-h:20,25,30,40,50,60,90,100;
+@each $height in $height-list-h{
+	.heighth-#{$height}{height:#{$height*1vh};}
+}
 /*height*/
-$height-list:10,20,25,30,35,40,50,65,100,120,200,300;
+$height-list:10,20,25,30,35,40,50,65,100,120,200,300,500;
 @each $height in $height-list{
 	.height-#{$height}{height:#{$height}px;}
 }
@@ -185,6 +189,10 @@ $breakpoint-map: (
 .middle-round-8{
         width: 8rem;
         height: 8rem;
+}
+.middle-round-p{
+        width: 60px;
+        height: 60px;
 }
 /*position_absolute*/
 .absolute{position: absolute;}

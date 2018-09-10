@@ -44,7 +44,7 @@ class MyClassDetail extends BaseView {
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
         self.setState({
-          detailData: data
+          detailData: data || {}
         })
       }).catch((e)=>{
         Loade.hide();
@@ -100,7 +100,7 @@ class MyClassDetail extends BaseView {
         const {detailData, status, itmStatus} = this.state;
         const self = this;
         
-        const carouselMap = [{ tabName: 'thired', content: (<img alt="text" src={detailData.imgUrl} />), isActive: false }];
+        const carouselMap = detailData&&detailData.coursePlanDetails ? [{ tabName: 'thired', content: (<img alt="text" src={detailData.imgUrl} />), isActive: false }] : [];
         const stepDom = detailData&&detailData.coursePlanDetails&&detailData.coursePlanDetails.length > 0 ? detailData.coursePlanDetails.map((itm, idx)=>{
           return (<Row key={`${idx}-stp`}>
             <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
@@ -115,7 +115,7 @@ class MyClassDetail extends BaseView {
               </Row>
             </Col>
         </Row>)
-        }) : <div />;
+        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>;
 
         return(
           <section className="padding-all bg-000">
@@ -134,14 +134,13 @@ class MyClassDetail extends BaseView {
                   </Col>
                 </Row>
               </Col>
-              <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
-                {/* <img className='width-100' src={'http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg'} /> */}
+              { detailData&&detailData.coursePlanDetails ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
                 src={detailData.mvUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
-              </Col>
-              <Col className="textclolor-white text-align-center margin-top-3">
+              </Col>: <div />}
+              { detailData&&detailData.coursePlanDetails ? <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
-              </Col>
+              </Col> : <div />}
               {
                 status ? (<Row className="width-100">
                   <Col span={11} className="margin-top-3">
@@ -180,7 +179,7 @@ class MyClassDetail extends BaseView {
                   }}
                 />
               </Col>
-                </Row>) : (<Col className="margin-top-3">
+                </Row>) :  detailData&&detailData.coursePlanDetails ? (<Col className="margin-top-3">
                 <Buttons
                   text="开始训练"
                   type={'primary'}
@@ -193,7 +192,7 @@ class MyClassDetail extends BaseView {
                     this.startClass()
                   }}
                 />
-              </Col>)
+              </Col>) : <div />
               }
               
               

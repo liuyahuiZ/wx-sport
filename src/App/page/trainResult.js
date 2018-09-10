@@ -44,9 +44,12 @@ class OcrDoc extends BaseView {
     setValue(key,val){
         this.setState({[key]: val});
     }
-    goLink(link){
+    goLink(link, itm){
       if(link) {
-        hashHistory.push(link);
+        hashHistory.push({
+          pathname: link,
+          query: itm || ''
+        });
       }
     }
     choseImage(){
@@ -78,6 +81,7 @@ class OcrDoc extends BaseView {
       const self = this;
       Loade.show();
       let obg = UrlSearch();
+      sessions.setStorage('picUrl', picture);
       transOverUp({
         userId: userId,
         keepTime: obg.keepTime,
@@ -88,17 +92,20 @@ class OcrDoc extends BaseView {
         question: question,
       }).then((data)=>{
         console.log(data);
-        Modal.alert({ title: '上传成功',
-              content: '训练成功上传成功',
-              btn: {
-                text: '确定',
-                type: 'link',
-                style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
-              }, 
-              type: 'large'
-            },
-          () => { self.goLink('/TeacherRate'); });
         Loade.hide();
+        Modal.alert({ title: '上传成功',
+          content: '训练成功上传成功',
+          btn: {
+            text: '确定',
+            type: 'link',
+            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+          }, 
+          type: 'large'
+        },
+        () => { 
+          // hashHistory.goBack(); 
+          self.goLink('/PicturePoster', {keepTime: obg.keepTime}); 
+        });
       }).catch((e)=>{
         Loade.hide();
         console.log(e)

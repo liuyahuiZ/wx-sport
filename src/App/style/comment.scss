@@ -131,6 +131,23 @@ body{
         width: 4rem;
         height: 4rem;
     }
+    &.icon-logo{
+        // background: url('./images/logo.png');
+        background-repeat: no-repeat;
+        width: 5rem;
+        height: 4rem;
+        background-size: 5rem;
+    }
+    &.icon-personRond{
+        width: 7rem;
+        height: 7rem;
+    }
+    &.icon-personRond-inner{
+        width: 6rem;
+        height: 6rem;
+        left: 0.5rem;
+        top: 0.5rem;
+    }
     &.icon-sport{
         background: url('./images/syei24.png');
         background-repeat: no-repeat;
@@ -235,4 +252,5 @@ body{
         background-repeat: no-repeat;
         background-size: 1.4rem;
     }
+
 }

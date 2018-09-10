@@ -29,13 +29,13 @@ class OcrDoc extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          userInfo: {},
           status: this.props.status,
           resourceKey: '',
           userInfo: storage.getStorage('userInfo') ||{},
           myClassList:[],
           ratioList: [],
-          loadText: '加载中'
+          loadText: '加载中',
+          userId: storage.getStorage('userId') ||{},
       };
     }
     componentDidMount(){
@@ -141,9 +141,12 @@ class OcrDoc extends Component {
        if(JSON.stringify(data)!=='{}'){
           storage.setStorage('userInfo', data);
           storage.setStorage('userId', data.id);
+          self.getMyClass(data.id);
+          self.getCourseRatio(data.id);
           // self.registry();
           self.setState({
-            userInfo: data
+            userInfo: data,
+            userId: data.id
           })
         }
       }).catch((err)=>{
@@ -248,7 +251,7 @@ class OcrDoc extends Component {
     }
 
     render() {
-        const { status, myClassList, resourceKey, userInfo, loadText, ratioList } = this.state;
+        const { status, myClassList, resourceKey, userInfo, loadText, ratioList, userId } = this.state;
         const self = this;
         const myClassListDom = myClassList.length > 0 ? myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
@@ -263,16 +266,16 @@ class OcrDoc extends Component {
           </Col>
           <Col className="margin-top-3 text-align-center textcolor-8EBF66" span={6}>共{itm.allSection}天</Col>
         </Row>)
-        }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>);
+        }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r" onClick={()=>{this.getMyClass(userId)}}>{loadText}</Col></Row>);
 
         const ratioListDom = ratioList.length > 0 ? ratioList.map((itm, idx)=>{
           return (<Row className="images-33 padding-all-2 float-left"><Col key={`ratio-${idx}`}  className="padding-all" onClick={()=>{self.goLink('/TrainResult',{
             courseId : itm.id,
             nowSection: itm.nowSection
           })}}>
-            <ProgressCircle score={itm.nowSection/itm.allSection  * 100} show={true} innerText={`${itm.nowSection/itm.allSection  * 100}%`} />
+            <ProgressCircle score={parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)} show={true} innerText={`${itm.nowSection/itm.allSection  * 100}%`} />
           </Col></Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">{loadText}</Col></Row>;
+        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r" onClick={()=>{this.getCourseRatio(userId)}}>{loadText}</Col></Row>;
 
         const tabOptions = [{
           tabName: (<Row>
