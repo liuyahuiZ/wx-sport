@@ -31,8 +31,8 @@ class OcrDoc extends BaseView {
       this.state = {
           article: {},
           feelCore: 50,
-          picture: 'http://pdc6cusp9.bkt.clouddn.com/1534342816',
-          theVieo: 'http://pdc6cusp9.bkt.clouddn.com/1534342866',
+          picture: 'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg',
+          theVieo: 'http://pdc6cusp9.bkt.clouddn.com/1534342816',
           query: UrlSearch()
       };
       moment.locale('en', {
@@ -81,6 +81,7 @@ class OcrDoc extends BaseView {
       const self = this;
       Loade.show();
       let obg = UrlSearch();
+      console.log(picture);
       sessions.setStorage('picUrl', picture);
       transOverUp({
         userId: userId,
@@ -112,7 +113,7 @@ class OcrDoc extends BaseView {
       })
     }
     render() {
-        const {article, feelCore, query} = this.state;
+        const {article, feelCore, query, picture, theVieo} = this.state;
         const self = this;
         let keepTimeM = parseInt(query.keepTime/60);
         let keepTimeS = parseInt(query.keepTime%60);
@@ -171,7 +172,7 @@ class OcrDoc extends BaseView {
                   <Col className={'zindex-6 absolute-left zindex-9'}>
                   <FileUp
                   description={''}
-                  defaultSrc={'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'}
+                  defaultSrc={ picture || 'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'}
                   ref={(r) => {
                     this.$$img1 = r;
                   }}
@@ -198,7 +199,7 @@ class OcrDoc extends BaseView {
                   <Col className={'zindex-6 absolute-left zindex-9'}>
                   <FileUp
                   description={''}
-                  defaultSrc={'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'}
+                  defaultSrc={ theVieo || 'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'}
                   ref={(r) => {
                     this.$$img2 = r;
                   }}

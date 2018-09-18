@@ -152,34 +152,6 @@ class OcrDoc extends Component {
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
       })
-
-      // fetch( config.ROOT_URL+ 'wx/getWebAccessToken', { method: 'POST', data: {
-      //     code: code
-      // }}).then(data => {
-      //   console.log(data)
-
-      //   Modal.alert({ title: '用户信息',
-      //       content: JSON.stringify(data),
-      //       btn: {
-      //         text: '确定',
-      //         type: 'link',
-      //         style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
-      //       }, 
-      //       type: 'large'
-      //     },
-      //   () => { console.log('nult callback'); });
-      // //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
-
-      //   let resp = JSON.parse(data.respBody);
-      //   if(!resp.errcode){
-      //     storage.setStorage('userInfo', resp);
-      //     self.registry();
-      //     self.setState({
-      //       userInfo: JSON.parse(data.respBody)
-      //     })
-      //   }
-        
-      // })
     }
 
     checkUser(){
@@ -273,7 +245,7 @@ class OcrDoc extends Component {
             courseId : itm.id,
             nowSection: itm.nowSection
           })}}>
-            <ProgressCircle score={parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)} show={true} innerText={`${itm.nowSection/itm.allSection  * 100}%`} />
+            <ProgressCircle score={parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)} show={true} innerText={`${parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)}%`} />
           </Col></Row>)
         }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r" onClick={()=>{this.getCourseRatio(userId)}}>{loadText}</Col></Row>;
 
@@ -299,7 +271,7 @@ class OcrDoc extends Component {
                   <Col span={2}>7</Col>
                 </Row>
               </Col>
-              <Col>
+              <Col className="margin-top-3">
                 {myClassListDom}
               </Col>
              

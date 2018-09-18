@@ -106,7 +106,7 @@ class HomeDoc extends BaseView {
         // 'https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png']
         const productListDom = productList.length > 0 ? productList.map((itm, idx)=>{
           return (
-          <Row className="margin-top-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`} 
+          <Row className="margin-top-2 margin-bottom-3 border-radius-5f heighr-13 overflow-hide relative"  key={`${idx}-itm`} 
           onClick={()=>{this.goLinks('/ClassDetail', {
             subjectId : itm.id,
             price: itm.price

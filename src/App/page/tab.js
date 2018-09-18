@@ -2,7 +2,7 @@ import React , { Component }from 'react';
 import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import Home from './home';
-import My from './my';
+import MyRoute from './myRoute';
 import Ranking from './ranking';
 
 const {
@@ -51,7 +51,7 @@ class TabDoc extends Component {
         { tabName: (<Row><Col style={{'height': '0.8rem'}} className="relative">
         <div className={`icon ${resourceKey ==='3' ? 'icon-my-a': 'icon-my'}`} />
       </Col>
-      <Col className="font-size-8">我的</Col></Row>), iconName: 'android-person  ', keyword: '3', content:(<My status={resourceKey== '3'} />)}];
+      <Col className="font-size-8">我的</Col></Row>), iconName: 'android-person  ', keyword: '3', content:(<MyRoute status={resourceKey== '3'} />)}];
         const typeOption = {
           showIcon: false,
           activeColor: '#8FBF66',

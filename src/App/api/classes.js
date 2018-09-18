@@ -111,7 +111,7 @@ export function userGatherInfo(req){
 
 export function userMarkRate(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `/userMark/markOrder`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `userMark/markOrder`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -121,7 +121,29 @@ export function userMarkRate(req){
 }
 export function userInfo(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `/user/info`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `user/info`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function userStudents(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `user/students`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function courselastKeep(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/lastKeep`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

@@ -9,6 +9,7 @@ import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
 import html2canvas from "html2canvas";
 
+
 const {
     Buttons,
     Toaster,
@@ -44,6 +45,7 @@ class ImgPoster extends BaseView {
       });
     }
     _viewAppear(){
+      Loade.show();
       setTimeout(()=>{
         this.doCanvas()
       }, 2000)
@@ -97,19 +99,6 @@ class ImgPoster extends BaseView {
           showCanvas: true
         })
       });
-
-
-      // html2canvas(this.$$screen, {
-      //   allowTaint: true,
-      //   taintTest: true,
-      //   useCORS: true,
-      //   width: self.$$screen.clientWidth + 'px',
-      //   height: self.$$screen.clientHeight + 'px'
-      // }).then(function(canvas) {
-      //   console.log(canvas);
-      //   // var dataUrl = canvas.toDataURL();
-      //   self.$$showScreen.appendChild(canvas);
-      // });
     }
     setValue(key,val){
         this.setState({[key]: val});
@@ -139,30 +128,30 @@ class ImgPoster extends BaseView {
                   <img src={ picUrl } className="absolute top-0 width-100" />
                 </div>
                 <div className="zindex-10">
-                  <img src={'../css/images/logo.png'} className="absolute top-0 margin-left-5 margin-top-5 icon icon-logo" />
+                  <img src="/dist/css/images/logo.png" className="absolute top-0 margin-left-5 margin-top-5 icon icon-logo" />
                 </div>
               </div>
-              <div className="zindex-6 absolute bottom-0 float-left padding-all heighr-20">
-                <div className="float-left relative width-40  margin-left-5 text-align-center">
-                  <img src={'../css/images/personRond.png'} className="absolute-left float-left icon icon-personRond" />
-                  <img src={userInfo.imgUrl} className="icon float-left absolute-left icon-personRond-inner border-radius-round overflow-hide " />
+              <div className="zindex-6 absolute bottom-0 float-left padding-all heighr-15">
+                <div className="float-left relative width-40 text-align-center heighr-8">
+                  <img src="/dist/css/images/personRond.png" className="absolute-left float-left icon icon-personRond zindex-6" />
+                  <img src={userInfo.imgUrl} className="icon float-left absolute-left icon-personRond-inner border-radius-round overflow-hide zindex-10" />
                 </div>
-                <div className="float-right textclolor-white width-60 line-height-12">
+                <div className="float-right textclolor-white width-60 line-height-25">
                 <div className="width-100">{userInfo.nickName}</div>
                   <div className="width-100">{nowTime}</div>
                 </div>
-                <div className="float-left width-100 padding-all">
+                <div className="float-left width-100 padding-all ">
                     <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-left textclolor-black-low line-height-14">时长</div>
-                      <div className="float-left width-100 text-align-left textclolor-white font-size-8 line-height-14">{keepTimeM}分{keepTimeS}</div>
+                      <div className="float-left width-100 text-align-left textclolor-black-low line-height-25 textcolor-8EBF66">时长</div>
+                      <div className="float-left width-100 text-align-left textclolor-white font-size-12 line-height-25">{keepTimeM}分{keepTimeS}</div>
                     </div>
                     <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-center textclolor-black-low line-height-14">动作</div>
-                      <div className="float-left width-100 text-align-center textclolor-white font-size-8 line-height-14">{'2 组'}</div>
+                      <div className="float-left width-100 text-align-center textclolor-black-low line-height-25 textcolor-8EBF66">动作</div>
+                      <div className="float-left width-100 text-align-center textclolor-white font-size-12 line-height-25">{'2 组'}</div>
                     </div>
                     <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-right textclolor-black-low line-height-14">消耗</div>
-                      <div className="float-left width-100 text-align-right textclolor-white font-size-8 line-height-14">{query.keepTime*10}卡</div>
+                      <div className="float-left width-100 text-align-right textclolor-black-low line-height-25 textcolor-8EBF66">消耗</div>
+                      <div className="float-left width-100 text-align-right textclolor-white font-size-12 line-height-25">{query.keepTime*10}卡</div>
                     </div>
                 </div>
               </div>

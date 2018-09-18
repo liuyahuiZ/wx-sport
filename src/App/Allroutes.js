@@ -113,6 +113,12 @@ const UserSign = (location, cb) => {
   },'UserSign')
 };
 
+const TeacherPersonal = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/teacherPersonal').default)
+  },'TeacherPersonal')
+};
+
 // const PicturePoster = (location, cb) => {
 //   require.ensure([], require => {
 //       cb(null, require('./page/picturePoster').default)
@@ -150,6 +156,7 @@ class MyRouter extends Component{
         <Route path={'TrainResult'} getComponent={TrainResult} />
         <Route path={'UserSign'} getComponent={UserSign} />
         <Route path={'PicturePoster'} component={PicturePoster} />
+        <Route path={'TeacherPersonal'} getComponent={TeacherPersonal} />
       </Route>
     </Router>
     )

@@ -14,6 +14,7 @@ class ProgressDrag extends Component {
       tabContentStyle: 0,
       endPosition: 0,
       allWidth: 0,
+      enableDrag: this.props.enableDrag,
       percent: this.props.percent,
       barWidthDisable: this.props.barWidthDisable,
     };
@@ -45,8 +46,10 @@ class ProgressDrag extends Component {
   drag(self) {
     const content = self.$$barround;
     const allWidth = self.$$barContainer.clientWidth;
+    const { enableDrag } = this.state;
     content.addEventListener('touchstart', (e) => {
       // e.preventDefault();
+      if(!enableDrag) return;
       const touch = e.touches[0];
       // console.log('touchstart', touch.pageY, self.state.tabContentStyle);
       self.setState({ 
@@ -55,6 +58,7 @@ class ProgressDrag extends Component {
       //  console.log('startY:',touch.pageY)
     }, false);
     content.addEventListener('touchmove', (e) => {
+      if(!enableDrag) return;
       e.preventDefault();
 
       const touch = e.touches[0];
@@ -104,6 +108,7 @@ ProgressDrag.propTypes = {
   barColor: PropTypes.string,
   radius: PropTypes.number,
   barWidthDisable: PropTypes.bool,
+  enableDrag: PropTypes.bool,
   onChange: PropTypes.func,
   barRoundStyle: PropTypes.shape({}),
   style: PropTypes.shape({}),
@@ -116,6 +121,7 @@ ProgressDrag.defaultProps = {
   radius: 0,
   barWidthDisable: false,
   barRoundStyle: {},
+  enableDrag: true,
   style: {},
   onChange: ()=>{}
 };
