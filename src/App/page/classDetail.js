@@ -17,7 +17,9 @@ const {
     Col,
     Icon,
     Carousel,
-    Loade
+    Loade,
+    ProgressDrag,
+    Checkbox
 } = Components;
 const { sessions, storage } = utils;
 
@@ -27,7 +29,8 @@ class OcrDoc extends BaseView {
       let obg = UrlSearch();
       this.state = {
           dataDetail: {},
-          subjectId: obg.subjectId
+          subjectId: obg.subjectId,
+          chosePlanTypeId: ''
       };
     }
     _viewAppear(){
@@ -43,6 +46,7 @@ class OcrDoc extends BaseView {
           self.setState({
             dataDetail: data
           })
+          sessions.setStorage('nowSubject', data);
         } else {
           self.setState({
             loadText: '暂无数据'
@@ -64,53 +68,31 @@ class OcrDoc extends BaseView {
         });
       }
     }
-    undefindOrder(){
-      const { subjectId } = this.state;
-      const self = this;
-      let userId = storage.getStorage('userId');
-      let authCode = storage.getStorage('authCode');
-      let obg = UrlSearch();
-      console.log(authCode);
-      Loade.show();
-      createOrder({
-        "authCode": authCode,
-        "clientIP": '192.168.3.1',
-        "subjectId": subjectId,
-        "userId": userId
-      }).then((res)=>{
-        Loade.hide();
-        console.log(res);
-        if(!res.prepayId) { Toaster.toaster({ type: 'error', content: '调用支付失败,请稍后重试', time: 3000 }); return; }
-        self.bought(res);
-      }).catch((err)=>{
-        Loade.hide();
-        console.log(res);
+
+    chosePlan(itm){
+      this.setState({
+        chosePlanTypeId: itm.id
       })
     }
-    bought(res){
-      const self = this;
+
+    doPlan(){
       let obg = UrlSearch();
-      wx.chooseWXPay({
-        timestamp: res.timeStamp,
-        nonceStr: res.nonceStr,
-        package: 'prepay_id='+res.prepayId,
-        signType: 'MD5', // 注意：新版支付接口使用 MD5 加密
-        paySign: res.paySign,
-        success: function (respon) {
-          Toaster.toaster({ type: 'error', content: '购买成功，请预约课程', time: 3000 });
-          self.goLink('/ClassList', {
-            subjectId : obg.subjectId,
-            orderId: res.orderId
-          })
-        }
-      });
-      
+      const {chosePlanTypeId} = this.state
+      if(!chosePlanTypeId&&chosePlanTypeId==='') {
+          Toaster.toaster({ type: 'error', position: 'top', content: '请选择计划', time: 3000 }, true);
+          return false;
+      }
+      this.goLink('/ClassList', {
+        subjectId : obg.subjectId,
+        courseTypeId: chosePlanTypeId
+        // orderId: res.orderId
+      })
     }
 
-
     render() {
-        const { dataDetail } = this.state;
+        const { dataDetail, chosePlanTypeId } = this.state;
         let obg = UrlSearch();
+        const self = this;
         const carouselMap = [];
         if(dataDetail&&dataDetail.slideImgUrlList) {
           for (let i=0; i< dataDetail.slideImgUrlList.length;i++){
@@ -134,7 +116,22 @@ class OcrDoc extends BaseView {
           <Col className="text-align-center heighr-1 line-height-1r margin-bottom-1">{botIcon} </Col>
         </Row>)
         }) : <div />;
-    
+
+        const bodyPlanDom = dataDetail&&dataDetail.courseTypes ? dataDetail.courseTypes.map((itm, idx)=>{
+          return <Col span={12} key={`${idx}-plan`} className="relative heighr-6 overflow-hide padding-all" onClick={()=>{self.chosePlan(itm)}}>
+            <Row className="heighr-6" justify="center" align="center">
+              <Col span={13} className={`${itm.id==chosePlanTypeId ? 'textclolor-white': 'textclolor-black-low'} text-align-right zindex-10`}>{itm.name}</Col>
+              <Col span={1} />
+              <Col span={10} className="text-align-left zindex-10"><Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={itm.id==chosePlanTypeId ? '#8EBF66': '#999'} /></Col>
+            </Row>
+            <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
+            <img className="width-100 absolute-left zindex-6 " src={itm.bgiUrl}  />
+          </Col>
+        }) : <div />;
+        
+        const poepleFirst = dataDetail&&dataDetail.fitPeoples ? dataDetail.fitPeoples.map((itm, idx)=>{
+          return <span key={`${idx}-sp`} className={"padding-all-2 bg-8EBF66 border-radius-5f margin-right-1 font-size-8"}>{itm}</span>
+        }) : '';
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
@@ -150,30 +147,33 @@ class OcrDoc extends BaseView {
                     <Row>
                       <Col span={24} className="font-size-8 textclolor-black-low margin-bottom-3 ">
                       {dataDetail.intro}
-                      </Col>
-                      <Col span={8}>
-                        <img className='width-100' src={dataDetail.introImgUrl} />
-                      </Col>
-                      
+                      </Col>                    
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">适用人群</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{dataDetail.fitPeople}</Col>
+                          <Col span={24} className="font-size-8 textclolor-333 padding-top-1r padding-bottom-1r">{poepleFirst}</Col>
                         </Row>
                       </Col>
 
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">计划难度</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{dataDetail.difficuity}</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low padding-all">
+                          <ProgressDrag percent={dataDetail.difficuity} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
+                          bgColor={'#333'} style={{height: '5px'}} barRoundStyle={{ 'width': '1.1rem','height': '1.1rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
+                          onChange={(v)=>{ console.log(v);}} barWidthDisable enableDrag={false} />
+                          </Col>
+                          <Col span={8} className="text-align-left font-size-8 textclolor-black-low">简单</Col>
+                          <Col span={8} className="text-align-center font-size-8 textclolor-black-low">一般</Col>
+                          <Col span={8} className="text-align-right font-size-8 textclolor-black-low">复杂</Col>
                         </Row>
                       </Col>
-                      <Col span={24} className="margin-top-2" >
+                      {/* <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">训练费用</Col>
                           <Col span={24} className="font-size-8 textclolor-black-low ">￥{(obg.price/100).toFixed(2)}</Col>
                         </Row>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
@@ -184,20 +184,38 @@ class OcrDoc extends BaseView {
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
+                  <Col span={22} className="font-size-12 textclolor-white line-height-4r ">养身计划</Col>
+                  <Col className="bg-1B1B1B padding-all">
+                    <Row gutter={8}>
+                      {bodyPlanDom}
+                    </Row>
+                  </Col>
+                  <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
                   <Col span={22} className="font-size-12 textclolor-white line-height-4r ">健身步骤</Col>
                   <Col className="bg-1B1B1B padding-all">
                     { stepDom }
+                    <Row>
+                      <Col span={3}><Checkbox
+                      options={[{ value: '1', text: '', checkStatus: 'checked' }]}
+                      onChange={(data) => {
+                        console.log(data);
+                      }}
+                      ref={(r) => { this.$$checkbox1 = r; }}
+                      /></Col>
+                      <Col span={21} className="textclolor-black-low line-height-2r font-size-8">购买训练计划前，需要执行阅读 风险PAR-Q 要求</Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text={`￥${(obg.price/100).toFixed(2)} 立即购买`}
+                  text={`立即预约`}
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
-                    this.undefindOrder()
+                    // this.undefindOrder()
+                    self.doPlan()
                   }}
                 />
               </Col>

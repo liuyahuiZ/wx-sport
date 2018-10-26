@@ -195,7 +195,7 @@ class PersonalFiles extends BaseView {
                   text="提交"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
                     hashHistory.goBack();
                   }}

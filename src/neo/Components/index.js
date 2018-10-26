@@ -7,6 +7,7 @@ import Textarea from './Textarea';
 import Select from './Select';
 import Selects from './Select/selects';
 import Radio from './Radio';
+import TagRadio from './TagRadio';
 import Checkbox from './Checkbox';
 import Container from './Container';
 import Toaster from './Toaster';
@@ -52,6 +53,7 @@ import TransAnimal from './TransAnimal';
 import ProgressCircle from './ProgressCircle';
 import TimeRunner from './TimeRunner';
 import ProgressDrag from './ProgressDrag';
+import PopContainer from './PopContainer';
 import * as Tables from './Table';
 
 const { Table, TableRowColumn, TableRow, TableHeaderRow } = Tables;
@@ -70,6 +72,7 @@ export {
   TableRow,
   TableHeaderRow,
   Radio,
+  TagRadio,
   Checkbox,
   Toaster,
   Modal,
@@ -114,5 +117,6 @@ export {
   TransAnimal,
   ProgressCircle,
   TimeRunner,
-  ProgressDrag
+  ProgressDrag,
+  PopContainer
 };

@@ -148,7 +148,7 @@ class MyClassDetail extends BaseView {
                   text="暂停"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop();
                     this.$$videos.pause();
@@ -158,7 +158,7 @@ class MyClassDetail extends BaseView {
                 text="开始"
                 type={'primary'}
                 size={'large'}
-                style={{backgroundColor: '#8EBF66', color:'#333'}}
+                style={{backgroundColor: '#80EA46', color:'#333'}}
                 onClick={()=>{
                   this.$$TimeRunner.start();
                   this.$$videos.play();
@@ -172,7 +172,7 @@ class MyClassDetail extends BaseView {
                   text="结束"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop()
                     this.submitClick()
@@ -184,7 +184,7 @@ class MyClassDetail extends BaseView {
                   text="开始训练"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     this.$$TimeRunner.start();

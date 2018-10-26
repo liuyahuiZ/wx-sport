@@ -6,7 +6,7 @@ import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import moment from 'moment';
 import wx from 'weixin-js-sdk';
-import { subjectCourses } from '../api/subject';
+import { subjectCourses, createOrder } from '../api/subject';
 import { userOrdeRing } from '../api/classes'
 
 const {
@@ -18,7 +18,8 @@ const {
     Col,
     Icon,
     Carousel,
-    Loade
+    Loade,
+    PopContainer
   } = Components;
 const { sessions, storage } = utils;
   
@@ -73,14 +74,15 @@ class ClassList extends BaseView {
       Loade.show();
       subjectCourses({
         subjectId:obg.subjectId,
-        datetime: selectDay.dateTime 
+        datetime: selectDay.dateTime,
+        courseTypeId: obg.courseTypeId
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
         Loade.hide();
         if(JSON.stringify(data)!=='{}'){
           self.setState({
-            classList: [data]
+            classList: data
           })
         } else {
           self.setState({
@@ -96,13 +98,11 @@ class ClassList extends BaseView {
     setValue(key,val){
         this.setState({[key]: val});
     }
-    goLink(link, id){
+    goLink(link, obg){
       if(link) {
         hashHistory.push({
           pathname: link,
-          query: {
-            subjectId : id,
-          }
+          query: obg
         });
       }
     }
@@ -174,55 +174,166 @@ class ClassList extends BaseView {
         this.getList();
       });
     }
+
+    undefindOrder(it){
+      const { subjectId } = this.state;
+      const self = this;
+      let userId = storage.getStorage('userId');
+      let authCode = storage.getStorage('authCode');
+      let obg = UrlSearch();
+      console.log(authCode);
+      Loade.show();
+      createOrder({
+        "authCode": authCode,
+        "clientIP": '192.168.3.1',
+        "subjectId": subjectId,
+        "userId": userId,
+        "courseId": it.courseId
+      }).then((res)=>{
+        Loade.hide();
+        console.log(res);
+        if(!res.prepayId) { Toaster.toaster({ type: 'error', content: '调用支付失败,请稍后重试', time: 3000 }); return; }
+        self.bought(res, it);
+      }).catch((err)=>{
+        Loade.hide();
+        console.log(res);
+      })
+      sessions.setStorage('nowCourse', it);
+      self.goLink('/Success', Object.assign({},{
+        "type": 'appoint',
+      }) )
+    }
+
+    bought(res, it){
+      const self = this;
+      let obg = UrlSearch();
+      wx.chooseWXPay({
+        timestamp: res.timeStamp,
+        nonceStr: res.nonceStr,
+        package: 'prepay_id='+res.prepayId,
+        signType: 'MD5', // 注意：新版支付接口使用 MD5 加密
+        paySign: res.paySign,
+        success: function (respon) {
+          Toaster.toaster({ type: 'error', content: '购买成功', time: 3000 });
+          self.goLink('/Success', Object.assign({},{
+            "type": 'appoint',
+          }) )
+        }
+      });
+    }
+
     ordeRing(it){
       console.log(it);
       let obg = UrlSearch();
+      const self = this;
       Loade.show();
-      let userId = storage.getStorage('userId');
-      if(!obg.orderId) {Toaster.toaster({ type: 'error', content: '无效的订单', time: 3000 }); return; }
+
       userOrdeRing({
-        userId: userId,
-        orderId: obg.orderId,
-        orderCourseId: it.id
+        courseId: it.courseId
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
-        Toaster.toaster({ type: 'error', content: '您已预约成功，请返回我的页面查看', time: 3000 })
+        if(res.result) {
+          self.doBought(it);
+        } else{
+          Toaster.toaster({ type: 'error', content: '预约已满', time: 3000 }); return;
+        }
+        // self.undefindOrder()
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: '系统错误', time: 3000 });
         Loade.hide();
       })
+    }
+    doBought(it){
+      console.log(it);
+      const self = this;
+      PopContainer.confirm({
+        content: (<div className="bg-0D0D0D">
+          <Row className="border-bottom border-color-e5e5e5 bg-101111 border-radius-5f bg-0D0D0D">
+            <Col span={4} className={'text-align-center'} onClick={() => { PopContainer.closeAll() }} >
+                <Icon iconName={"android-close"} size={'180%'} iconColor={'#fff'} />
+            </Col>
+            <Col span={16} className={'text-align-center line-height-3r'}></Col>
+            <Col>
+              <Row className={"padding-all-1r line-height-3r"}>
+                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
+                  <Row>
+                    <Col span={12}>总价：</Col>
+                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                  </Row>
+                </Col>
+                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
+                  <Row>
+                    <Col span={12}>会员折扣价：</Col>
+                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                  </Row>
+                </Col>
+                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
+                  <Row>
+                    <Col span={12}>会员卡折后价</Col>
+                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                  </Row>
+                </Col>
+                <Col className={"text-align-center font-size-8 textclolor-black-low"}>还需支付</Col>
+                <Col className={"text-align-center font-size-16 textcolor-79EF44"}>¥{it.price}</Col>
+              </Row>
+              <Row className={"padding-all-1r"}>
+                <Col span={24} className="font-size-10 textclolor-white">温馨提示</Col>
+                <Col span={24} className="font-size-8 textclolor-black-low ">1. 入门课开课12小时前免费取消预约，支持全额退款；</Col>
+                <Col span={24} className="font-size-8 textclolor-black-low ">2. 入门课开课12小时后取消预约，不支持全额退款；</Col>
+                <Col span={24} className="font-size-8 textclolor-black-low ">3. 入门课需提前15分钟到场，迟到15分钟不能再参加，不支持全额退款</Col>
+                <Col className="margin-top-2">
+                 <Buttons
+                  text={`确认付款`}
+                  type={'primary'}
+                  size={'large'}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  onClick={()=>{
+                    PopContainer.closeAll();
+                    self.undefindOrder(it)
+                  }}
+                /></Col>
+              </Row>
+            </Col>
+          </Row>
+          </div>),
+      type: 'bottom',
+      containerStyle: { top: '3rem'},
+      });
     }
 
 
     render() {
         const {loadText, classList, dateArr, selectDay} = this.state;
         const self = this;
-        const carouselMap = [{ tabName: 'first', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/14/1522133980415_375x375.jpg" />), isActive: true },
-        { tabName: 'second', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/15/1522134154187_750x700.jpg" />), isActive: false },
-        { tabName: 'thired', content: (<img alt="text" src="https://static1.keepcdn.com/2018/02/24/14/1519455021015_750x700.jpg" />), isActive: false }];
+        // const carouselMap = [{ tabName: 'first', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/14/1522133980415_375x375.jpg" />), isActive: true },
+        // { tabName: 'second', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/15/1522134154187_750x700.jpg" />), isActive: false },
+        // { tabName: 'thired', content: (<img alt="text" src="https://static1.keepcdn.com/2018/02/24/14/1519455021015_750x700.jpg" />), isActive: false }];
         
-        const classListDom = classList.length > 0 ? classList.map((itm, idx) => {
-          let itmDom = itm.children.length > 0 ? itm.children.map((it, id)=>{
-            let statusDom = it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 bg-8EBF66 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
-          : <Col span={3.5} className="margin-top-2r zindex-10 border-all bg-D1D5D1 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r">结束</Col>;
-          return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B" key={`${id}-lit`} >
+        const classListDom = classList&&classList.length > 0 ? classList.map((itm, idx) => {
+          let itmDom = itm.children&&itm.children.length > 0 ? itm.children.map((it, id)=>{
+            let statusDom = it.currentPeople < it.maxPeople ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-9 border-all border-color-80EA46 textcolor-79EF44 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
+          : <Col span={3.5} className="margin-top-2r zindex-10 border-all border-color-333  bg-1B1B1B textcolor-313132 font-size-9  text-align-center border-radius-3 heighr-2 line-height-2r" >结束</Col>;
+          return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B border-bottom border-color-333" key={`${id}-lit`} >
             <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >
-              <Row className="zindex-10 bg-D1D5D1">
-                <Col span={7}><img className="width-100 heighr-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-21/15321406954276.png`} /></Col>
+              <Row className="zindex-10 ">
+                <Col span={7} className="margin-top-1r">
+                  <div className="middle-round border-radius-round overflow-hide">
+                    <img className="width-100 heighr-4" alt="text" src={it.coachImgUrl} />
+                  </div>
+                </Col>
                 <Col className="margin-top-1r" span={13}>
                   <Row >
-                    <Col className="zindex-10 font-size-8 textcolor-2d2d2d">{it.title}</Col>
-                    <Col className="zindex-10 font-size-7 textcolor-2d2d2d">{it.description}</Col>
-                    <Col className="zindex-10 font-size-7 textcolor-2d2d2d">{it.startTime}-{it.endTime} ¥{it.price}(会员 ¥63.55)</Col>
+                    <Col className="zindex-10 font-size-8 textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
+                    <Col className="zindex-10 font-size-7 textclolor-black-low">{it.desc}</Col>
+                    <Col className="zindex-10 font-size-7 textcolor-79EF44">{it.startTime}-{it.endTime} ¥{it.price}</Col>
                   </Row>
                 </Col>
                 {statusDom}
               </Row>
             </Col>
             </Row>)
-          }) : <div />;
+          }) : <div className="text-align-center font-size-8 textclolor-white line-height-2r">暂无数据</div>;
           let doms = (<Row content="flex-start" className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D" key={`${idx}-s`}>
             <Col span={1}></Col>
             <Col span={11} className="font-size-10 textclolor-white line-height-2r ">{itm.cityName}</Col>
@@ -246,15 +357,15 @@ class ClassList extends BaseView {
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
-              <Col>
+              {/* <Col>
                 <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'10rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
-              </Col>
-              <Col className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B">
-                <Row className="padding-all">{clenderDom}</Row>
-                <Row className="margin-top-2 bg-0D0D0D">
+              </Col> */}
+              <Col className="margin-top-2 border-radius-5f overflow-hide bg-101111">
+                <Row className="bg-0D0D0D">
                 <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>地区 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
                 <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
                 </Row>
+                <Row className="margin-top-2 padding-all">{clenderDom}</Row>
               </Col>
               <Col>
               {classListDom}

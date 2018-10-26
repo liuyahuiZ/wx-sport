@@ -5,7 +5,8 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
-import { signedList, getToken } from '../api/index';
+import { getToken } from '../api/index';
+import { courseDetail, courseMoves } from '../api/classes';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -17,7 +18,9 @@ const {
     Col,
     Icon,
     Carousel,
-    Loade
+    Loade,
+    Collapse,
+    Panel
 } = Components;  
 const { sessions, storage } = utils;
 
@@ -25,16 +28,15 @@ class OcrDoc extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
-          detailData: {
-            course:{},
-            peoples: []
-          }
+          detailData: {},
+          courseMovesArr: {}
       };
     }
 
     _viewAppear(){
       this.checkRedct();
-      this.getSignedList();
+      this.getClassDetail();
+      this.getCourseMoves();
     }
 
     checkRedct(){
@@ -75,22 +77,34 @@ class OcrDoc extends BaseView {
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
       })
     }
-    
-    getSignedList(){
-      const self = this;
+
+    getClassDetail(){
       let obg = UrlSearch();
-      if(!obg.courseId) return;
+      const self = this;
       Loade.show();
-      signedList({courseId: obg.courseId}).then((res)=>{
+      courseDetail({id: obg.id}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
         self.setState({
-          detailData: data
+          detailData: res.result
         })
-      }).catch((e)=>{
+      }).catch((err)=>{
         Loade.hide();
-        console.log(e)
+      })
+    }
+
+    getCourseMoves(){
+      let obg = UrlSearch();
+      const self = this;
+      Loade.show();
+      courseMoves({courseId: obg.id}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        self.setState({
+          courseMovesArr: res.result
+        })
+      }).catch((err)=>{
+        Loade.hide();
       })
     }
 
@@ -116,28 +130,25 @@ class OcrDoc extends BaseView {
     }
 
     render() {
-        const {detailData} = this.state;
+        const {detailData, courseMovesArr} = this.state;
         let obg = UrlSearch();
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
-        let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
-        let personDom = detailData.peoples&&detailData.peoples.length > 0 ?
-        detailData.peoples.map((itm, idx)=>{
-          return (<Row className="middle-round float-left " key={`${idx}-lab`}>
-            <Col className="padding-all-3">
-              <img className='width-100 middle-round-3 overflow-hide border-radius-6r' src={itm} />
-            </Col>
-          </Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>
+        let startDate = detailData.startDate ? detailData.startDate.split(' ')[0] : ''
+        const movesDom = courseMovesArr && courseMovesArr.length > 0 ? courseMovesArr.map((itm,idx)=>{
+          return (<div className="images-33 float-left" key={`${idx}-ke`}>
+            <Row><Col>{JSON.stringify(itm)}</Col><Col></Col></Row>
+          </div>)
+        }) : ''
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
+                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.title}</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.startTime}-{detailData.endTime}</Col>
                   <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">该二维码用于开门</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low"></Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
@@ -146,30 +157,34 @@ class OcrDoc extends BaseView {
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row content="flex-start">
                   <Col>
-                    <Row content="flex-start">
-                      <Col span={1}></Col>
-                      <Col span={11} className="font-size-10 textclolor-white line-height-2r ">预约人数</Col>
-                      <Col span={10} className="font-size-8 textclolor-white text-align-right line-height-2r ">查看更多</Col>
-                      <Col span={2} className="line-height-2r"><Icon iconName={'chevron-right '} size={'90%'} iconColor={'#333'} /></Col>
-                    </Row>
+                    <Collapse >
+                      <Panel title={'计划要点'}>
+                        <div>{detailData.kernel}</div>
+                      </Panel>
+                    </Collapse>
+                  </Col>
+                  <Col>
+                    <Collapse >
+                      <Panel title={'训练计划入门课注意事项'}>
+                        <div>{detailData.careful}</div>
+                      </Panel>
+                    </Collapse>
+                  </Col>
+                  <Col>
+                    <Collapse >
+                      <Panel title={'训练动作'}>
+                        <div>{movesDom}</div>
+                      </Panel>
+                    </Collapse>
                   </Col>
                   <Col className="bg-1B1B1B padding-all">
-                    {personDom}
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">课程</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title}</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“我的”页面中查看</Col>
-                        </Row>
-                      </Col>
-
-                      <Col span={24} className="margin-top-2" >
-                        <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address}</Col>
+                          <Col span={24} className="font-size-10 textclolor-white">门店地址</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.address}</Col>
                           <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
-                            this.openMap(detailData.course.latitude, detailData.course.longitude)
+                            this.openMap(detailData.latitude, detailData.longitude)
                           }}>点击查看地图</Col>
                         </Row>
                       </Col>
@@ -179,7 +194,7 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text="确认提交"
+                  text="返回"
                   type={'primary'}
                   size={'large'}
                   style={{backgroundColor: '#80EA46', color:'#333'}}

@@ -6,7 +6,7 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { signedList, getToken } from '../api/index';
-import { userSign } from '../api/subject';
+import { courseDetail } from '../api/classes';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -22,72 +22,34 @@ const {
 } = Components;  
 const { sessions, storage } = utils;
 
-class UserSign extends BaseView {
+class UserSignd extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
+          userInfo: storage.getStorage('userInfo') ||{},
           detailData: {
             course:{},
-            peoples: []
+            peoples: [],
+          },
+          courseDetial: {
+            coach: ''
           }
       };
     }
 
     _viewAppear(){
-      this.checkRedct();
-      this.getSignedList();
+      this.getCourseDetail();
     }
 
-    getSignedList(){
-        const self = this;
-        let obg = UrlSearch();
-        if(!obg.courseId) return;
-        Loade.show();
-        signedList({courseId: obg.courseId}).then((res)=>{
-          Loade.hide();
-          if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-          let data = res.result;
-          self.setState({
-            detailData: data
-          })
-        }).catch((e)=>{
-          Loade.hide();
-          console.log(e)
-        })
-      }
-
-    checkRedct(){
+    getCourseDetail(){
       let obg = UrlSearch();
-      const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FUserSign%3FcourseId%3D" + obg.courseId+"%26teacherId%3D" + obg.teacherId;
-      const appId = 'wx9a7768b6cd7f33d0';
-      
-      let userInfo = storage.getStorage('userInfo')
-      let userId = storage.getStorage('userId');
-      if(obg.code&&obg.code!==''){
-        storage.setStorage('authCode', obg.code);
-        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
-          this.getUserinfo(obg.code);
-        }
-      }else{
-        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
-          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
-        }
-      }
-    }
-    getUserinfo(code){
       const self = this;
-      getToken({code: code}).then((data)=>{
-        console.log(data);
-      //   Toaster.toaster({ type: 'success', position: 'top', content: JSON.stringify(data), time: 5000 });
-        if(JSON.stringify(data)!=='{}'){
-          storage.setStorage('userInfo', data);
-          storage.setStorage('userId', data.id);
-          self.setState({
-            userInfo: data
-          })
-        }
+      courseDetail({id: obg.courseId}).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        self.setValue('courseDetial', data)
       }).catch((err)=>{
-        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+        console.log(err)
       })
     }
 
@@ -133,17 +95,16 @@ class UserSign extends BaseView {
     }
 
     render() {
-        const {detailData} = this.state;
+        const {detailData, userInfo, courseDetial} = this.state;
         let obg = UrlSearch();
         let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
+        console.log(userInfo);
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" align="center" content="flex-start">
-              <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-20 border-all border-color-000">
-                <Row className="padding-all margin-top-2" justify="center" >
-                  <Col className="zindex-10 margin-top-2 text-align-center font-size-12 textclolor-white">{startDate}</Col>
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.startTime}-{detailData.course.endTime}</Col>
+              <Col className="border-radius-5f overflow-hide relative minheight-20 border-all border-color-000">
+                <Row className="padding-all margin-top-5r" justify="center" >
+                  <Col className="zindex-10 text-align-left font-size-12 textclolor-white">{courseDetial.title || '塑形训练课'}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
@@ -153,35 +114,76 @@ class UserSign extends BaseView {
                 <Row content="flex-start">
                   <Col className="bg-1B1B1B padding-all">
                     <Row className="width-100">
-                      <Col span={24} className="margin-top-2" >
+                      <Col className="border-bottom border-color-333">
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">课程</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title}</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“我的”页面中查看</Col>
+                          <Col span={6}>
+                          <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide relative" >
+                              <img src={courseDetial.coach.imgUrl} className="width-100" />
+                              <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                          </div>
+                          </Col>
+                          <Col span={12} className="textclolor-white line-height-3r">{courseDetial.coach.nickName}</Col>
                         </Row>
                       </Col>
-
+                      <Col span={24} className="margin-top-2 border-bottom border-color-333" >
+                        <Row className="line-height-3r">
+                          <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'android-time '} size={'140%'} iconColor={'#fff'} /></Col>
+                          <Col span={20} className="font-size-8 textclolor-white ">时间：{courseDetial.startDate}</Col>
+                        </Row>
+                      </Col>
                       <Col span={24} className="margin-top-2" >
-                        <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address}</Col>
-                          <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
-                            this.openMap(detailData.course.latitude, detailData.course.longitude)
-                          }}>点击查看地图</Col>
+                        <Row className="line-height-3r">
+                          <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'ios-location '} size={'140%'} iconColor={'#fff'} /></Col>
+                          <Col span={20} className="font-size-8 textclolor-white ">门店地址：{courseDetial.address}</Col>
                         </Row>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
+                <Row>
+                  <Col span={24} className="margin-top-2 bg-000" >
+                    <Row className="line-height-3r">
+                      <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'briefcase '} size={'140%'} iconColor={'#fff'} /></Col>
+                      <Col span={20} className="font-size-8 textclolor-white font-size-12">课程准备</Col>
+                    </Row>
+                  </Col>
+                  <Col className="bg-0D0D0D padding-all">
+                      <div className="font-size-8 textclolor-black-low">{courseDetial.prepare}</div>
+                  </Col>
+                </Row>
+              </Col>
+              
+
+              <Col className="margin-top-3">
+                <Buttons
+                  text="取消课程"
+                  type={'primary'}
+                  size={'large'}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  onClick={()=>{
+                    
+                  }}
+                />
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text="点击签到"
+                  text="课程改期"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#8EBF66', color:'#333'}}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
                   onClick={()=>{
-                    this.doSign()
+                    
+                  }}
+                />
+              </Col>
+              <Col className="margin-top-3">
+                <Buttons
+                  text="返回"
+                  type={'primary'}
+                  size={'large'}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  onClick={()=>{
+                    hashHistory.goBack();
                   }}
                 />
               </Col>
@@ -191,4 +193,4 @@ class UserSign extends BaseView {
         );
     }
 }
-export default UserSign;
+export default UserSignd;

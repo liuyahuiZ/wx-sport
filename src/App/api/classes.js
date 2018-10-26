@@ -89,7 +89,7 @@ export function transOverUp(req){
 
 export function userOrdeRing(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `user/ordering`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `course/ordering`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -101,6 +101,72 @@ export function userOrdeRing(req){
 export function userGatherInfo(req){
     return new Promise((resolve, reject)=>{
         fetch(config.API_URL+ `course/gatherInfo`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function courseDetail(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/detail`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function courseMoves(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/moves`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function coursePlan(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/plan`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function coursePlanOver(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/plan/over`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function coursePlanFeedback(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/plan/feedback`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function coursePlanRecords(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/plan/records`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

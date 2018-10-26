@@ -101,6 +101,12 @@ const ClassAppointment = (location, cb) => {
   },'ClassAppointment')
 };
 
+const MyClassAppointment = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/myClassAppointment').default)
+  },'MyClassAppointment')
+};
+
 const TrainResult = (location, cb) => {
   require.ensure([], require => {
       cb(null, require('./page/trainResult').default)
@@ -117,6 +123,30 @@ const TeacherPersonal = (location, cb) => {
   require.ensure([], require => {
       cb(null, require('./page/teacherPersonal').default)
   },'TeacherPersonal')
+};
+
+const Registor = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/registor').default)
+  },'Registor')
+};
+
+const SuccessPage = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/successPage').default)
+  },'SuccessPage')
+};
+
+const MyPlan = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/myPlan').default)
+  },'MyPlan')
+};
+
+const TrainResultOver = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/trainResultOver').default)
+  },'TrainResultOver')
 };
 
 // const PicturePoster = (location, cb) => {
@@ -157,6 +187,11 @@ class MyRouter extends Component{
         <Route path={'UserSign'} getComponent={UserSign} />
         <Route path={'PicturePoster'} component={PicturePoster} />
         <Route path={'TeacherPersonal'} getComponent={TeacherPersonal} />
+        <Route path={'Registor'} getComponent={Registor} />
+        <Route path={'Success'} getComponent={SuccessPage} />
+        <Route path={'MyClassAppointment'} getComponent={MyClassAppointment} />
+        <Route path={'MyPlan'} getComponent={MyPlan} />
+        <Route path={'TrainResultOver'} getComponent={TrainResultOver} />
       </Route>
     </Router>
     )

@@ -1,18 +1,20 @@
 export default {
-  checkbox: {
+  radio: {
     boxSizing: 'border-box',
     display: 'inline-block',
     position: 'relative',
     margin: '0px 8px 0px 0px'
   },
-
   label: {
     boxSizing: 'border-box',
     display: 'inline-block',
     cursor: 'pointer',
-    margin: '0px 10px',
-    height: '32px',
-    lineHeight: '32px'
+    margin: '0px 10px 0 0',
+    padding: '0.2rem 0.5rem',
+    backgroundColor: '#bfcbd9',
+    borderRadius: '2rem',
+    minWidth: '4rem',
+    textAlign: 'center'
   },
   container: {
     display: 'inline-block',
@@ -29,19 +31,16 @@ export default {
     boxSizing: 'border-box',
     cursor: 'pointer',
     backgroundColor: '#fff',
-    borderRadius: '5px',
-    lineHeight: '15px',
+    borderRadius: '50%',
+    lineHeight: '32px',
     position: 'relative',
-    textAlign: 'center',
-    marginRight: '6px',
-    color: '#fff'
+    top: '3px',
+    marginRight: '6px'
   },
   text: {
     display: 'inline-block'
   },
   checked: {
-    border: '1px solid #8EBF66',
-    backgroundColor: '#8EBF66',
-    color: '#fff'
+    backgroundColor: '#20a0ff'
   }
 };

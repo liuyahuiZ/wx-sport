@@ -26,7 +26,8 @@ class HomeDoc extends BaseView {
           status: this.props.status,
           productList: [],
           bannerList: [],
-          loadText: '加载中'
+          loadText: '加载中',
+          playStatue: false
       };
     }
 
@@ -37,19 +38,19 @@ class HomeDoc extends BaseView {
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); }
         let data = res.result;
         const list = [];
-        for(let i=0;i<data.length;i++){
-          list.push({
-            tabName: `ban-${data[i].id}`,
-            content: (<img alt="text" src={data[i].imgUrl} />),
-            isActive:  i==0 ? true : false
-          })
-        }
+        // for(let i=0;i<data.length;i++){
+        //   list.push({
+        //     tabName: `ban-${data[i].id}`,
+        //     content: (<img alt="text" src={data[i].imgUrl} />),
+        //     isActive:  i==0 ? true : false
+        //   })
+        // }
         // const dem = [{ tabName: 'first', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/14/1522133980415_375x375.jpg" />), isActive: true },
         // { tabName: 'second', content: (<img alt="text" src="https://static1.keepcdn.com/2018/03/27/15/1522134154187_750x700.jpg" />), isActive: false },
         // { tabName: 'thired', content: (<img alt="text" src="https://static1.keepcdn.com/2018/02/24/14/1519455021015_750x700.jpg" />), isActive: false }];
         self.setState({
           show: true,
-          bannerList: list
+          bannerList: data
         })
       }).catch((e)=>{
         console.log(e)
@@ -100,7 +101,8 @@ class HomeDoc extends BaseView {
     }
   
     render() {
-        const {productList, bannerList, loadText} = this.state;
+        const {productList, bannerList, loadText, playStatue} = this.state;
+        const self = this;
         // let imgArr = ['http://47.88.2.72:2016/getphotoPal/2018-7-23/15323156729698.png',
         // 'https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg',
         // 'https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png']
@@ -126,7 +128,16 @@ class HomeDoc extends BaseView {
         }) : <Row ><Col className="text-align-center font-size-8 textclolor-white line-height-2r">{loadText}</Col></Row>;
       return(
           <section className="padding-all bg-000">
-              <Carousel options={bannerList} containerStyle={{borderRadius: '0.5rem', height:'5rem', backgroundColor: '#333'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
+              {/* <Carousel options={bannerList} containerStyle={{borderRadius: '0.5rem', height:'5rem', backgroundColor: '#333'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble /> */}
+              <div className="heighr-8 border-radius-5f overflow-hide relative">
+                { bannerList.imgUrl && playStatue ? <video controls="controls" className="width-100 heighr-8 zindex-10" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
+                src={bannerList.imgUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  /> :
+                <div className="relative text-align-center" onClick={()=>{self.setState({'playStatue': true}); self.$$videos.play();}}>
+                  <Icon className="zindex-10 absolute top-2r transform-d-50" iconName={'android-arrow-dropright-circle'} size={'360%'} iconColor={'#fff'}  />
+                  <img className="width-100 absolute-left zindex-6" src="https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png" />
+                </div>
+                }
+              </div>
               <Row justify='center'>
               <Col>{productListDom}</Col>
             </Row>

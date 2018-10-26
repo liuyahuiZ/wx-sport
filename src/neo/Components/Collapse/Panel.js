@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import * as arrayUtils from '../../utils/array';
 import Icon from '../Icon';
 import styles from './style';
+import Row from '../Grid/Row';
+import Col from '../Grid/Col';
 import '../Style/comstyle.scss';
 
 class Panel extends Component {
@@ -10,10 +12,10 @@ class Panel extends Component {
     super(props);
     this.state = {
       tabContentStyle: '',
-      contentStyle: 'hide',
+      contentStyle: 'show',
       height: 0,
       offsetHeight: 0,
-      isFirst: false
+      isFirst: true
     };
     this.changeActive = this.changeActive.bind(this);
     this.setHeight = this.setHeight.bind(this);
@@ -37,16 +39,15 @@ class Panel extends Component {
       this.setState({ isFirst: true });
     }
     setTimeout(() => {
-      console.log(this.$$panelContent.offsetHeight);
       this.setHeight(this.$$panelContent.offsetHeight, 'height');
+      if (contentStyle === 'hide') {
+        this.setState({ contentStyle: 'show' });
+        this.setState({ offsetHeight: 0 });
+      } else {
+        this.setState({ contentStyle: 'hide' });
+        this.setState({ offsetHeight: this.$$panelContent.offsetHeight });
+      }
     }, 100);
-    if (contentStyle === 'hide') {
-      this.setState({ contentStyle: 'show' });
-      this.setState({ offsetHeight: 0 });
-    } else {
-      this.setState({ contentStyle: 'hide' });
-      this.setState({ offsetHeight: height });
-    }
   }
   render() {
     const { children, title } = this.props;
@@ -65,7 +66,11 @@ class Panel extends Component {
           style={styles.panelHeader} onClick={() => { this.changeActive(); }}
           ref={(r) => { self.$$panelHeader = r; }}
         >
-          <Icon iconName={iconName} size={'100%'} style={styles.icon} />{title}</div>
+        <Row >
+          <Col span={20}>{title}</Col>
+          <Col span={4} className="text-align-right"><Icon iconName={iconName} size={'100%'} style={styles.icon} /></Col>
+        </Row>
+        </div>
         {content}
       </div>
     );

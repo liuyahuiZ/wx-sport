@@ -12,7 +12,7 @@ export default {
     fontSize: '16px',
     height: '32px',
     minWidth: '100%',
-    borderRadius: '3px',
+    borderRadius: '6px',
     backgroundColor: '#fff',
     color: '#333',
     border: '1px solid #aaa',
@@ -37,11 +37,11 @@ export default {
   small: {
     fontSize: '14px',
     height: '32px',
-    borderRadius: '4px'
+    borderRadius: '6px'
   },
   large: {
     height: '46px',
-    borderRadius: '4px'
+    borderRadius: '6px'
   },
   alldisabled: {
     cursor: 'not-allowed'

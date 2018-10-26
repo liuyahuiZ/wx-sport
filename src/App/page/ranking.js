@@ -131,7 +131,7 @@ class OcrDoc extends Component {
             <Row >
               <Col span={24} className="overflow-hide">
               <TransAnimal >
-                <Row justify="center" className="padding-all-1r bg-8EBF66 border-radius-5f overflow-hide relative">
+                <Row justify="center" className="padding-all-1r bg-000 border-radius-5f overflow-hide relative">
                   <Col className="text-align-center margin-top-1r zindex-10">
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide">
                         <img src={ markList.length>0&&markList[0].img_url} className="width-100" />

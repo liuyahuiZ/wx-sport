@@ -59,8 +59,8 @@ class OcrDoc extends Component {
         }
       }
       if((userId&&userId!=='')){
-        this.getMyClass(userId);
-        this.getCourseRatio(userId);
+        // this.getMyClass(userId);
+        // this.getCourseRatio(userId);
       }
       console.log('userId', userId);
     }
@@ -76,8 +76,8 @@ class OcrDoc extends Component {
         let data = res.result;
         storage.setStorage('userId', data);
         console.log(res);
-        self.getMyClass(res);
-        self.getCourseRatio(res);
+        // self.getMyClass(res);
+        // self.getCourseRatio(res);
       }).catch((e)=>{
         console.log(e);
       })
@@ -320,7 +320,7 @@ class OcrDoc extends Component {
                   </Col> */}
 
                   <Col className="margin-top-1r text-align-center zindex-10" onClick={()=>{ this.checkUser()}}>
-                    <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
+                    <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
                         <img src={userInfo.imgUrl} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
@@ -329,11 +329,11 @@ class OcrDoc extends Component {
                     <span className="textclolor-white">{userInfo.nickName || '请登陆'}</span>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
-                    {/* <Row>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">粉丝 173人</span></Col>
-                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-8 textclolor-white">关注 26人</span></Col>
+                    <Row>
                       <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
-                    </Row> */}
+                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-8 textclolor-white">余额 26</span></Col>
+                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">充值</span></Col>
+                    </Row>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                   <div className="width-100 absolute-left zindex-6 heightp-100 bg bg1" />

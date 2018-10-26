@@ -5,8 +5,9 @@ export default {
     width: '100%',
     overflow: 'hidden',
     borderRadius: '3px',
-    border: '1px solid #eee',
-    boxSizing: 'border-box'
+    color: '#fff',
+    boxSizing: 'border-box',
+    color: '#999'
   },
   panel: {
     float: 'left',
@@ -14,7 +15,6 @@ export default {
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    backgroundColor: '#fff',
   },
   panelHeader: {
     float: 'left',
@@ -23,8 +23,9 @@ export default {
     cursor: 'pointer',
     width: '100%',
     zIndex: '10',
-    backgroundColor: '#fff',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    color: '#fff',
+    backgroundColor: '#000'
   },
   show: {
     width: '100%',

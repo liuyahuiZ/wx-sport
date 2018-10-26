@@ -90,7 +90,7 @@ class Input extends Component {
 
   render() {
     const { placeholder, maxLength, maxLengthShow,
-      disabled, style, typeStyle, onKeyUp, icon, type } = this.props;
+      disabled, style, typeStyle, onKeyUp, icon, type, innerStyle } = this.props;
     const { count, value, focus } = this.state;
     let padWidth = 0;
     if (maxLengthShow) {
@@ -114,7 +114,7 @@ class Input extends Component {
         <input
           placeholder={placeholder}
           onChange={this.handleChange}
-          style={arrayUtils.merge([inputStyle, hasIcon])}
+          style={arrayUtils.merge([inputStyle, innerStyle, hasIcon])}
           value={value}
           disabled={disabled}
           onFocus={this.handleFocus}
@@ -134,6 +134,7 @@ Input.propTypes = {
   type: PropTypes.string,
   placeholder: PropTypes.string,
   style: PropTypes.shape({}),
+  innerStyle: PropTypes.shape({}),
   maxLength: PropTypes.number,
   max: PropTypes.number,
   min: PropTypes.number,
@@ -151,6 +152,7 @@ Input.propTypes = {
 Input.defaultProps = {
   value: '',
   style: {},
+  innerStyle: {},
   type: 'text',
   max: Infinity,
   min: -Infinity,

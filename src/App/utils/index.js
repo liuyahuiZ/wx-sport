@@ -1,3 +1,4 @@
+import { hashHistory } from 'react-router';
 export function accMul(arg1,arg2){
     var m=0,s1=arg1.toString(),s2=arg2.toString();
     try{m+=s1.split(".")[1].length}catch(e){}
@@ -48,3 +49,12 @@ export function UrlSearch() {
     obj = Object.assign({}, obj, rObj)
     return obj;
  }
+
+ export function goLink(link, obg){
+    if(link) {
+      hashHistory.push({
+        pathname: link,
+        query: obg
+      });
+    }
+  }
