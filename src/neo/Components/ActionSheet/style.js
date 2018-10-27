@@ -16,7 +16,9 @@ export default {
     width: '100vw',
     height: 'auto',
     zIndex: '667',
-    fontSize: '1rem'
+    fontSize: '1rem',
+    paddingTop: '0.3rem',
+    paddingBottom: '0.3rem'
   },
   header: {
     width: '100%',
@@ -41,11 +43,10 @@ export default {
   },
   content: {
     width: '100%',
-    borderBottom: '1px solid #eee',
     boxSizing: 'border-box',
     maxHeight: '70vh',
     overflowY: 'auto',
-    backgroundColor: '#EFEFEF',
+    backgroundColor: '#1b1b1b',
     boxShadow: '1px 1px 20px #333',
   },
   textAligncenter: {
@@ -59,20 +60,18 @@ export default {
   },
   opeationItem:{
     width: '100%',
-    height: '2rem',
     lineHeight: '2rem',
-    borderBottom: '1px solid #E0E0E0',
-    padding: '0.4rem',
+    padding: '0.6rem',
     color: '#999',
-    backgroundColor: '#F9F9F9',
-    paddingLeft: '0.7rem'
+    backgroundColor: '#1b1b1b',
+    paddingLeft: '1rem'
   },
   activeIcon:{
     position: 'absolute',
-    left: '0.2rem'
+    right: '1rem'
   },
   active:{
-    color: '#007AFF'
+    color: '#fff'
   },
   boxbg: {
     display: 'block',
@@ -103,7 +102,7 @@ export default {
     color: '#fff'
   },
   normal: {
-    backgroundColor: 'rgb(235,244,255)',
+    backgroundColor: '#1b1b1b',
     borderColor: 'rgb(65,150,252)',
   },
   disabled: {
@@ -123,7 +122,7 @@ export default {
   },
   container: {
     // display: 'inline-block',
-    // padding: '10px',
+    padding: '0.3rem',
     // margin: '10px 10px'
   },
   spanb: {

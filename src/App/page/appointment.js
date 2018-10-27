@@ -34,7 +34,7 @@ class OcrDoc extends Component {
     getMyClass(){
         const self = this;
         myClass({
-            userId: 106 //storage.getStorage('userId')
+            userId: storage.getStorage('userId')
         }).then((res)=>{
             if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
             let data = res.result;
@@ -52,17 +52,22 @@ class OcrDoc extends Component {
       })
     }
         
-    goLink(link){
-      if(link) {
-        hashHistory.push(link);
-      }
+    goLink(link, itm){
+        if(link) {
+          hashHistory.push({
+            pathname: link,
+            query: itm || ''
+          });
+        }
     }
     
 
     render() {
         const { userInfo, dataDetail, loadText } = this.state;
+        const self = this;
         let appintArrDom = dataDetail&&dataDetail.myCourses ? dataDetail.myCourses.map((itm, idx)=>{
-            return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3">
+            return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
+            onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>
                     <Col span={12} className="zindex-10 font-size-12 text-align-left">{itm.name}</Col>
                     <Col span={12} className="zindex-10 font-size-8 text-align-right line-height-2r">{itm.date}</Col>
@@ -100,7 +105,7 @@ class OcrDoc extends Component {
                 <Row justify="center" className="padding-all-1r bg-1B1B1B border-radius-5f overflow-hide relative">
                   <Col span={8}>
                     <Row>
-                        <Col className={"text-align-center font-size-26 textclolor-white"}>{dataDetail.mySignInCout||0}</Col>
+                        <Col className={"text-align-center font-size-26 textclolor-white"}>{dataDetail.mySignInCount||0}</Col>
                         <Col className={"text-align-center font-size-8 textclolor-black-low"}>累计打卡/天</Col>
                     </Row>
                   </Col>

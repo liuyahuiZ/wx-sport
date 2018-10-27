@@ -45,3 +45,25 @@ export function userSign(req){
         })
     })
 }
+
+export function teacherInfo(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `teacher/info`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function teacherStudents(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `teacher/students`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

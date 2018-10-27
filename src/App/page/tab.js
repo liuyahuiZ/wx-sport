@@ -3,7 +3,7 @@ import { Components, utils } from 'neo';
 import { hashHistory } from 'react-router';
 import { UrlSearch } from '../utils';
 import Home from './home';
-import MyRoute from './myRoute';
+import MyRoute from './my';
 import Ranking from './ranking';
 import Appointment from './appointment';
 

@@ -149,6 +149,23 @@ const TrainResultOver = (location, cb) => {
   },'TrainResultOver')
 };
 
+const MyPlanRecode = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/myPlanRecode').default)
+  },'MyPlanRecode')
+};
+
+const TeachersPage = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/teachersPage').default)
+  },'TeachersPage')
+};
+
+const TeacherStudent = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/teacherStudent').default)
+  },'TeacherStudent')
+};
 // const PicturePoster = (location, cb) => {
 //   require.ensure([], require => {
 //       cb(null, require('./page/picturePoster').default)
@@ -192,6 +209,9 @@ class MyRouter extends Component{
         <Route path={'MyClassAppointment'} getComponent={MyClassAppointment} />
         <Route path={'MyPlan'} getComponent={MyPlan} />
         <Route path={'TrainResultOver'} getComponent={TrainResultOver} />
+        <Route path={'MyPlanRecode'} getComponent={MyPlanRecode} />
+        <Route path={'Teachers'} getComponent={TeachersPage} />
+        <Route path={'TeacherStudent'} getComponent={TeacherStudent} />
       </Route>
     </Router>
     )

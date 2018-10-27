@@ -166,7 +166,17 @@ export function coursePlanFeedback(req){
 
 export function coursePlanRecords(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `course/plan/records`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `course/plan/records`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+export function coursePlanRecordsDetail(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/plan/records/detail`,{ method: 'GET', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

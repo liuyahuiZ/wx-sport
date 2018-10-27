@@ -57,7 +57,7 @@ class Cell extends Component {
       const item = (<div key={`${idx}-d`} style={arrayUtils.merge([styles.opeationItem, styles.textAlignLeft, activeStyle, noIconStyle])} onClick={()=> {
         this.setValue(im);
         options.successCallback(im);
-      }}>{ im.value === self.state.active && options.showIcon ? <Icon iconName={'android-done'} size={'100%'} iconColor={ '#007AFF' } style={styles.activeIcon} />: '' }{im.text}</div>);
+      }}>{ im.value === self.state.active && options.showIcon ? <Icon iconName={'android-done'} size={'100%'} iconColor={ '#fff' } style={styles.activeIcon} />: '' }{im.text}</div>);
       return item;
     })
 

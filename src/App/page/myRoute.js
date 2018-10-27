@@ -5,7 +5,6 @@ import config from '../config/config';
 import { UrlSearch } from '../utils';
 import { getToken } from '../api/index';
 import My from './my';
-import Teachers from './teachers';
 
 const {
     Buttons,
@@ -105,8 +104,6 @@ class OcrDoc extends Component {
         let Dom = <div />;
         if(userInfo.userType == 0) {
           Dom = <My />
-        } else {
-          Dom = <Teachers />
         }
         return Dom;
     }
