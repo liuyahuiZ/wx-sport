@@ -6,6 +6,7 @@ import fetch from '../servise/fetch';
 import moment from 'moment';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
+import formate from '../utils/formate';
 import { transOver, classDetail, coursePlan, coursePlanOver } from '../api/classes';
 
 const {
@@ -117,22 +118,6 @@ class MyClassDetail extends BaseView {
             content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png'/>)
           }
         ];
-        // const stepDom = detailData&&detailData.coursePlanDetails&&detailData.coursePlanDetails.length > 0 ? detailData.coursePlanDetails.map((itm, idx)=>{
-        //   return (<Row key={`${idx}-stp`}>
-        //     <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
-        //       <Row >
-        //         <Col className="text-align-center">
-        //           <Row justify="center">
-        //             <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">{itm.name}</Col>
-        //           </Row>
-        //         </Col>
-        //         <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
-        //         <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">{itm.description}</Col>
-        //       </Row>
-        //     </Col>
-        // </Row>)
-        // }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>;
-
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
             return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
@@ -181,14 +166,29 @@ class MyClassDetail extends BaseView {
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
-                <Row className="padding-top-2" content="flex-start">
-                  <Col span={12} className="font-size-10 textclolor-white ">{detailData.courseName}</Col>
-                  <Col span={10} className="textclolor-white text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#fff'} /> {detailData.name} </Col>
+                <Row className="" content="flex-start">
+                  <Col>
+                  <Row className="padding-all bg-000">
+                      <Col span={12} className="font-size-10 textclolor-white ">{detailData.courseName}</Col>
+                      <Col span={10} className="textclolor-white text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#fff'} /> {detailData.name} </Col>
+                  </Row>
+                  </Col>
                   <Col className="bg-1B1B1B">
-                    <Row>
-                      <Col></Col>
-                      <Col></Col>
-                      <Col></Col>
+                    <Row justify="center" className="padding-all">
+                      <Col className="text-align-center textclolor-black-low">训练强度</Col>
+                      <Col className="text-align-center"><i className="icon small icon-working" /></Col>
+                      <Col span="6">
+                        <Buttons
+                          text="强度表"
+                          type={'primary'}
+                          size={'small'}
+                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          onClick={()=>{
+                            console.log('123');
+                          }}/>
+                      </Col>
+                    </Row>
+                    <Row justify="center">
                       <Col>
                         <Collapse >
                           <Panel title={'计划要点'}>
@@ -198,7 +198,7 @@ class MyClassDetail extends BaseView {
                       </Col>
                       <Col>
                         <Collapse >
-                          <Panel title={'训练提示'}>
+                          <Panel title={'当天训练提示'}>
                             <div>{detailData.tips}</div>
                           </Panel>
                         </Collapse>
@@ -207,14 +207,14 @@ class MyClassDetail extends BaseView {
                   </Col>
                 </Row>
               </Col>
-              <Col className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
+              <Col className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0}</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0}</Col>
+                  <Col span={4} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
+                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-12"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
@@ -279,7 +279,16 @@ class MyClassDetail extends BaseView {
               </Col>) : <div />
               }
               
-              
+              <Col className="margin-top-1r"><Buttons
+                  text="返回"
+                  type={'primary'}
+                  size={'large'}
+                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  onClick={()=>{
+                    console.log(this.$$TimeRunner);
+                    hashHistory.goBack();
+                  }}
+                /></Col>
             
             </Row>
           </section>

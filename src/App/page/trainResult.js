@@ -93,8 +93,8 @@ class OcrDoc extends BaseView {
         doubtText: question,
         doubtImageUrl: picture,
         doubtMvUrl: theVieo,
-      }).then((data)=>{
-        console.log(data);
+      }).then((res)=>{
+        console.log(res);
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         self.goLink('/TrainResultOver', {keepTime: obg.keepTime}); 

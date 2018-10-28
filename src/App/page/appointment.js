@@ -18,7 +18,7 @@ const {
   } = Components;
 const { sessions, storage } = utils;
 
-class OcrDoc extends Component {
+class Appointment extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -38,7 +38,8 @@ class OcrDoc extends Component {
         }).then((res)=>{
             if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
             let data = res.result;
-            if(JSON.stringify(data)!=='{}'){
+            console.log(data);
+            if(data&&JSON.stringify(data)!=='{}'){
                 self.setState({
                     dataDetail: data
                 })
@@ -141,4 +142,4 @@ class OcrDoc extends Component {
         );
     }
 }
-export default OcrDoc;
+export default Appointment;

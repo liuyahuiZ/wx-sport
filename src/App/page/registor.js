@@ -5,7 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import BaseView from '../core/app';
 import { UrlSearch } from '../utils';
-import { userMark, userInfo } from '../api/classes';
+import { userMark, courseMovesUpdate } from '../api/classes';
 
 const {
     Buttons,
@@ -22,11 +22,11 @@ const {
 } = Components;
 const { sessions, storage } = utils;
 
-class OcrDoc extends BaseView {
+class Registor extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
-          userInfo: {},
+          userInfo: storage.getStorage('userInfo') ||{},
           resourceKey: '1',
           js: 5,
           bd: 5,
@@ -38,51 +38,56 @@ class OcrDoc extends BaseView {
       };
     }
 
+    componentDidMount(){
+        // console.log('obg', storage.getStorage('userInfo'), UrlSearch());
+        // console.log(storage.getStorage('authCode'))
+        let obg = UrlSearch();
+        let userInfo = storage.getStorage('userInfo')
+        let userId = storage.getStorage('userId');
+        if(obg.code&&obg.code!==''){
+          if(userInfo&&userInfo!==''){
+            storage.removeStorage('userInfo');
+            storage.removeStorage('userId');
+          }
+          storage.setStorage('authCode', obg.code);
+          if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+            this.getUserinfo(obg.code);
+          }
+        }else{
+          if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+            window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+          }
+        }
+        if((userId&&userId!=='')){
+          // this.getMyClass(userId);
+          // this.getCourseRatio(userId);
+        }
+        console.log('userId', userId);
+    }
+
     _viewAppear(){
-      this.getUserInfo();
     }
 
     setValue(key,val){
         this.setState({[key]: val});
     }
 
-    getUserInfo(){
-      let obg = UrlSearch();
-      const self = this;
-      userInfo({userId: obg.teacherId}).then((res)=>{
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let info = res.result;
-        self.setState({
-          userInfo: info
-        })
-      }).catch((err)=>{
-        Toaster.toaster({ type: 'error', content: '获取教练信息失败', time: 3000 });
-      })
-    }
-
     submitMark(){
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
-      const {js, bd, wg} = this.state;
+      const { userInfo, js, bd, wg, height, weight, birthday, phone, active, history, expeirence } = this.state;
       Loade.show();
-      userMark({
-        userId: obg.teacherId,
-        js: js,
-        bd: bd,
-        wg: wg
+      courseMovesUpdate({
+        id: userId,
+        age: birthday,
+        height: height,
+        weight: weight,
+        injuryHistory : history,
+        phoneNo: phone,
+        exercise: expeirence
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        Modal.alert({ title: '评分成功',
-          content: "您对该教练评分成功!",
-          btn: {
-            text: '确定',
-            type: 'link',
-            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
-          }, 
-          type: 'large'
-        },
-        () => { console.log('nult callback'); });
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -240,4 +245,4 @@ class OcrDoc extends BaseView {
         );
     }
 }
-export default OcrDoc;
+export default Registor;

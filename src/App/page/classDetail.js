@@ -30,7 +30,8 @@ class OcrDoc extends BaseView {
       this.state = {
           dataDetail: {},
           subjectId: obg.subjectId,
-          chosePlanTypeId: ''
+          chosePlanTypeId: '',
+          difficulty: 1
       };
     }
     _viewAppear(){
@@ -44,7 +45,8 @@ class OcrDoc extends BaseView {
         let data = res.result;
         if(JSON.stringify(data)!=='{}'){
           self.setState({
-            dataDetail: data
+            dataDetail: data,
+            difficulty: data.difficuity
           })
           sessions.setStorage('nowSubject', data);
         } else {
@@ -77,20 +79,21 @@ class OcrDoc extends BaseView {
 
     doPlan(){
       let obg = UrlSearch();
-      const {chosePlanTypeId} = this.state
+      const {chosePlanTypeId, difficulty} = this.state
       if(!chosePlanTypeId&&chosePlanTypeId==='') {
           Toaster.toaster({ type: 'error', position: 'top', content: '请选择计划', time: 3000 }, true);
           return false;
       }
       this.goLink('/ClassList', {
         subjectId : obg.subjectId,
-        courseTypeId: chosePlanTypeId
+        courseTypeId: chosePlanTypeId,
+        difficulty: difficulty
         // orderId: res.orderId
       })
     }
 
     render() {
-        const { dataDetail, chosePlanTypeId } = this.state;
+        const { dataDetail, chosePlanTypeId, difficulty } = this.state;
         let obg = UrlSearch();
         const self = this;
         const carouselMap = [];
@@ -159,9 +162,9 @@ class OcrDoc extends BaseView {
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">计划难度</Col>
                           <Col span={24} className="font-size-8 textclolor-black-low padding-all">
-                          <ProgressDrag percent={dataDetail.difficuity} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
+                          <ProgressDrag percent={difficulty} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
                           bgColor={'#333'} style={{height: '5px'}} barRoundStyle={{ 'width': '1.1rem','height': '1.1rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
-                          onChange={(v)=>{ console.log(v);}} barWidthDisable enableDrag={false} />
+                          onChange={(v)=>{ console.log(v); self.setState({difficulty: v})}} barWidthDisable />
                           </Col>
                           <Col span={8} className="text-align-left font-size-8 textclolor-black-low">简单</Col>
                           <Col span={8} className="text-align-center font-size-8 textclolor-black-low">一般</Col>

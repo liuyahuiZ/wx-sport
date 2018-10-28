@@ -100,6 +100,15 @@ class OcrDoc extends BaseView {
       courseMoves({courseId: obg.id}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let arrs = []
+        let keys= Object.keys(res.result);
+        let values = Object.values(res.result);
+        for(let i=0;i<keys.length;i++){
+          arrs.push({
+            text: keys[i],
+            value: values[i]
+          })
+        }
         self.setState({
           courseMovesArr: res.result
         })
@@ -176,6 +185,18 @@ class OcrDoc extends BaseView {
                         <div>{movesDom}</div>
                       </Panel>
                     </Collapse>
+                    <Row justify="center">
+                      <Col span={14}>
+                        <Buttons 
+                          text="提交/更新"
+                          type={'primary'}
+                          size={'small'}
+                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          onClick={()=>{
+                            console.log('123');
+                          }}/>
+                      </Col>
+                    </Row>
                   </Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row className="width-100">

@@ -67,3 +67,14 @@ export function teacherStudents(req){
         })
     })
 }
+
+export function teacherSignInPage(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `teacher/signInPage`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

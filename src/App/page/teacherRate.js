@@ -134,7 +134,7 @@ class TeacherRate extends BaseView {
             <Row >
               <Col span={24} >
               <TransAnimal >
-                <Row justify="center" className="padding-all-1r bg-8EBF66 border-radius-5f  overflow-hide relative">
+                <Row justify="center" className="padding-all-1r bg-000 border-radius-5f  overflow-hide relative">
                   <Col className="zindex-10 text-align-center margin-top-1r">
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r  overflow-hide">
                         <img src={userInfo.imgUrl} className="width-100" />
@@ -165,7 +165,7 @@ class TeacherRate extends BaseView {
                         <div className="margin-top-p4r font-size-8 textclolor-black-low text-align-center line-height-20">课程难度</div>
                       </Col>
                       <Col span={18}>
-                        <TagRadio options={[{ value: 1, text: 'js', checked: true }, { value: 2, text: 'Jquery' }, { value: 4, text: 'react' } ]}
+                        <TagRadio options={[{ value: 1, text: '简单', checked: true }, { value: 2, text: '中等' }, { value: 4, text: '困难' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
@@ -178,7 +178,7 @@ class TeacherRate extends BaseView {
                         <div className="margin-top-p4r  font-size-8 textclolor-black-low text-align-center line-height-20">讲解问题</div>
                       </Col>
                       <Col span={18}>
-                      <TagRadio options={[{ value: 1, text: 'js', checked: true }, { value: 2, text: 'Jquery' }, { value: 4, text: 'react' } ]}
+                      <TagRadio options={[{ value: 1, text: '不清晰', checked: true }, { value: 2, text: '模糊' }, { value: 4, text: '清晰' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
@@ -191,17 +191,12 @@ class TeacherRate extends BaseView {
                         <div className="margin-top-p4r font-size-8 textclolor-black-low text-align-center line-height-20">疑问解答</div>
                       </Col>
                       <Col span={18}>
-                        <TagRadio options={[{ value: 1, text: 'js', checked: true }, { value: 2, text: 'Jquery' }, { value: 4, text: 'react' } ]}
+                        <TagRadio options={[{ value: 1, text: '能', checked: true }, { value: 2, text: '基本可以' }, { value: 4, text: '不能' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
                           // self.setValue('bd', v)
                         }} />
-                        {/* <Rate value={wg} allCode={5} fontSize={'1.6rem'} normalColor={'#464646'} activeColor={'#8EBE64'}
-                        onChange={(v)=>{
-                          console.log(v)
-                          self.setValue('wg', v)
-                        }} /> */}
                       </Col>
                     </Row>
                   </Col>

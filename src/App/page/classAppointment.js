@@ -5,7 +5,8 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
-import { signedList, getToken } from '../api/index';
+import { getToken } from '../api/index';
+import { teacherSignInPage } from '../api/subject';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -81,7 +82,7 @@ class OcrDoc extends BaseView {
       let obg = UrlSearch();
       if(!obg.courseId) return;
       Loade.show();
-      signedList({courseId: obg.courseId}).then((res)=>{
+      teacherSignInPage({courseId: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;

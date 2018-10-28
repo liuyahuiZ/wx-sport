@@ -131,6 +131,17 @@ export function courseMoves(req){
     })
 }
 
+export function courseMovesUpdate(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `course/moves/update`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
 export function coursePlan(req){
     return new Promise((resolve, reject)=>{
         fetch(config.API_URL+ `course/plan`,{ method: 'POST', data: req})

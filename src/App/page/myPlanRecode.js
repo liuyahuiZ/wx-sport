@@ -6,6 +6,7 @@ import fetch from '../servise/fetch';
 import moment from 'moment';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
+import formate from '../utils/formate';
 import { coursePlanRecords, coursePlanRecordsDetail} from '../api/classes';
 
 const {
@@ -125,10 +126,9 @@ class MyPlanRecode extends BaseView {
     render() {
         const {selectRecode, recodes, detailData, status, itmStatus, feedback} = this.state;
         const self = this;
-        const carouselMap = detailData&&detailData.imgUrlList ?  
-        detailData.imgUrlList.map((itm, idx)=>{
-          return { tabName: idx, content: (<img alt="text" src={itm} />), isActive: false } 
-        }): [
+        const carouselMap = feedback&&feedback.doubtImageUrl ?  
+         [{ tabName: 'idx', content: (<img alt="text" src={feedback.doubtImageUrl} />), isActive: false }]
+        : [
           {
             tabName: 1,
             content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg' />),
@@ -147,21 +147,21 @@ class MyPlanRecode extends BaseView {
               <Col className="textclolor-white" span={4}>
                 <Row>
                   <Col className={"font-size-8 textclolor-black-low"}>重量kg</Col>
-                  <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.weight}</Col>
+                  <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.weight}</Col>
                 </Row>
               </Col>
               <Col className="textclolor-white" span={3}>
                 <Row><Col className={"font-size-8 textclolor-black-low"}>组数</Col>
-                <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.groupNum}</Col></Row>
+                <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.groupNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={3}>
                 <Row><Col className={"font-size-8 textclolor-black-low"}>次数</Col>
-                <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.cycleNum}</Col></Row>
+                <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.cycleNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={6}>
                 <Row>
                   <Col className={"font-size-8 textclolor-black-low"}>持续时间</Col>
-                  <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.time}</Col></Row>
+                  <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.time}</Col></Row>
               </Col>
             </Row>)
           }) : <div />;
@@ -174,6 +174,11 @@ class MyPlanRecode extends BaseView {
                <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
               </Col>
             </Row>
+          </Col>
+          <Col className="bg-000 line-height-3r"> 
+            <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
+            <span className="textcolor-8EBF66 font-size-12 margin-right-1">{itm.restTime}</span>
+            <span className="textclolor-black-low">每个动作之间休息时间</span>
           </Col>
           <Col>{itmDom}</Col>
       </Row>)
@@ -218,21 +223,21 @@ class MyPlanRecode extends BaseView {
                 </Row>
               </Col>
               <Col className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
-                <Row>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
-                  <Col span={8} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0}</Col>
-                  <Col span={8} className={"textcolor-79EF44 text-align-center font-size-16"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0}</Col>
+                <Row className="padding-all">
+                  <Col span={4} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
+                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-12"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
-              { detailData&&detailData.mvUrl ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
+              { feedback&&feedback.doubtMvUrl ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
-                src={detailData.mvUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
+                src={feedback.doubtMvUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>: <div />}
-              { detailData&&detailData.mvUrl ? <Col className="textclolor-white text-align-center margin-top-3">
+              { feedback&&feedback.doubtMvUrl ? <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
               </Col> : <div />}
 

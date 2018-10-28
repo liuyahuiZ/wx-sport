@@ -75,7 +75,8 @@ class ClassList extends BaseView {
       subjectCourses({
         subjectId:obg.subjectId,
         datetime: selectDay.dateTime,
-        courseTypeId: obg.courseTypeId
+        courseTypeId: obg.courseTypeId,
+        // difficulty: obg.difficulty
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
