@@ -37,6 +37,17 @@ export function classDetail(req){
         })
     })
 }
+export function userUpdInfo(req){
+    return new Promise((resolve, reject)=>{
+        let reqbody=req
+        fetch(config.API_URL+ `user/updInfo`, { method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
 
 
 export function courseRatio(req){
@@ -133,7 +144,7 @@ export function courseMoves(req){
 
 export function courseMovesUpdate(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `course/moves/update`,{ method: 'GET', data: req})
+        fetch(config.API_URL+ `course/moves/update`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

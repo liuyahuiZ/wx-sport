@@ -40,8 +40,13 @@ class Appointment extends Component {
             let data = res.result;
             console.log(data);
             if(data&&JSON.stringify(data)!=='{}'){
+                let loadText = '加载中'
+                if(data.myCourses.length==0){   
+                    loadText = '暂无数据'
+                }
                 self.setState({
-                    dataDetail: data
+                    dataDetail: data,
+                    loadText: loadText
                 })
             } else {
                 self.setState({
@@ -66,7 +71,7 @@ class Appointment extends Component {
     render() {
         const { userInfo, dataDetail, loadText } = this.state;
         const self = this;
-        let appintArrDom = dataDetail&&dataDetail.myCourses ? dataDetail.myCourses.map((itm, idx)=>{
+        let appintArrDom = dataDetail&&dataDetail.myCourses&&dataDetail.myCourses.length>0 ? dataDetail.myCourses.map((itm, idx)=>{
             return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
             onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>

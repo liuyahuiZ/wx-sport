@@ -6,6 +6,7 @@ import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import moment from 'moment';
 import wx from 'weixin-js-sdk';
+import formate from '../utils/formate';
 import { subjectCourses, createOrder } from '../api/subject';
 import { userOrdeRing } from '../api/classes'
 
@@ -260,23 +261,23 @@ class ClassList extends BaseView {
                 <Col className={"border-bottom border-color-333 textclolor-black-low"}>
                   <Row>
                     <Col span={12}>总价：</Col>
-                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
                   </Row>
                 </Col>
                 <Col className={"border-bottom border-color-333 textclolor-black-low"}>
                   <Row>
                     <Col span={12}>会员折扣价：</Col>
-                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
                   </Row>
                 </Col>
                 <Col className={"border-bottom border-color-333 textclolor-black-low"}>
                   <Row>
                     <Col span={12}>会员卡折后价</Col>
-                    <Col span={12} className={"text-align-right"}>{it.price}元</Col>
+                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
                   </Row>
                 </Col>
                 <Col className={"text-align-center font-size-8 textclolor-black-low"}>还需支付</Col>
-                <Col className={"text-align-center font-size-16 textcolor-79EF44"}>¥{it.price}</Col>
+                <Col className={"text-align-center font-size-16 textcolor-79EF44"}>¥{formate.formateMoney(it.price)}</Col>
               </Row>
               <Row className={"padding-all-1r"}>
                 <Col span={24} className="font-size-10 textclolor-white">温馨提示</Col>

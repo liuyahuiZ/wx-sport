@@ -19,7 +19,8 @@ const {
     TimeRunner,
     Loade,
     Collapse,
-    Panel
+    Panel,
+    Modal
 } = Components;
 const { sessions, storage } = utils;
 
@@ -103,6 +104,33 @@ class MyClassDetail extends BaseView {
       }
     }
 
+    intensionPop(){
+      Modal.alert({ title: '',
+          content: (<Row className="bg-1b1b1b font-size-8 padding-all" gutter={20} justify="center">
+            <Col span={13} className="bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 1-3 基本算不训练</Col>
+            <Col span={11} className="bg-262626 textclolor-white border-radius-5f line-height-2r text-align-center">RPE 4 训练非常轻松</Col>
+            <Col span={20} className="margin-top-2 bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 5 没有任何难度 热身完强度</Col>
+            <Col span={20} className="margin-top-2 bg-262626 textclolor-white border-radius-5f line-height-2r text-align-center">RPE 6 能够控制动作速度与节奏</Col>
+            <Col span={20} className="margin-top-2 bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 7 能够完成动作要求额外多3次</Col>
+            <Col span={13} className="margin-top-2 bg-262626 textclolor-white border-radius-5f line-height-2r text-align-center">RPE 8 保证动作不变形</Col>
+            <Col span={10} className="margin-top-2 bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 9 动作极限</Col>
+            <Col span={16} className="margin-top-2 bg-262626 textclolor-white border-radius-5f line-height-2r text-align-center">RPE 10 勉强1次动作</Col>
+          </Row>),
+          containerStyle: {"backgroundColor":'#1b1b1b',"width":"90%"},
+          contentStyle: {"borderBottom":'none'},
+          btn: {
+            text: '确定',
+            type: 'link',
+            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0', 'color': '#79EF44'}
+          }, 
+          type: 'large'
+        },
+        () => { 
+          // hashHistory.goBack(); 
+          // self.goLink('/PicturePoster', {keepTime: obg.keepTime}); 
+        });
+    }
+
     render() {
         const {detailData, status, itmStatus} = this.state;
         const self = this;
@@ -184,7 +212,7 @@ class MyClassDetail extends BaseView {
                           size={'small'}
                           style={{backgroundColor: '#80EA46', color:'#333'}}
                           onClick={()=>{
-                            console.log('123');
+                            self.intensionPop()
                           }}/>
                       </Col>
                     </Row>

@@ -5,7 +5,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import BaseView from '../core/app';
 import { UrlSearch } from '../utils';
-import { userMark, courseMovesUpdate } from '../api/classes';
+import { userMark, userUpdInfo } from '../api/classes';
 
 const {
     Buttons,
@@ -28,13 +28,16 @@ class Registor extends BaseView {
       this.state = {
           userInfo: storage.getStorage('userInfo') ||{},
           resourceKey: '1',
-          js: 5,
-          bd: 5,
-          wg: 5,
           height: '',
           weight: '',
           birthday: '',
-          active: 'man'
+          phone: '',
+          active: 'man',
+          history: '',
+          expeirence: '',
+          year: '',
+          month: '',
+          day: ''
       };
     }
 
@@ -75,16 +78,43 @@ class Registor extends BaseView {
     submitMark(){
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
-      const { userInfo, js, bd, wg, height, weight, birthday, phone, active, history, expeirence } = this.state;
+      let date = new Date;
+      let nowYear = date.getFullYear()
+      const { height, weight, birthday, phone, history, expeirence, active, year, month, day } = this.state;
+      if(!height&&height==='') {
+          Toaster.toaster({ type: 'error', position: 'top', content: '请输入身高', time: 3000 }, true);
+          return false;
+      }
+      if(!weight&&weight==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入体重', time: 3000 }, true);
+        return false;
+      }
+      if(!year&&year==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入生日', time: 3000 }, true);
+        return false;
+      }
+      if(!phone&&phone==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入电话', time: 3000 }, true);
+        return false;
+      }
+      if(!history&&history==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入伤病历史', time: 3000 }, true);
+        return false;
+      }
+      if(!expeirence&&expeirence==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入运动经验', time: 3000 }, true);
+        return false;
+      }
       Loade.show();
-      courseMovesUpdate({
+      userUpdInfo({
         id: userId,
-        age: birthday,
+        age: (nowYear - year),
         height: height,
         weight: weight,
         injuryHistory : history,
         phoneNo: phone,
-        exercise: expeirence
+        exercise: expeirence,
+        sex: active
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
@@ -96,7 +126,7 @@ class Registor extends BaseView {
         
 
     render() {
-        const { userInfo, js, bd, wg, height, weight, birthday, phone, active, history, expeirence } = this.state;
+        const { userInfo, height, weight, birthday, phone, active, history, expeirence, year, month, day } = this.state;
         const self = this;
 
         return(
@@ -168,14 +198,36 @@ class Registor extends BaseView {
                 <Row justify="center">
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">生日</Col>
-                    <Col span={16}>
+                    <Col span={8}>
                     <Input
-                        placeholder="请输入生日"
-                        value={birthday}
+                        placeholder="请输入年"
+                        value={year}
                         innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
-                            self.setValue('birthday',v)
+                            self.setValue('year',v)
+                        }}
+                        />
+                    </Col>
+                    <Col span={4}>
+                    <Input
+                        placeholder="月"
+                        value={month}
+                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        maxLength={100}
+                        onChange={(e,t,v)=>{
+                            self.setValue('month',v)
+                        }}
+                        />
+                    </Col>
+                    <Col span={4}>
+                    <Input
+                        placeholder="日"
+                        value={day}
+                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        maxLength={100}
+                        onChange={(e,t,v)=>{
+                            self.setValue('day',v)
                         }}
                         />
                     </Col>

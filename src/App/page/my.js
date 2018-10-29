@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { myClass, userRegistry, courseRatio } from '../api/classes';
+import { myClass, userRegistry, courseRatio, userInfo } from '../api/classes';
 import { getToken } from '../api/index';
 
 const {
@@ -36,6 +36,7 @@ class OcrDoc extends Component {
           ratioList: [],
           loadText: '加载中',
           userId: storage.getStorage('userId') ||{},
+          userInfoMation: {}
       };
     }
     componentDidMount(){
@@ -62,22 +63,22 @@ class OcrDoc extends Component {
         // this.getMyClass(userId);
         // this.getCourseRatio(userId);
       }
+      this.getUserInfoMation();
       console.log('userId', userId);
     }
-    registry(){
-      let userInfo = storage.getStorage('userInfo');
+
+    getUserInfoMation(){
+      let userId = storage.getStorage('userId');
       const self = this;
-      userRegistry({
-        wxid: userInfo.wechatPid,
-        wxIcon: userInfo.imgUrl,
-        nickname: userInfo.nickName
+      userInfo({
+        userId: userId
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
-        storage.setStorage('userId', data);
+        self.setState({
+          userInfoMation: data
+        })
         console.log(res);
-        // self.getMyClass(res);
-        // self.getCourseRatio(res);
       }).catch((e)=>{
         console.log(e);
       })
@@ -141,8 +142,8 @@ class OcrDoc extends Component {
        if(JSON.stringify(data)!=='{}'){
           storage.setStorage('userInfo', data);
           storage.setStorage('userId', data.id);
-          self.getMyClass(data.id);
-          self.getCourseRatio(data.id);
+          // self.getMyClass(data.id);
+          // self.getCourseRatio(data.id);
           // self.registry();
           self.setState({
             userInfo: data,
@@ -223,7 +224,7 @@ class OcrDoc extends Component {
     }
 
     render() {
-        const { status, myClassList, resourceKey, userInfo, loadText, ratioList, userId } = this.state;
+        const { status, myClassList, resourceKey, userInfo, loadText, ratioList, userId, userInfoMation } = this.state;
         const self = this;
         const myClassListDom = myClassList.length > 0 ? myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
@@ -329,10 +330,19 @@ class OcrDoc extends Component {
                     <span className="textclolor-white">{userInfo.nickName || '请登陆'}</span>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
-                    <Row>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
-                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-8 textclolor-white">余额 26</span></Col>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">充值</span></Col>
+                    <Row >
+                      <Col span={8} className="text-align-center line-height-2r"><span className="font-size-8 textclolor-white">积分 0</span></Col>
+                      <Col span={8} className="text-align-center heighr-2 line-height-2r"><span className="font-size-8 textclolor-white">余额 0</span></Col>
+                      <Col span={6} className="text-align-center line-height-1r">
+                      <Buttons
+                          text="充值"
+                          type={'primary'}
+                          size={'small'}
+                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          onClick={()=>{
+                            console.log('123');
+                          }}/>
+                      </Col>
                     </Row>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
@@ -340,11 +350,34 @@ class OcrDoc extends Component {
                 </Row>
                 </TransAnimal>
               </Col>
-             
-              <Col className='padding-all bg-1B1B1B margin-top-3 border-radius-5f'>
-                <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
+              <Col className='padding-all bg-1B1B1B margin-top-3 border-radius-5f line-height-2r' onClick={()=>{self.goLink('/Registor')}}>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>身高</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.height||0}</Col>
+                  </Row>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>体重</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.weight||0}</Col>
+                  </Row>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>年龄</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.age||0}</Col>
+                  </Row>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>伤病历史</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.injuryHistory||'无'}</Col>
+                  </Row>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>运动经验</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.exercise||'无'}</Col>
+                  </Row>
+              </Col>
+              <Col className=' bg-1B1B1B margin-top-3 border-radius-5f'>
+              <Row className="bg-0D0D0D line-height-2r"><Col className="textclolor-white">测试动作成绩</Col></Row>
+              <Row className="padding-all"><Col></Col></Row>
+                {/* <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
                   this.tabChange(v);
-                }} />
+                }} /> */}
               </Col>
               <Col span={24} className="bg-1B1B1B margin-top-2 border-radius-5f">
                 <Item

@@ -93,6 +93,7 @@ class OcrDoc extends BaseView {
         doubtText: question,
         doubtImageUrl: picture,
         doubtMvUrl: theVieo,
+        practiveTime: obg.keepTime
       }).then((res)=>{
         console.log(res);
         Loade.hide();

@@ -38,7 +38,7 @@ class LayOut extends Component {
         })
         this.getSign();
         // storage.setStorage('userInfo', {"openid":"o7vpA1s0OLLSrPK47Y5sLNDI7NKs","nickname":"MR.Andsen","sex":1,"language":"zh_CN","city":"浦东新区","province":"上海","country":"中国","headimgurl":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTITVMkZP6mtUU1WAxOSa9nyquS9ho7QInmlFhrckhRgtmNTSsZVwuInbu1CjBAAvH7faR7SV4LeTg/132","privilege":[]});
-        storage.setStorage('userId', 106);
+        // storage.setStorage('userId', 1);
     }
     
     componentWillReceiveProps(nextProps, nextContext) {
@@ -89,7 +89,7 @@ class LayOut extends Component {
             console.log(res)
             let data = res;
             wx.config({
-                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: 'wx9a7768b6cd7f33d0', // 必填，公众号的唯一标识
                 timestamp: data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: data.noncestr, // 必填，生成签名的随机串

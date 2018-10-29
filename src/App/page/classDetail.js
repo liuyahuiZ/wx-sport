@@ -31,7 +31,7 @@ class OcrDoc extends BaseView {
           dataDetail: {},
           subjectId: obg.subjectId,
           chosePlanTypeId: '',
-          difficulty: 1
+          difficulty: 50
       };
     }
     _viewAppear(){

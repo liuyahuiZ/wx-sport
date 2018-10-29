@@ -6,8 +6,9 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { getToken } from '../api/index';
-import { courseDetail, courseMoves } from '../api/classes';
+import { courseDetail, courseMoves, courseMovesUpdate } from '../api/classes';
 import wx from 'weixin-js-sdk';
+import selectStyle from '../../neo/Components/Select/selectStyle';
 
 const {
     Buttons,
@@ -20,7 +21,8 @@ const {
     Carousel,
     Loade,
     Collapse,
-    Panel
+    Panel,
+    Input
 } = Components;  
 const { sessions, storage } = utils;
 
@@ -29,7 +31,9 @@ class OcrDoc extends BaseView {
       super(props);
       this.state = {
           detailData: {},
-          courseMovesArr: {}
+          courseMovesArr: {},
+          upMoves:[]
+
       };
     }
 
@@ -100,15 +104,7 @@ class OcrDoc extends BaseView {
       courseMoves({courseId: obg.id}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let arrs = []
-        let keys= Object.keys(res.result);
-        let values = Object.values(res.result);
-        for(let i=0;i<keys.length;i++){
-          arrs.push({
-            text: keys[i],
-            value: values[i]
-          })
-        }
+       
         self.setState({
           courseMovesArr: res.result
         })
@@ -137,15 +133,63 @@ class OcrDoc extends BaseView {
         infoUrl: 'test' // 在查看位置界面底部显示的超链接,可点击跳转
       });
     }
-
+    submitMove(){
+      const { courseMovesArr } = this.state;
+      let obg = UrlSearch();
+      let userId = storage.getStorage('userId')
+      console.log(courseMovesArr);
+      if(courseMovesArr.length>0){
+        let newArr = []
+        for(let i=0;i<courseMovesArr.length;i++){
+          newArr[i] = {
+            "courseId": obg.id,
+            "name": courseMovesArr[i].text,
+            "userId": userId,
+            "weight": courseMovesArr[i].value
+          }
+        }
+        courseMovesUpdate({data: newArr}).then((res)=>{
+          Loade.hide();
+          if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        }).catch((err)=>{
+          Loade.hide();
+        })
+      }
+    }
     render() {
-        const {detailData, courseMovesArr} = this.state;
+        const {detailData, courseMovesArr, upMoves} = this.state;
+        const self = this;
         let obg = UrlSearch();
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
         let startDate = detailData.startDate ? detailData.startDate.split(' ')[0] : ''
         const movesDom = courseMovesArr && courseMovesArr.length > 0 ? courseMovesArr.map((itm,idx)=>{
-          return (<div className="images-33 float-left" key={`${idx}-ke`}>
-            <Row><Col>{JSON.stringify(itm)}</Col><Col></Col></Row>
+          return (<div className="images-33 float-left bg-1B1B1B padding-all" key={`${idx}-ke`}>
+            <Row className="text-align-center">
+            <Col className="textclolor-white">{itm.text}</Col>
+            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-79EF44">
+              <Input
+                placeholder="请输入"
+                value={itm.value}
+                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#79EF44","textAlign":"center"}}
+                maxLength={100}
+                onChange={(e,t,v)=>{
+                    // self.setValue('weight',v)
+                    let allMove = courseMovesArr;
+                    allMove[idx].value= v;
+                    // let newMove = upMoves 
+                    // newMove[idx] = {
+                    //   "courseId": obg.id,
+                    //   "name": itm.text,
+                    //   "userId": userId,
+                    //   "weight": v
+                    // }
+                    self.setState({
+                      courseMovesArr: allMove,
+                      // upMoves: newMove
+                    })
+                }}
+                />
+            </Col></Row>
           </div>)
         }) : ''
         return(
@@ -182,7 +226,18 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Collapse >
                       <Panel title={'训练动作'}>
-                        <div>{movesDom}</div>
+                        <Row>
+                          <Col>{movesDom}</Col>
+                          {/* <Col className={"text-align-center line-height-2r bg-262626"} span={8} onClick={()=>{
+                            let newArr= courseMovesArr;
+                            newArr.push({
+                              text: '', value: ''
+                            })
+                            self.setState({
+                              courseMovesArr: newArr
+                            })
+                          }}><Icon iconName={'ios-plus '} size={'120%'} iconColor={'#fff'} /> </Col> */}
+                        </Row>
                       </Panel>
                     </Collapse>
                     <Row justify="center">
@@ -193,7 +248,7 @@ class OcrDoc extends BaseView {
                           size={'small'}
                           style={{backgroundColor: '#80EA46', color:'#333'}}
                           onClick={()=>{
-                            console.log('123');
+                            self.submitMove()
                           }}/>
                       </Col>
                     </Row>

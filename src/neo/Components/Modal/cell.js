@@ -59,7 +59,7 @@ class Cell extends Component {
               options.containerStyle])}
           >
             {titleItem}
-            <div style={arrayUtils.merge([styles.content, contentMaxHeight])}>
+            <div style={arrayUtils.merge([styles.content, contentMaxHeight, options.contentStyle])}>
               {options.content}</div>
             <div style={arrayUtils.merge([styles.foot, styles[btnConStyle]])}>
               {buttons}
