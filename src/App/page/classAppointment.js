@@ -85,10 +85,12 @@ class OcrDoc extends BaseView {
       teacherSignInPage({courseId: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
-        self.setState({
-          detailData: data
-        })
+        if(res.code>0){
+          let data = res.result;
+          self.setState({
+            detailData: data
+          })
+        }
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -118,10 +120,11 @@ class OcrDoc extends BaseView {
 
     render() {
         const {detailData} = this.state;
+        console.log('detailData',detailData)
         let obg = UrlSearch();
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
-        let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
-        let personDom = detailData.peoples&&detailData.peoples.length > 0 ?
+        let startDate = detailData&&detailData.course&&detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
+        let personDom = detailData&&detailData.peoples&&detailData.peoples.length > 0 ?
         detailData.peoples.map((itm, idx)=>{
           return (<Row className="middle-round float-left " key={`${idx}-lab`}>
             <Col className="padding-all-3">
@@ -134,8 +137,8 @@ class OcrDoc extends BaseView {
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title}</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime}-{detailData.course.endTime}</Col>
+                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title||''}</Col>
+                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime||''}-{detailData.course.endTime||''}</Col>
                   <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
                   <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
@@ -160,7 +163,7 @@ class OcrDoc extends BaseView {
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">课程</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title}</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title||''}</Col>
                           <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“我的”页面中查看</Col>
                         </Row>
                       </Col>
@@ -168,7 +171,7 @@ class OcrDoc extends BaseView {
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-10 textclolor-white">地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address}</Col>
+                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address||''}</Col>
                           <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
                             this.openMap(detailData.course.latitude, detailData.course.longitude)
                           }}>点击查看地图</Col>

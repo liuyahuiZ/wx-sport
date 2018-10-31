@@ -23,7 +23,7 @@ class Appointment extends Component {
       super(props);
       this.state = {
           status: this.props.status,
-          userInfo: storage.getStorage('userInfo'),
+          userInfo: storage.getStorage('userInfo')||{},
           dataDetail: {},
           loadText: '加载中'
       };
@@ -88,7 +88,7 @@ class Appointment extends Component {
                     <Col span={8} className="zindex-10 text-align-center">
                         <Row>
                             <Col className="font-size-8">完成比例</Col>
-                            <Col className="font-size-16">{computed.accMul(itm.completePercent||0, 100)}%</Col>
+                            <Col className="font-size-16">{computed.accMul(itm.completePercent||0, 100).toFixed(2)}%</Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-right">

@@ -46,7 +46,7 @@ class OcrDoc extends BaseView {
         if(JSON.stringify(data)!=='{}'){
           self.setState({
             dataDetail: data,
-            difficulty: data.difficuity
+            difficulty: 50 || data.difficuity
           })
           sessions.setStorage('nowSubject', data);
         } else {
@@ -205,7 +205,9 @@ class OcrDoc extends BaseView {
                       }}
                       ref={(r) => { this.$$checkbox1 = r; }}
                       /></Col>
-                      <Col span={21} className="textclolor-black-low line-height-2r font-size-8">购买训练计划前，需要执行阅读 风险PAR-Q 要求</Col>
+                      <Col span={21} className="textclolor-black-low line-height-2r font-size-8" onClick={()=>{
+                        this.goLink('/ParqPage')
+                      }}>购买训练计划前，需要执行阅读 风险PAR-Q 要求</Col>
                     </Row>
                   </Col>
                 </Row>

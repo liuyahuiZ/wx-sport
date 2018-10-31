@@ -239,6 +239,18 @@ export function userStudents(req){
     })
 }
 
+export function userMoves(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `user/moves`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+
 export function courselastKeep(req){
     return new Promise((resolve, reject)=>{
         fetch(config.API_URL+ `course/lastKeep`,{ method: 'POST', data: req})

@@ -26,7 +26,7 @@ class Loader extends Component {
     let contbg = '';
     let cell = '';
     if (this.state.status === 'show') {
-      contbg = (<div style={styles.boxbg} onClick={() => { this.hide(); }}>1</div>);
+      contbg = (<div style={styles.boxbg} onClick={() => { this.hide(); }}></div>);
       cell = (
         <div style={styles.loadContainer}>
           <div className="spinner"></div>

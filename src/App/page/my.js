@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { myClass, userRegistry, courseRatio, userInfo } from '../api/classes';
+import { myClass, userRegistry, courseRatio, userInfo, userMoves } from '../api/classes';
 import { getToken } from '../api/index';
 
 const {
@@ -64,6 +64,7 @@ class OcrDoc extends Component {
         // this.getCourseRatio(userId);
       }
       this.getUserInfoMation();
+      this.getUserMoves();
       console.log('userId', userId);
     }
 
@@ -84,6 +85,23 @@ class OcrDoc extends Component {
       })
     }
 
+    getUserMoves(){
+      let userId = storage.getStorage('userId');
+      const self = this;
+      userMoves({
+        userId: userId
+      }).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        self.setState({
+          userMoveArr: data
+        })
+        console.log(res);
+      }).catch((e)=>{
+        console.log(e);
+      })
+    }
+    
     getMyClass(userId){
       console.log(userId);
       const self = this;
@@ -223,8 +241,30 @@ class OcrDoc extends Component {
       }
     }
 
+    submitMove(){
+      const { userMoveArr } = this.state;
+      let userId = storage.getStorage('userId')
+      console.log(userMoveArr);
+      if(userMoveArr.length>0){
+        let newArr = []
+        for(let i=0;i<userMoveArr.length;i++){
+          newArr[i] = {
+            "name": userMoveArr[i].text,
+            "userId": userId,
+            "weight": userMoveArr[i].value
+          }
+        }
+        courseMovesUpdate({data: newArr}).then((res)=>{
+          Loade.hide();
+          if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        }).catch((err)=>{
+          Loade.hide();
+        })
+      }
+    }
+
     render() {
-        const { status, myClassList, resourceKey, userInfo, loadText, ratioList, userId, userInfoMation } = this.state;
+        const { status, myClassList, resourceKey, userInfo, loadText, ratioList, userId, userInfoMation, userMoveArr } = this.state;
         const self = this;
         const myClassListDom = myClassList.length > 0 ? myClassList.map((itm, idx)=>{
           return (<Row justify="center" className="margin-top-3" key={`${idx}-r`} onClick={()=>{
@@ -307,6 +347,31 @@ class OcrDoc extends Component {
             </Row>
           )
         }]
+
+        const movesDom = userMoveArr && userMoveArr.length > 0 ? userMoveArr.map((itm,idx)=>{
+          return (<div className="images-33 float-left bg-1B1B1B padding-all" key={`${idx}-ke`}>
+            <Row className="text-align-center">
+            <Col className="textclolor-white">{itm.text}</Col>
+            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-79EF44">
+              <Input
+                placeholder="请输入"
+                value={itm.value}
+                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#79EF44","textAlign":"center"}}
+                maxLength={100}
+                onChange={(e,t,v)=>{
+                    // self.setValue('weight',v)
+                    let allMove = userMoveArr;
+                    allMove[idx].value= v;
+                    self.setState({
+                      userMoveArr: allMove,
+                      // upMoves: newMove
+                    })
+                }}
+                />
+            </Col></Row>
+          </div>)
+        }) : <div className="text-align-center textclolor-white line-height-2r">暂无数据</div>;
+
         return(
           <section className="padding-all bg-000 minheight-100">
             <Row >
@@ -374,7 +439,23 @@ class OcrDoc extends Component {
               </Col>
               <Col className=' bg-1B1B1B margin-top-3 border-radius-5f'>
               <Row className="bg-0D0D0D line-height-2r"><Col className="textclolor-white">测试动作成绩</Col></Row>
-              <Row className="padding-all"><Col></Col></Row>
+              <Row className="padding-all">
+                <Col>
+                {movesDom}
+                <Row justify="center">
+                      <Col span={14}>
+                        <Buttons 
+                          text="提交/更新"
+                          type={'primary'}
+                          size={'small'}
+                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          onClick={()=>{
+                            self.submitMove()
+                          }}/>
+                      </Col>
+                    </Row>
+                </Col>
+              </Row>
                 {/* <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
                   this.tabChange(v);
                 }} /> */}
@@ -387,6 +468,16 @@ class OcrDoc extends Component {
                     rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
                     onClick={()=>{
                       this.goLink('/ServiceTitle')
+                    }}
+                    showRight 
+                    />
+                <Item
+                    leftContent={{text: (<Row><Col span={5}>
+                        <Icon iconName={'compose  '} size={'160%'} iconColor={'#fff'}  />
+                        </Col><Col span={19}>PAR-Q 问卷</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
+                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
+                    onClick={()=>{
+                      this.goLink('/ParqPage')
                     }}
                     showRight 
                     />

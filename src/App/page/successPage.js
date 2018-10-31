@@ -5,7 +5,7 @@ import BaseView from '../core/app';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { userGatherInfo } from '../api/classes';
+import { userGatherInfo, courseDetail } from '../api/classes';
 import { userSign } from '../api/subject';
 
 const {
@@ -35,6 +35,8 @@ class Success extends BaseView {
     _viewAppear(){
       let userId = storage.getStorage('userId');
       const self = this;
+      console.log('123123')
+      self.getClassDetail();
     }
            
     goLink(link, obg){
@@ -44,6 +46,21 @@ class Success extends BaseView {
           query: obg
         });
       }
+    }
+
+    getClassDetail(){
+      let obg = UrlSearch();
+      const self = this;
+      Loade.show();
+      courseDetail({id: obg.courseId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        self.setState({
+          detail: res.result
+        })
+      }).catch((err)=>{
+        Loade.hide();
+      })
     }
 
     doSign(){
@@ -96,11 +113,11 @@ class Success extends BaseView {
               <Col className="textclolor-black-low margin-top-1r line-height-3r">
                 <Row className="border-bottom border-color-333">
                   <Col span={4}>课程：</Col>
-                  <Col span={20} className="text-align-right"></Col>
+                  <Col span={20} className="text-align-right">{detail.title}</Col>
                 </Row>
                 <Row className="border-bottom border-color-333">
                   <Col span={4}>门店：</Col>
-                  <Col span={20} className="text-align-right">福田店</Col>
+                  <Col span={20} className="text-align-right">{detail.store}</Col>
                 </Row>
                 <Row className="border-bottom border-color-333">
                   <Col span={4}>时间：</Col>
@@ -118,7 +135,7 @@ class Success extends BaseView {
                       hashHistory.goBack();
                     }else{
                       this.goLink('UserSign',{
-                        courseId: detail.courseId
+                        courseId: obg.courseId
                       })
                     }
                   }}

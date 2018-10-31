@@ -33,9 +33,10 @@ class Message extends Component {
     const resumap = options.map((itm) => {
       const selfStye = itm.msgtype ;
       const positionStyle = itm.position ;
-      if (itm.msgtype !== 'error') {
-        self.timeHide(itm.id, itm.time);
-      }
+      // if (itm.msgtype !== 'error') {
+      //   self.timeHide(itm.id, itm.time);
+      // }
+      self.timeHide(itm.id, itm.time);
       return (
         <Transition
         act={'enter'}

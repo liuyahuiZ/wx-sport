@@ -191,7 +191,7 @@ class OcrDoc extends BaseView {
                 />
             </Col></Row>
           </div>)
-        }) : ''
+        }) : <div className="text-align-center textclolor-white line-height-2r">暂无数据</div>
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">

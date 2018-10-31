@@ -201,9 +201,6 @@ class ClassList extends BaseView {
         console.log(res);
       })
       sessions.setStorage('nowCourse', it);
-      self.goLink('/Success', Object.assign({},{
-        "type": 'appoint',
-      }) )
     }
 
     bought(res, it){

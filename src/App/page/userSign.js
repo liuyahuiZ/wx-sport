@@ -44,11 +44,14 @@ class UserSignd extends BaseView {
     getCourseDetail(){
       let obg = UrlSearch();
       const self = this;
+      Loade.show();
       courseDetail({id: obg.courseId}).then((res)=>{
+        Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
         self.setValue('courseDetial', data)
       }).catch((err)=>{
+        Loade.hide();
         console.log(err)
       })
     }
