@@ -19,7 +19,8 @@ const {
     ProgressCircle,
     Tab,
     Progress,
-    Loade
+    Loade,
+    Input
   } = Components;
 const { sessions, storage } = utils;
 //"https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FTab"
@@ -68,6 +69,12 @@ class OcrDoc extends Component {
       console.log('userId', userId);
     }
 
+    componentWillReceiveProps(nextProps){
+      this.setState({
+        status: nextProps.status
+      })
+    }
+
     getUserInfoMation(){
       let userId = storage.getStorage('userId');
       const self = this;
@@ -76,9 +83,11 @@ class OcrDoc extends Component {
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
-        self.setState({
-          userInfoMation: data
-        })
+        if(res.code>0&&data){
+          self.setState({
+            userInfoMation: data
+          })
+        }
         console.log(res);
       }).catch((e)=>{
         console.log(e);
@@ -147,12 +156,6 @@ class OcrDoc extends Component {
       })
     }
 
-    componentWillReceiveProps(nextProps){
-      this.setState({
-        status: nextProps.status
-      })
-    }
-
     getUserinfo(code){
       const self = this;
       getToken({code: code}).then((data)=>{
@@ -176,7 +179,7 @@ class OcrDoc extends Component {
     checkUser(){
       console.log(storage.getStorage('userInfo'));
       if (storage.getStorage('userInfo')) {
-        this.goLink('/PersonalFiles');
+        // this.goLink('/PersonalFiles');
       } else {
         window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
       }
@@ -279,7 +282,7 @@ class OcrDoc extends Component {
           </Col>
           <Col className="margin-top-3 text-align-center textcolor-8EBF66" span={6}>共{itm.allSection}天</Col>
         </Row>)
-        }) : (<Row ><Col className="text-align-center font-size-8 textclolor-white line-height-4r" onClick={()=>{this.getMyClass(userId)}}>{loadText}</Col></Row>);
+        }) : (<Row ><Col className="text-align-center font-size-small textclolor-white line-height-4r" onClick={()=>{this.getMyClass(userId)}}>{loadText}</Col></Row>);
 
         const ratioListDom = ratioList.length > 0 ? ratioList.map((itm, idx)=>{
           return (<Row className="images-33 padding-all-2 float-left"><Col key={`ratio-${idx}`}  className="padding-all" onClick={()=>{self.goLink('/TrainResult',{
@@ -288,24 +291,24 @@ class OcrDoc extends Component {
           })}}>
             <ProgressCircle score={parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)} show={true} innerText={`${parseFloat(itm.nowSection/itm.allSection  * 100).toFixed(2)}%`} />
           </Col></Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r" onClick={()=>{this.getCourseRatio(userId)}}>{loadText}</Col></Row>;
+        }) : <Row><Col className="text-align-center font-size-small textclolor-white line-height-4r" onClick={()=>{this.getCourseRatio(userId)}}>{loadText}</Col></Row>;
 
         const tabOptions = [{
           tabName: (<Row>
             <Col style={{'height': '1.5rem'}}>
             <div className={`icon small ${resourceKey ==='1' ? 'icon-working-a': 'icon-working'}`} />
             </Col>
-            <Col className="font-size-8">正在进行</Col></Row>),
+            <Col className="font-size-small">正在进行</Col></Row>),
           keyword: '1', 
           headStyle: {height: '4rem'},
           content: (
             <Row justify="center">
               <Col  className="margin-top-3">
-                <Row justify="center" className="textclolor-666 font-size-8">
+                <Row justify="center" className="textclolor-666 font-size-small">
                   <Col span={6}>第一周</Col>
                   <Col span={2}>1</Col>
                   <Col span={2}>2</Col>
-                  <Col span={2}><div className="bg-8EBF66 font-size-8 textclolor-white small-round text-align-center border-radius-100">3</div></Col>
+                  <Col span={2}><div className="bg-8EBF66 font-size-small textclolor-white small-round text-align-center border-radius-100">3</div></Col>
                   <Col span={2}>4</Col>
                   <Col span={2}>5</Col>
                   <Col span={2}>6</Col>
@@ -324,7 +327,7 @@ class OcrDoc extends Component {
             <Col style={{'height': '1.5rem'}}>
             <div className={`icon ${resourceKey ==='2' ? 'icon-complate-a': 'icon-complate'}`} />
             </Col>
-            <Col className="font-size-8">已完成</Col></Row>),
+            <Col className="font-size-small">已完成</Col></Row>),
             keyword: '2',
             content: (
             <div>
@@ -337,7 +340,7 @@ class OcrDoc extends Component {
             <Col style={{'height': '1.5rem'}}>
             <Icon iconName={'android-star'} size={'180%'} iconColor={resourceKey ==='3' ? '#8FBF66' :'#fff'} />
             </Col>
-            <Col className="font-size-8">动态</Col></Row>),
+            <Col className="font-size-small">动态</Col></Row>),
             keyword: '3',
             content: (
             <Row>
@@ -396,14 +399,14 @@ class OcrDoc extends Component {
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     <Row >
-                      <Col span={8} className="text-align-center line-height-2r"><span className="font-size-8 textclolor-white">积分 0</span></Col>
-                      <Col span={8} className="text-align-center heighr-2 line-height-2r"><span className="font-size-8 textclolor-white">余额 0</span></Col>
+                      <Col span={8} className="text-align-center line-height-2r"><span className="font-size-small textclolor-white">积分 0</span></Col>
+                      <Col span={8} className="text-align-center heighr-2 line-height-2r"><span className="font-size-small textclolor-white">余额 0</span></Col>
                       <Col span={6} className="text-align-center line-height-1r">
                       <Buttons
                           text="充值"
                           type={'primary'}
                           size={'small'}
-                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          style={{backgroundColor: '#9eea6a', color:'#333'}}
                           onClick={()=>{
                             console.log('123');
                           }}/>
@@ -415,7 +418,7 @@ class OcrDoc extends Component {
                 </Row>
                 </TransAnimal>
               </Col>
-              <Col className='padding-all bg-1B1B1B margin-top-3 border-radius-5f line-height-2r' onClick={()=>{self.goLink('/Registor')}}>
+              <Col className='padding-all bg-1B1B1B margin-top-3 border-radius-5f line-height-2r' onChange={()=>{self.goLink('/Registor')}}>
                   <Row>
                     <Col className="textclolor-white" span={6}>身高</Col>
                     <Col className="textclolor-white" span={18}>{userInfoMation.height||0}</Col>
@@ -442,18 +445,20 @@ class OcrDoc extends Component {
               <Row className="padding-all">
                 <Col>
                 {movesDom}
-                <Row justify="center">
-                      <Col span={14}>
-                        <Buttons 
-                          text="提交/更新"
-                          type={'primary'}
-                          size={'small'}
-                          style={{backgroundColor: '#80EA46', color:'#333'}}
-                          onClick={()=>{
-                            self.submitMove()
-                          }}/>
-                      </Col>
-                    </Row>
+                </Col>
+                <Col>
+                  <Row justify="center">
+                    <Col span={14}>
+                      <Buttons 
+                        text="提交/更新"
+                        type={'primary'}
+                        size={'small'}
+                        style={{backgroundColor: '#9eea6a', color:'#333'}}
+                        onClick={()=>{
+                          self.submitMove()
+                        }}/>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
                 {/* <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
@@ -464,8 +469,8 @@ class OcrDoc extends Component {
                 <Item
                     leftContent={{text: (<Row><Col span={5}>
                         <Icon iconName={'clipboard '} size={'160%'} iconColor={'#fff'}  />
-                        </Col><Col span={19}>服务条款</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
-                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
+                        </Col><Col span={19}>服务条款</Col></Row>), style: {flex: '5'}, className: 'font-size-small textclolor-gray'}} 
+                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-small textclolor-gray text-align-right'}}
                     onClick={()=>{
                       this.goLink('/ServiceTitle')
                     }}
@@ -474,8 +479,8 @@ class OcrDoc extends Component {
                 <Item
                     leftContent={{text: (<Row><Col span={5}>
                         <Icon iconName={'compose  '} size={'160%'} iconColor={'#fff'}  />
-                        </Col><Col span={19}>PAR-Q 问卷</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
-                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
+                        </Col><Col span={19}>PAR-Q 问卷</Col></Row>), style: {flex: '5'}, className: 'font-size-small textclolor-gray'}} 
+                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-small textclolor-gray text-align-right'}}
                     onClick={()=>{
                       this.goLink('/ParqPage')
                     }}
@@ -484,8 +489,8 @@ class OcrDoc extends Component {
                 <Item
                     leftContent={{text: (<Row><Col span={5}>
                         <Icon iconName={'information-circled '} size={'160%'} iconColor={'#fff'}  />
-                        </Col><Col span={19}>关于牛油果</Col></Row>), style: {flex: '5'}, className: 'font-size-8 textclolor-gray'}} 
-                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-8 textclolor-gray text-align-right'}}
+                        </Col><Col span={19}>关于牛油果</Col></Row>), style: {flex: '5'}, className: 'font-size-small textclolor-gray'}} 
+                    rightContent={{text: '', style: {flex: '5'}, className: 'font-size-small textclolor-gray text-align-right'}}
                     onClick={()=>{
                       this.goLink('/About')
                     }}

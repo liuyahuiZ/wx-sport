@@ -163,7 +163,7 @@ class OcrDoc extends BaseView {
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
         let startDate = detailData.startDate ? detailData.startDate.split(' ')[0] : ''
         const movesDom = courseMovesArr && courseMovesArr.length > 0 ? courseMovesArr.map((itm,idx)=>{
-          return (<div className="images-33 float-left bg-1B1B1B padding-all" key={`${idx}-ke`}>
+          return (<div className="images-33 float-left bg-1B1B1B " key={`${idx}-ke`}>
             <Row className="text-align-center">
             <Col className="textclolor-white">{itm.text}</Col>
             <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-79EF44">
@@ -197,11 +197,11 @@ class OcrDoc extends BaseView {
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.title}</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.startTime}-{detailData.endTime}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">该二维码用于开门</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low"></Col>
+                  <Col className="zindex-10 text-align-center font-size-normal textclolor-white">{detailData.title}</Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">{startDate} {detailData.startTime}-{detailData.endTime}</Col>
+                  {/* <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col> */}
+                  {/* <Col className="zindex-10 text-align-center font-size-small textclolor-black-low margin-top-2">该二维码用于开门</Col> */}
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low"></Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
@@ -226,7 +226,7 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Collapse >
                       <Panel title={'训练动作'}>
-                        <Row>
+                        <Row className="bg-1B1B1B padding-top-2">
                           <Col>{movesDom}</Col>
                           {/* <Col className={"text-align-center line-height-2r bg-262626"} span={8} onClick={()=>{
                             let newArr= courseMovesArr;
@@ -240,13 +240,13 @@ class OcrDoc extends BaseView {
                         </Row>
                       </Panel>
                     </Collapse>
-                    <Row justify="center">
+                    <Row justify="center" className={"margin-top-1r margin-bottom-1r"}>
                       <Col span={14}>
                         <Buttons 
                           text="提交/更新"
                           type={'primary'}
                           size={'small'}
-                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          style={{backgroundColor: '#9eea6a', color:'#333'}}
                           onClick={()=>{
                             self.submitMove()
                           }}/>
@@ -257,9 +257,9 @@ class OcrDoc extends BaseView {
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">门店地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.address}</Col>
-                          <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
+                          <Col span={24} className="font-size-default textclolor-white">门店地址</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low ">{detailData.address}</Col>
+                          <Col span={24} className="font-size-small textclolor-white margin-top-2" onClick={()=>{
                             this.openMap(detailData.latitude, detailData.longitude)
                           }}>点击查看地图</Col>
                         </Row>
@@ -273,9 +273,9 @@ class OcrDoc extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    
+                    hashHistory.goBack();
                   }}
                 />
               </Col>

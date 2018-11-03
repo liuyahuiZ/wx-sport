@@ -107,7 +107,7 @@ class PayDoc extends Component {
             {itm.img_group ? <img className='width-100'
         src={`${config.ROOT_URL}files/getTheImage?path=${'/uploads/'+itm.img_group[0].photopath}`}
           /> : ''}</Col>
-            <Col  className="padding-all font-size-8">{itm.info}</Col>
+            <Col  className="padding-all font-size-small">{itm.info}</Col>
           </Row>)
         });
 

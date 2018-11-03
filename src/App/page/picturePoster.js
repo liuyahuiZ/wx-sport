@@ -143,15 +143,15 @@ class ImgPoster extends BaseView {
                 <div className="float-left width-100 padding-all ">
                     <div className="float-left width-30">
                       <div className="float-left width-100 text-align-left textclolor-black-low line-height-25 textcolor-8EBF66">时长</div>
-                      <div className="float-left width-100 text-align-left textclolor-white font-size-12 line-height-25">{keepTimeM}分{keepTimeS}</div>
+                      <div className="float-left width-100 text-align-left textclolor-white font-size-normal line-height-25">{keepTimeM}分{keepTimeS}</div>
                     </div>
                     <div className="float-left width-30">
                       <div className="float-left width-100 text-align-center textclolor-black-low line-height-25 textcolor-8EBF66">动作</div>
-                      <div className="float-left width-100 text-align-center textclolor-white font-size-12 line-height-25">{'2 组'}</div>
+                      <div className="float-left width-100 text-align-center textclolor-white font-size-normal line-height-25">{'2 组'}</div>
                     </div>
                     <div className="float-left width-30">
                       <div className="float-left width-100 text-align-right textclolor-black-low line-height-25 textcolor-8EBF66">消耗</div>
-                      <div className="float-left width-100 text-align-right textclolor-white font-size-12 line-height-25">{query.keepTime*10}卡</div>
+                      <div className="float-left width-100 text-align-right textclolor-white font-size-normal line-height-25">{query.keepTime*10}卡</div>
                     </div>
                 </div>
               </div>

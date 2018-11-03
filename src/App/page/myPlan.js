@@ -31,6 +31,7 @@ class MyClassDetail extends BaseView {
           article: {},
           status: false,
           itmStatus: true,
+          mvVideo: '',
           detailData: {
             coursePlanDetails: {}
           }
@@ -41,8 +42,11 @@ class MyClassDetail extends BaseView {
     }
     getCoursePlan(){
       let obg = UrlSearch();
+      let userId = storage.getStorage('userId');
       const self = this;
+      Loade.show();
       coursePlan({
+        userId: userId,
         courseId: obg.courseId,
         nowSection: obg.nowSection,
       }).then((res)=>{
@@ -50,7 +54,8 @@ class MyClassDetail extends BaseView {
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
         self.setState({
-          detailData: data || {}
+          detailData: data || {},
+          mvVideo: data.mvUrl
         })
       }).catch((e)=>{
         Loade.hide();
@@ -106,7 +111,7 @@ class MyClassDetail extends BaseView {
 
     intensionPop(){
       Modal.alert({ title: '',
-          content: (<Row className="bg-1b1b1b font-size-8 padding-all" gutter={20} justify="center">
+          content: (<Row className="bg-1b1b1b font-size-small padding-all" gutter={20} justify="center">
             <Col span={13} className="bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 1-3 基本算不训练</Col>
             <Col span={11} className="bg-262626 textclolor-white border-radius-5f line-height-2r text-align-center">RPE 4 训练非常轻松</Col>
             <Col span={20} className="margin-top-2 bg-6bab3d border-radius-5f line-height-2r text-align-center">RPE 5 没有任何难度 热身完强度</Col>
@@ -130,9 +135,15 @@ class MyClassDetail extends BaseView {
           // self.goLink('/PicturePoster', {keepTime: obg.keepTime}); 
         });
     }
+    setVideo(itm){
+      console.log(itm);
+      this.setState({
+        mvVideo: itm.description
+      })
+    }
 
     render() {
-        const {detailData, status, itmStatus} = this.state;
+        const {detailData, status, itmStatus, mvVideo} = this.state;
         const self = this;
         const carouselMap = detailData&&detailData.imgUrlList ?  
         detailData.imgUrlList.map((itm, idx)=>{
@@ -148,42 +159,46 @@ class MyClassDetail extends BaseView {
         ];
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
-            return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
+            return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center" onClick={()=>{self.setVideo(itme)}}>
               <Col className="textclolor-white" span={8}>
-                <Row><Col>{itme.name}</Col><Col className={"font-size-8 textclolor-black-low"}>{itme.intension}分强度</Col></Row>
+                <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
               <Col className="textclolor-white" span={4}>
                 <Row>
-                  <Col className={"font-size-8 textclolor-black-low"}>重量kg</Col>
+                  <Col className={"font-size-small textclolor-black-low"}>重量kg</Col>
                   <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.weight}</Col>
                 </Row>
               </Col>
               <Col className="textclolor-white" span={3}>
-                <Row><Col className={"font-size-8 textclolor-black-low"}>组数</Col>
+                <Row><Col className={"font-size-small textclolor-black-low"}>组数</Col>
                 <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.groupNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={3}>
-                <Row><Col className={"font-size-8 textclolor-black-low"}>次数</Col>
+                <Row><Col className={"font-size-small textclolor-black-low"}>次数</Col>
                 <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.cycleNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={6}>
                 <Row>
-                  <Col className={"font-size-8 textclolor-black-low"}>持续时间</Col>
+                  <Col className={"font-size-small textclolor-black-low"}>持续时间</Col>
                   <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.time}</Col></Row>
               </Col>
             </Row>)
           }) : <div />;
           return (<Row key={`${idx}-stps`} className="padding-all bg-1B1B1B margin-top-2 border-radius-5f">
-          <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
-            <Row >
-              <Col className="text-align-center heighr-5 line-height-5r overflow-hide relative">
-               <span className="zindex-10 textclolor-white relative margin-top-2">{itm.name} ({itm.cycleNum})</span>
-               <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-               <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
-              </Col>
-            </Row>
-          </Col>
-          <Col>{itmDom}</Col>
+          <Collapse >
+            <Panel hideRight={true} title={<Row className="border-bottom border-color-333">
+                  <Col className="text-align-center heighr-5 line-height-5r overflow-hide relative">
+                  <span className="zindex-10 textclolor-white relative margin-top-2">{itm.name} {itm.cycleNum}轮</span>
+                  <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
+                  <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
+                  </Col>
+                </Row>}>
+              <Row>
+                <Col>{itmDom}</Col>
+              </Row>
+            </Panel>
+          </Collapse>
+          
       </Row>)
         }) : <div />
         return(
@@ -197,7 +212,7 @@ class MyClassDetail extends BaseView {
                 <Row className="" content="flex-start">
                   <Col>
                   <Row className="padding-all bg-000">
-                      <Col span={12} className="font-size-10 textclolor-white ">{detailData.courseName}</Col>
+                      <Col span={12} className="font-size-default textclolor-white ">{detailData.courseName}</Col>
                       <Col span={10} className="textclolor-white text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#fff'} /> {detailData.name} </Col>
                   </Row>
                   </Col>
@@ -210,7 +225,7 @@ class MyClassDetail extends BaseView {
                           text="强度表"
                           type={'primary'}
                           size={'small'}
-                          style={{backgroundColor: '#80EA46', color:'#333'}}
+                          style={{backgroundColor: '#9eea6a', color:'#333'}}
                           onClick={()=>{
                             self.intensionPop()
                           }}/>
@@ -237,18 +252,18 @@ class MyClassDetail extends BaseView {
               </Col>
               <Col className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
-                  <Col span={4} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-12"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
+                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
               { detailData&&detailData.mvUrl ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
-                src={detailData.mvUrl} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
+                src={mvVideo} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>: <div />}
               { detailData&&detailData.mvUrl ? <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
@@ -260,7 +275,7 @@ class MyClassDetail extends BaseView {
                   text="暂停"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop();
                     this.$$videos.pause();
@@ -270,7 +285,7 @@ class MyClassDetail extends BaseView {
                 text="开始"
                 type={'primary'}
                 size={'large'}
-                style={{backgroundColor: '#80EA46', color:'#333'}}
+                style={{backgroundColor: '#9eea6a', color:'#333'}}
                 onClick={()=>{
                   this.$$TimeRunner.start();
                   this.$$videos.play();
@@ -284,7 +299,7 @@ class MyClassDetail extends BaseView {
                   text="结束"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop()
                     this.submitClick()
@@ -296,7 +311,7 @@ class MyClassDetail extends BaseView {
                   text="开始训练"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     this.$$TimeRunner.start();
@@ -311,7 +326,7 @@ class MyClassDetail extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     hashHistory.goBack();

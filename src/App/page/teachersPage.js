@@ -170,28 +170,28 @@ class Teachers extends BaseView {
                 <Row className="margin-top-1r">
                     <Col span={8} className="zindex-10 text-align-left">
                         <Row>
-                            <Col className="font-size-8 textclolor-white">解答次数</Col>
+                            <Col className="font-size-small textclolor-white">解答次数</Col>
                             <Col >
-                              <span className="font-size-16 textcolor-79EF44">{teacherInfos.answerNum||0}</span>
-                              <span className="font-size-8 textclolor-black-low">次</span>
+                              <span className="font-size-large textcolor-79EF44">{teacherInfos.answerNum||0}</span>
+                              <span className="font-size-small textclolor-black-low">次</span>
                             </Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-center">
                         <Row>
-                            <Col className="font-size-8 textclolor-white">完成课程</Col>
+                            <Col className="font-size-small textclolor-white">完成课程</Col>
                             <Col className="">
-                              <span className="font-size-16 textcolor-79EF44">{teacherInfos.courseNum||0}</span>
-                              <span className="font-size-8 textclolor-black-low">个</span>
+                              <span className="font-size-large textcolor-79EF44">{teacherInfos.courseNum||0}</span>
+                              <span className="font-size-small textclolor-black-low">个</span>
                             </Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-right">
                         <Row>
-                            <Col className="font-size-8 textclolor-white">总用户</Col>
+                            <Col className="font-size-small textclolor-white">总用户</Col>
                             <Col className="">
-                              <span className="font-size-16 textcolor-79EF44">{teacherInfos.studentNum||0}</span>
-                              <span className="font-size-8 textclolor-black-low">人</span>
+                              <span className="font-size-large textcolor-79EF44">{teacherInfos.studentNum||0}</span>
+                              <span className="font-size-small textclolor-black-low">人</span>
                             </Col>
                         </Row>
                     </Col>

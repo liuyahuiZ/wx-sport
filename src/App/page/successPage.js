@@ -35,7 +35,6 @@ class Success extends BaseView {
     _viewAppear(){
       let userId = storage.getStorage('userId');
       const self = this;
-      console.log('123123')
       self.getClassDetail();
     }
            
@@ -55,9 +54,11 @@ class Success extends BaseView {
       courseDetail({id: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        self.setState({
-          detail: res.result
-        })
+        if(res.code>0&&res.result){
+          self.setState({
+            detail: res.result
+          })
+        }
       }).catch((err)=>{
         Loade.hide();
       })
@@ -129,7 +130,7 @@ class Success extends BaseView {
                   text={type=='registor' ? "返回" :'查看预约'}
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     if(type=='registor') {
                       hashHistory.goBack();

@@ -71,10 +71,10 @@ class OcrDoc extends BaseView {
             />
             <div className="has-header articles">
             <Row className="padding-all-1r " justify="center">
-              <Col span={24} className="font-size-12 line-height-4r ">
+              <Col span={24} className="font-size-normal line-height-4r ">
                {article.title}
               </Col>
-              <Col span={24} className="font-size-8 textcolor-aeaeae">
+              <Col span={24} className="font-size-small textcolor-aeaeae">
               {article.user} | {article.createTime}
               </Col>
               <Col className="margin-top-2 ">

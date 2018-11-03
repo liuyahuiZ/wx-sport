@@ -50,7 +50,7 @@ class Panel extends Component {
     }, 100);
   }
   render() {
-    const { children, title } = this.props;
+    const { children, title, hideRight } = this.props;
     const { contentStyle, offsetHeight, isFirst } = this.state;
     const self = this;
     const iconName = contentStyle === 'show' ? 'chevron-down' : 'chevron-right';
@@ -66,10 +66,10 @@ class Panel extends Component {
           style={styles.panelHeader} onClick={() => { this.changeActive(); }}
           ref={(r) => { self.$$panelHeader = r; }}
         >
-        <Row >
+        {hideRight ? title: <Row style={styles.hasPadding}>
           <Col span={20}>{title}</Col>
           <Col span={4} className="text-align-right"><Icon iconName={iconName} size={'100%'} style={styles.icon} /></Col>
-        </Row>
+        </Row> }
         </div>
         {content}
       </div>
@@ -79,12 +79,14 @@ class Panel extends Component {
 
 Panel.propTypes = {
   children: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(), PropTypes.func]),
-  title: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.string])
+  title: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.string]),
+  hideRight: PropTypes.bool
 };
 
 Panel.defaultProps = {
   children: [],
-  title: ''
+  title: '',
+  hideRight: false
 };
 
 

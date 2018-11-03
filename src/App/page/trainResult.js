@@ -136,11 +136,11 @@ class OcrDoc extends BaseView {
                  bgColor={'#333'} style={{height: '7px'}} barRoundStyle={{ 'width': '1.3rem','height': '1.3rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
                 onChange={(v)=>{ console.log(v); self.setValue('feelCore', v)}} barWidthDisable />
                   </Col>
-                  <Col span={4} className="textclolor-white font-size-8">轻松</Col>
-                  <Col span={5} className="text-align-center textclolor-white font-size-8">有点吃力</Col>
-                  <Col span={5} className="text-align-center textclolor-white font-size-8">吃力</Col>
-                  <Col span={5} className="text-align-center textclolor-white font-size-8">非常吃力</Col>
-                  <Col span={5} className="text-align-right font-size-8 textclolor-white">无法轻松</Col>
+                  <Col span={4} className="textclolor-white font-size-small">轻松</Col>
+                  <Col span={5} className="text-align-center textclolor-white font-size-small">有点吃力</Col>
+                  <Col span={5} className="text-align-center textclolor-white font-size-small">吃力</Col>
+                  <Col span={5} className="text-align-center textclolor-white font-size-small">非常吃力</Col>
+                  <Col span={5} className="text-align-right font-size-small textclolor-white">无法轻松</Col>
                 </Row>
               </Col>
               <Col className="margin-top-2 padding-all relative border-radius-5f overflow-hide bg-1B1B1B">
@@ -162,7 +162,7 @@ class OcrDoc extends BaseView {
 
               <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D" >
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
-                  <Col className="border-radius-6r font-size-8 overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
+                  <Col className="border-radius-6r font-size-small overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
                    <Row onClick={()=>{
                      this.$$img1.EditImg()
                    }}>
@@ -207,7 +207,7 @@ class OcrDoc extends BaseView {
 
               <Col className="margin-top-2 relative border-radius-5f overflow-hide bg-0D0D0D">
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
-                  <Col className="border-radius-6r font-size-8 overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
+                  <Col className="border-radius-6r font-size-small overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
                    <Row onClick={()=>{
                      this.$$img2.EditImg()
                    }}>
@@ -237,7 +237,7 @@ class OcrDoc extends BaseView {
                   text="打卡完成"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.submitTrain()
                   }}

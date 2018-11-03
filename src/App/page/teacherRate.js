@@ -6,7 +6,7 @@ import fetch from '../servise/fetch';
 import BaseView from '../core/app';
 import moment from 'moment';
 import { UrlSearch } from '../utils';
-import { userMark, userInfo } from '../api/classes';
+import { userMark, userInfo, courseDetail } from '../api/classes';
 
 const {
     Buttons,
@@ -29,15 +29,33 @@ class TeacherRate extends BaseView {
       this.state = {
           userInfo: {},
           resourceKey: '1',
-          js: 5,
-          bd: 5,
-          wg: 5
+          kcnd: {},
+          jjwt: {},
+          ywjd: {},
+          selectDay: {},
+          detailData: {}
       };
     }
 
     _viewAppear(){
       this.getUserInfo();
       this.initClander();
+      this.getClassDetail();
+    }
+
+    getClassDetail(){
+      let obg = UrlSearch();
+      const self = this;
+      Loade.show();
+      courseDetail({id: obg.courseId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        self.setState({
+          detailData: res.result
+        })
+      }).catch((err)=>{
+        Loade.hide();
+      })
     }
 
     initClander(){
@@ -79,7 +97,7 @@ class TeacherRate extends BaseView {
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let info = res.result;
         self.setState({
-          userInfo: info
+          userInfo: info || {}
         })
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: '获取教练信息失败', time: 3000 });
@@ -89,17 +107,20 @@ class TeacherRate extends BaseView {
     submitMark(){
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
-      const {js, bd, wg} = this.state;
+      const {kcnd, jjwt, ywjd, selectDay} = this.state;
       Loade.show();
       userMark({
         userId: obg.teacherId,
-        js: js,
-        bd: bd,
-        wg: wg
+        kcnd: kcnd.text,
+        jjwt: jjwt.text,
+        ywjd: ywjd.text,
+        courseId: obg.courseId,
+        onlineDate: selectDay.dateTime
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        Modal.alert({ title: '评分成功',
+        if(res.code>0){
+          Modal.alert({ title: '评分成功',
           content: "您对该教练评分成功!",
           btn: {
             text: '确定',
@@ -107,8 +128,9 @@ class TeacherRate extends BaseView {
             style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
           }, 
           type: 'large'
-        },
-        () => { console.log('nult callback'); });
+          },
+          () => { console.log('nult callback'); });
+        }
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -117,17 +139,17 @@ class TeacherRate extends BaseView {
         
 
     render() {
-        const { userInfo, js, bd, wg, dateArr, selectDay } = this.state;
+        const { userInfo, kcnd, jjwt, ywjd, dateArr, selectDay, detailData } = this.state;
         const self = this;
 
         const clenderDom = dateArr.length > 0 ? dateArr.map((itm, idx)=>{
           return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ console.log(itm); self.setState({'selectDay': itm}); }}>
-          <Row><Col className="font-size-8 textclolor-black-low text-align-center">{itm.dateName}</Col>
-          <Col className="font-size-8 textclolor-black-low text-align-center">
-          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-8 textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
+          <Row><Col className="font-size-small textclolor-black-low text-align-center">{itm.dateName}</Col>
+          <Col className="font-size-small textclolor-black-low text-align-center">
+          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
           </Col></Row>
           </Col>)
-        }) : <Col className="text-align-center font-size-8 textclolor-white line-height-2r">{loadText}</Col>;
+        }) : <Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col>;
 
         return(
           <section className="padding-all bg-000 minheight-100">
@@ -145,10 +167,10 @@ class TeacherRate extends BaseView {
                     <span className="zindex-10 textclolor-white">{userInfo.nickName}</span>
                   </Col>
                   <Col className="zindex-10 text-align-center ">
-                    <span className="zindex-10 font-size-8 textclolor-white">{userInfo.describe || '牛油果体适能训练营36期'}</span>
+                    <span className="zindex-10 font-size-small textclolor-white">{detailData.title || ''}</span>
                   </Col>
                   <Col className="zindex-10 text-align-center ">
-                    <span className="zindex-10 font-size-8 textclolor-white">{userInfo.describe || 'xxx'}</span>
+                    <span className="zindex-10 font-size-small textclolor-white">{detailData.startDate || ''}</span>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                   <div className="width-100 absolute-left zindex-6 heightp-100 bg bg1" />
@@ -158,44 +180,44 @@ class TeacherRate extends BaseView {
              
               <Col span={24} className="bg-1B1B1B margin-top-2 padding-top-2r padding-bottom-2r border-radius-5f">
                 <Row justify="center">
-                  <Col className="text-align-center textclolor-black-low font-size-8">我们希望获得您的反馈，以持续改善我们的计划内容</Col>
+                  <Col className="text-align-center textclolor-black-low font-size-small">我们希望获得您的反馈，以持续改善我们的计划内容</Col>
                   <Col span={22} className="border-bottom border-color-333 padding-bottom-1r">
                     <Row justify="center" className="margin-top-2">
                       <Col span={6}>
-                        <div className="margin-top-p4r font-size-8 textclolor-black-low text-align-center line-height-20">课程难度</div>
+                        <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">课程难度</div>
                       </Col>
                       <Col span={18}>
                         <TagRadio options={[{ value: 1, text: '简单', checked: true }, { value: 2, text: '中等' }, { value: 4, text: '困难' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
-                          // self.setValue('bd', v)
+                          self.setValue('kcnd', v)
                         }} />
                       </Col>
                     </Row>
                     <Row justify="center" className="margin-top-2">
                       <Col span={6}>
-                        <div className="margin-top-p4r  font-size-8 textclolor-black-low text-align-center line-height-20">讲解问题</div>
+                        <div className="margin-top-p4r  font-size-small textclolor-black-low text-align-center line-height-20">讲解问题</div>
                       </Col>
                       <Col span={18}>
                       <TagRadio options={[{ value: 1, text: '不清晰', checked: true }, { value: 2, text: '模糊' }, { value: 4, text: '清晰' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
-                          // self.setValue('bd', v)
+                          self.setValue('jjwt', v)
                         }} />
                       </Col>
                     </Row>
                     <Row justify="center" className="margin-top-2">
                       <Col span={6}>
-                        <div className="margin-top-p4r font-size-8 textclolor-black-low text-align-center line-height-20">疑问解答</div>
+                        <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">疑问解答</div>
                       </Col>
                       <Col span={18}>
                         <TagRadio options={[{ value: 1, text: '能', checked: true }, { value: 2, text: '基本可以' }, { value: 4, text: '不能' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
                           console.log(v)
-                          // self.setValue('bd', v)
+                          self.setValue('ywjd', v)
                         }} />
                       </Col>
                     </Row>
@@ -210,7 +232,7 @@ class TeacherRate extends BaseView {
                   text="确认提交"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.submitMark()
                   }}

@@ -110,12 +110,12 @@ class MyClassDetail extends BaseView {
                     <Col span={10} className="bg-8EBF66 text-align-center border-radius-5f line-height-2r">{itm.name}</Col>
                   </Row>
                 </Col>
-                <Col span={24} className="font-size-10 text-align-center line-height-2r textclolor-white">计划难度</Col>
-                <Col span={24} className="font-size-8 text-align-center textclolor-black-low ">{itm.description}</Col>
+                <Col span={24} className="font-size-default text-align-center line-height-2r textclolor-white">计划难度</Col>
+                <Col span={24} className="font-size-small text-align-center textclolor-black-low ">{itm.description}</Col>
               </Row>
             </Col>
         </Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>;
+        }) : <Row><Col className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</Col></Row>;
 
         return(
           <section className="padding-all bg-000">
@@ -127,7 +127,7 @@ class MyClassDetail extends BaseView {
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row className="padding-top-2" content="flex-start">
                   <Col span={1}></Col>
-                  <Col span={12} className="font-size-10 textclolor-white ">{detailData.name}</Col>
+                  <Col span={12} className="font-size-default textclolor-white ">{detailData.name}</Col>
                   <Col span={10} className="textclolor-333 text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#333'} /> {moment(detailData.createTime).format('YYYY-MM-DD')} </Col>
                   <Col className="bg-1B1B1B">
                     {stepDom}
@@ -148,7 +148,7 @@ class MyClassDetail extends BaseView {
                   text="暂停"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop();
                     this.$$videos.pause();
@@ -158,7 +158,7 @@ class MyClassDetail extends BaseView {
                 text="开始"
                 type={'primary'}
                 size={'large'}
-                style={{backgroundColor: '#80EA46', color:'#333'}}
+                style={{backgroundColor: '#9eea6a', color:'#333'}}
                 onClick={()=>{
                   this.$$TimeRunner.start();
                   this.$$videos.play();
@@ -172,7 +172,7 @@ class MyClassDetail extends BaseView {
                   text="结束"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop()
                     this.submitClick()
@@ -184,7 +184,7 @@ class MyClassDetail extends BaseView {
                   text="开始训练"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     this.$$TimeRunner.start();

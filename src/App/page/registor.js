@@ -118,6 +118,7 @@ class Registor extends BaseView {
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        hashHistory.goBack();
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -146,19 +147,19 @@ class Registor extends BaseView {
                   </Col>
                   <Col span={16}>
                     <Row justify="center">
-                        <Col span={9} onClick={()=>{self.setValue('active','man')}} className={`${active=='man'? 'bg-8EBF66 textclolor-333' : 'bg-000 textclolor-gray border-all border-color-e5e5e5'} margin-top-p4r font-size-8 text-align-center border-radius-6r line-height-20`}>
+                        <Col span={9} onClick={()=>{self.setValue('active','man')}} className={`${active=='man'? 'bg-8EBF66 textclolor-333' : 'bg-000 textclolor-gray border-all border-color-e5e5e5'} margin-top-p4r font-size-small text-align-center border-radius-6r line-height-25`}>
                             <Icon iconName="female" size={'130%'} iconColor={`${active=='man'? '#333': '#fff'}`} />
                             <span>男</span>
                         </Col>
                         <Col span={4}> </Col>
-                        <Col span={9} onClick={()=>{self.setValue('active','woman')}} className={`${active=='woman'? 'bg-8EBF66 textclolor-333' : 'bg-000 textclolor-gray border-all border-color-e5e5e5'} margin-top-p4r font-size-8 text-align-center border-radius-6r line-height-20`}>
+                        <Col span={9} onClick={()=>{self.setValue('active','woman')}} className={`${active=='woman'? 'bg-8EBF66 textclolor-333' : 'bg-000 textclolor-gray border-all border-color-e5e5e5'} margin-top-p4r font-size-small text-align-center border-radius-6r line-height-25`}>
                             <Icon iconName="male " size={'130%'} iconColor={`${active=='woman'? '#333': '#fff'}`} />
                             <span>女</span>
                         </Col>
                     </Row>
                   </Col>
                   {/* <Col className="zindex-10 text-align-center ">
-                    <span className="zindex-10 font-size-8 textclolor-white">{userInfo.describe || 'xxx'}</span>
+                    <span className="zindex-10 font-size-small textclolor-white">{userInfo.describe || 'xxx'}</span>
                   </Col> */}
                 </Row>
                 </TransAnimal>
@@ -172,7 +173,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入身高"
                         value={height}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('height',v)
@@ -187,7 +188,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入体重"
                         value={weight}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('weight',v)
@@ -202,7 +203,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入年"
                         value={year}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('year',v)
@@ -213,7 +214,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="月"
                         value={month}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('month',v)
@@ -224,7 +225,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="日"
                         value={day}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('day',v)
@@ -239,7 +240,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入电话"
                         value={phone}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('phone',v)
@@ -254,7 +255,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入伤病历史"
                         value={history}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('history',v)
@@ -269,7 +270,7 @@ class Registor extends BaseView {
                     <Input
                         placeholder="请输入运动经验"
                         value={expeirence}
-                        innerStyle={{"backgroundColor":"#1B1B1B","color":"#fff"}}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
                         maxLength={100}
                         onChange={(e,t,v)=>{
                             self.setValue('expeirence',v)
@@ -284,7 +285,7 @@ class Registor extends BaseView {
                   text="注 册"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.submitMark()
                   }}

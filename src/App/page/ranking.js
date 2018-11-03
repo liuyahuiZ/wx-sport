@@ -37,6 +37,9 @@ class OcrDoc extends Component {
       this.setState({
         status: nextProps.status
       })
+      if(nextProps.status){
+        this.getMark()
+      }
     }
         
     goLink(link){
@@ -45,56 +48,24 @@ class OcrDoc extends Component {
       }
     }
     loadmore(){
-      console.log('load...');
       const self = this;
       // 'loading' 'loaded' 'canload'
       self.setState({
         enableLoad: 'loading'
       })
-      // self.getProduct();
     }
     getMark(){
       const self = this;
       userMarkRate({limit: 4}).then((res)=>{
-        console.log(res);
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
-        self.setState({
-          markList: data
-        })
+        if(res.code>0&&res.result) {
+          self.setState({
+            markList: data
+          })
+        }
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
-      })
-    }
-    getProduct(){
-      const {currentPage, pageSize, productList} = this.state;
-      const self = this;
-      let reqbody={
-        "currentPage" : currentPage,
-        "pageSize": pageSize,
-      }
-      fetch( config.ROOT_URL+ 'article/getArticle', { method: 'POST', data: reqbody})
-      .then(data => {
-          console.log(data)
-          let page =  currentPage;
-          let products = productList;
-          let enableLoad = 'loading';
-          if(data.respHead.code=='0000'){
-            products = products.concat(data.respBody.list);
-            if( products.length >= data.respBody.pageInfo.allCount ) {
-              enableLoad = 'loaded'
-            } else{
-              page = currentPage + 1;
-              enableLoad = 'canload';
-            }
-            self.setState({
-              productList: products,
-              enableLoad: enableLoad,
-              currentPage: page
-            })
-          }else{
-
-          }
       })
     }
     
@@ -113,7 +84,7 @@ class OcrDoc extends Component {
             />
             </div>
             </Col>
-            <Col span={14} className="textclolor-white font-size-9 margin-top-3">
+            <Col span={14} className="textclolor-white font-size-default margin-top-3">
               <Row>
                 <Col>{itm.nick_name}</Col>
                 <Col className="font-size-7 textcolor-aeaeae">运动量{itm.sumMark}h</Col>

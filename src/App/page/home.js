@@ -81,6 +81,9 @@ class HomeDoc extends BaseView {
       this.setState({
         status: nextProps.status
       })
+      if(nextProps.status){
+        this._viewAppear()
+      }
     }
 
     loadFunc(){
@@ -118,14 +121,14 @@ class HomeDoc extends BaseView {
               <Row>
                   <Col span={19}>
                     <Row>
-                      <Col className="font-size-12 textclolor-white">{itm.title}</Col>
-                      <Col className="font-size-8 textclolor-white">{itm.smallTitle}</Col>
+                      <Col className="font-size-big textclolor-white">{itm.title}</Col>
+                      <Col className="font-size-small textclolor-white">{itm.smallTitle}</Col>
                     </Row>
                   </Col>
               </Row>
             </Col>
           </Row>)
-        }) : <Row ><Col className="text-align-center font-size-8 textclolor-white line-height-2r">{loadText}</Col></Row>;
+        }) : <Row ><Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col></Row>;
       return(
           <section className="padding-all bg-000">
               {/* <Carousel options={bannerList} containerStyle={{borderRadius: '0.5rem', height:'5rem', backgroundColor: '#333'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble /> */}

@@ -31,7 +31,7 @@ class OcrDoc extends BaseView {
           dataDetail: {},
           subjectId: obg.subjectId,
           chosePlanTypeId: '',
-          difficulty: 50
+          difficulty: 0
       };
     }
     _viewAppear(){
@@ -45,8 +45,8 @@ class OcrDoc extends BaseView {
         let data = res.result;
         if(JSON.stringify(data)!=='{}'){
           self.setState({
-            dataDetail: data,
-            difficulty: 50 || data.difficuity
+            dataDetail: data || {},
+            difficulty: data.difficuity
           })
           sessions.setStorage('nowSubject', data);
         } else {
@@ -102,19 +102,23 @@ class OcrDoc extends BaseView {
             carouselMap.push({tabName: `f-${i}`, content: (<img alt="text" src={dataDetail.slideImgUrlList[i]} />), isActive: true })
           }
         }
-        const stepArr = JSON.stringify(dataDetail)!=='{}' ? dataDetail.step.split('|'): [];
+        const stepArr = JSON.stringify(dataDetail)!=='{}'&&dataDetail ? dataDetail.step.split('|'): [];
 
         const stepDom = stepArr.length > 0 ? stepArr.map((itm, idx)=>{
           const botIcon = idx === (stepArr.length-1) ? '' : 
           (<Icon iconName={'android-arrow-dropdown '} className="nopadding" size={'150%'} iconColor={'#000'} />)
           return (<Row justify='center' key={`stp-${idx}`}>
           <Col span={18} className="bg-000 padding-all border-radius-6r overflow-hide">
-              <Row justify='center'>
+              <div className="text-align-center">
+                <span className="display-inline-block bg-8EBF66 font-size-small textclolor-white small-round text-align-center border-radius-100">{idx+1}</span>
+                <span className="display-inline-block font-size-small textclolor-black-low padding-left-3">{itm}</span>
+              </div>
+              {/* <Row justify='center'>
                 <Col span={3} className="textclolor-white ">
-                  <div className="bg-8EBF66 font-size-8 textclolor-white small-round text-align-center border-radius-100">{idx+1}</div>
+                  <span className="bg-8EBF66 font-size-small textclolor-white small-round text-align-center border-radius-100">{idx+1}</span>
                 </Col>
-                <Col span={11} className="font-size-8 textclolor-black-low text-align-left">{itm}</Col>
-              </Row>
+                <Col span={11} className="font-size-small textclolor-black-low text-align-left">{itm}</Col>
+              </Row> */}
           </Col>
           <Col className="text-align-center heighr-1 line-height-1r margin-bottom-1">{botIcon} </Col>
         </Row>)
@@ -133,7 +137,7 @@ class OcrDoc extends BaseView {
         }) : <div />;
         
         const poepleFirst = dataDetail&&dataDetail.fitPeoples ? dataDetail.fitPeoples.map((itm, idx)=>{
-          return <span key={`${idx}-sp`} className={"padding-all-2 bg-8EBF66 border-radius-5f margin-right-1 font-size-8"}>{itm}</span>
+          return <span key={`${idx}-sp`} className={"padding-all-2 bg-8EBF66 border-radius-5f margin-right-1 font-size-small"}>{itm}</span>
         }) : '';
         return(
           <section className="padding-all bg-000">
@@ -145,56 +149,56 @@ class OcrDoc extends BaseView {
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row content="flex-start">
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-list '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-12 textclolor-white line-height-4r ">训练计划简介</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">训练计划简介</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
-                      <Col span={24} className="font-size-8 textclolor-black-low margin-bottom-3 ">
+                      <Col span={24} className="font-size-small textclolor-black-low margin-bottom-3 ">
                       {dataDetail.intro}
                       </Col>                    
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">适用人群</Col>
-                          <Col span={24} className="font-size-8 textclolor-333 padding-top-1r padding-bottom-1r">{poepleFirst}</Col>
+                          <Col span={24} className="font-size-default textclolor-white">适用人群</Col>
+                          <Col span={24} className="font-size-small textclolor-333 padding-top-1r padding-bottom-1r">{poepleFirst}</Col>
                         </Row>
                       </Col>
 
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">计划难度</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low padding-all">
+                          <Col span={24} className="font-size-default textclolor-white">计划难度</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low padding-all">
                           <ProgressDrag percent={difficulty} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
                           bgColor={'#333'} style={{height: '5px'}} barRoundStyle={{ 'width': '1.1rem','height': '1.1rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
                           onChange={(v)=>{ console.log(v); self.setState({difficulty: v})}} barWidthDisable />
                           </Col>
-                          <Col span={8} className="text-align-left font-size-8 textclolor-black-low">简单</Col>
-                          <Col span={8} className="text-align-center font-size-8 textclolor-black-low">一般</Col>
-                          <Col span={8} className="text-align-right font-size-8 textclolor-black-low">复杂</Col>
+                          <Col span={8} className="text-align-left font-size-small textclolor-black-low">简单</Col>
+                          <Col span={8} className="text-align-center font-size-small textclolor-black-low">一般</Col>
+                          <Col span={8} className="text-align-right font-size-small textclolor-black-low">复杂</Col>
                         </Row>
                       </Col>
                       {/* <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">训练费用</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">￥{(obg.price/100).toFixed(2)}</Col>
+                          <Col span={24} className="font-size-default textclolor-white">训练费用</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low ">￥{(obg.price/100).toFixed(2)}</Col>
                         </Row>
                       </Col> */}
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-12 textclolor-white line-height-4r ">注意事项</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">注意事项</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
-                      <Col className="font-size-8 textclolor-black-low ">{dataDetail.ps}</Col>
+                      <Col className="font-size-small textclolor-black-low ">{dataDetail.ps}</Col>
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-12 textclolor-white line-height-4r ">养身计划</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">养身计划</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row gutter={8}>
                       {bodyPlanDom}
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-12 textclolor-white line-height-4r ">健身步骤</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">健身步骤</Col>
                   <Col className="bg-1B1B1B padding-all">
                     { stepDom }
                     <Row>
@@ -205,7 +209,7 @@ class OcrDoc extends BaseView {
                       }}
                       ref={(r) => { this.$$checkbox1 = r; }}
                       /></Col>
-                      <Col span={21} className="textclolor-black-low line-height-2r font-size-8" onClick={()=>{
+                      <Col span={21} className="textclolor-black-low line-height-2r font-size-small" onClick={()=>{
                         this.goLink('/ParqPage')
                       }}>购买训练计划前，需要执行阅读 风险PAR-Q 要求</Col>
                     </Row>
@@ -217,7 +221,7 @@ class OcrDoc extends BaseView {
                   text={`立即预约`}
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     // this.undefindOrder()
                     self.doPlan()

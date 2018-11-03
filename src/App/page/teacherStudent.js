@@ -124,8 +124,8 @@ class TeacherStudent extends BaseView {
           return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
           onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
               <Row>
-                  <Col span={12} className="zindex-10 font-size-12 text-align-left">{itm.name}</Col>
-                  <Col span={12} className="zindex-10 font-size-8 text-align-right line-height-2r">{itm.date}</Col>
+                  <Col span={12} className="zindex-10 font-size-normal text-align-left">{itm.name}</Col>
+                  <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
               </Row>
               <Row className="">
                   <Col span={8} className="zindex-10 text-align-right margin-top-2">
@@ -137,14 +137,14 @@ class TeacherStudent extends BaseView {
                   </Col>
                   <Col span={8} className="zindex-10 text-align-left margin-top-1r">
                       <Row>
-                          <Col className="font-size-8">训练天数</Col>
-                          <Col className="font-size-16">{itm.trainingDays}</Col>
+                          <Col className="font-size-small">训练天数</Col>
+                          <Col className="font-size-large">{itm.trainingDays}</Col>
                       </Row>
                   </Col>
                   <Col span={8} className="zindex-10 text-align-center margin-top-1r">
                       <Row>
-                          <Col className="font-size-8">完成比例</Col>
-                          <Col className="font-size-16">{computed.accMul(itm.completePercent||0, 100)}%</Col>
+                          <Col className="font-size-small">完成比例</Col>
+                          <Col className="font-size-large">{computed.accMul(itm.completePercent||0, 100)}%</Col>
                       </Row>
                   </Col>
               </Row>

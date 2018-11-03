@@ -35,12 +35,14 @@ class PersonalFiles extends BaseView {
       userGatherInfo({
         userId: userId,
       }).then((res)=>{
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
-        self.setState({
-          trateInfo: data
-        })
         Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        if(res.code>0&&res.result){
+          let data = res.result;
+          self.setState({
+            trateInfo: data
+          })
+        }
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -58,16 +60,16 @@ class PersonalFiles extends BaseView {
         const topDom = trateInfo&&trateInfo.top4 ? trateInfo.top4.map((itm,idx)=>{
           return (<Row className="images-half float-left" key={`rs-${idx}`}>
             <Col span={4}><div className="icon icon-sport margin-top-p4r" /></Col>
-            <Col span={20} className="font-size-8 textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
+            <Col span={20} className="font-size-small textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
           </Row>)
-        }) :  <div className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</div>;
+        }) :  <div className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</div>;
 
         const otherDom = trateInfo&&trateInfo.other ? trateInfo.other.map((itm,idx)=>{
           return (<Row className="images-33 float-left padding-all" key={`rsd-${idx}`}>
-            <Col className="font-size-8 textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
+            <Col className="font-size-small textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
             <Col><div className="icon icon-boy margin-top-p4r" /></Col>
         </Row>)
-        }) :  <div className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</div>;
+        }) :  <div className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</div>;
 
         return(
           <section className="padding-all bg-000 minheight-100">
@@ -93,9 +95,9 @@ class PersonalFiles extends BaseView {
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     {/* <Row>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">粉丝 173人</span></Col>
-                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-8 textclolor-white">关注 26人</span></Col>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
+                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-small textclolor-white">粉丝 173人</span></Col>
+                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-small textclolor-white">关注 26人</span></Col>
+                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-small textclolor-white">积分 290</span></Col>
                     </Row> */}
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
@@ -111,8 +113,8 @@ class PersonalFiles extends BaseView {
               </Col>
               <Col span={24} className="bg-1B1B1B margin-top-1r border-radius-5f">
                 <Row className="bg-0D0D0D">
-                  <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>初试成绩 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
-                  <Col span={12} className="padding-all font-size-9 textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>当前成绩 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
+                  <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>初试成绩 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
+                  <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>当前成绩 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
                 </Row>
                {otherDom}
               </Col>
@@ -121,7 +123,7 @@ class PersonalFiles extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     hashHistory.goBack();
                   }}

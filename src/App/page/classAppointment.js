@@ -7,6 +7,7 @@ import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { getToken } from '../api/index';
 import { teacherSignInPage } from '../api/subject';
+import { courseDetail } from '../api/classes';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -36,6 +37,7 @@ class OcrDoc extends BaseView {
     _viewAppear(){
       this.checkRedct();
       this.getSignedList();
+      this.getClassDetail();
     }
 
     checkRedct(){
@@ -76,6 +78,21 @@ class OcrDoc extends BaseView {
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
       })
     }
+
+    getClassDetail(){
+      let obg = UrlSearch();
+      const self = this;
+      Loade.show();
+      courseDetail({id: obg.id}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        self.setState({
+          detailData: res.result
+        })
+      }).catch((err)=>{
+        Loade.hide();
+      })
+    }
     
     getSignedList(){
       const self = this;
@@ -85,7 +102,7 @@ class OcrDoc extends BaseView {
       teacherSignInPage({courseId: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        if(res.code>0){
+        if(res.code>0&&res.result){
           let data = res.result;
           self.setState({
             detailData: data
@@ -131,17 +148,17 @@ class OcrDoc extends BaseView {
               <img className='width-100 middle-round-3 overflow-hide border-radius-6r' src={itm} />
             </Col>
           </Row>)
-        }) : <Row><Col className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</Col></Row>
+        }) : <Row><Col className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</Col></Row>
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30 border-all border-color-000">
                 <Row className="padding-all" justify="center" >
-                  <Col className="zindex-10 text-align-center font-size-12 textclolor-white">{detailData.course.title||''}</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">{startDate} {detailData.course.startTime||''}-{detailData.course.endTime||''}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low margin-top-2">扫码签到</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
+                  <Col className="zindex-10 text-align-center font-size-normal textclolor-white">{detailData&&detailData.course&&detailData.course.title||''}</Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">{startDate} {detailData&&detailData.course&&detailData.course.startTime||''}-{detailData&&detailData.course&&detailData.course.endTime||''}</Col>
+                  <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://avocadomethod.cn:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low margin-top-2">扫码签到</Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
@@ -152,9 +169,8 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Row content="flex-start">
                       <Col span={1}></Col>
-                      <Col span={11} className="font-size-10 textclolor-white line-height-2r ">预约人数</Col>
-                      <Col span={10} className="font-size-8 textclolor-white text-align-right line-height-2r ">查看更多</Col>
-                      <Col span={2} className="line-height-2r"><Icon iconName={'chevron-right '} size={'90%'} iconColor={'#333'} /></Col>
+        <Col span={11} className="font-size-default textclolor-white line-height-2r ">预约人数 ({detailData&&detailData.course? `${detailData.course.currentPeople}/${detailData.course.maxPeople}` : ''})</Col>
+                      <Col span={10} className="font-size-small textclolor-white text-align-right line-height-2r "></Col>
                     </Row>
                   </Col>
                   <Col className="bg-1B1B1B padding-all">
@@ -162,19 +178,17 @@ class OcrDoc extends BaseView {
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">课程</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.title||''}</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">课程详情再“我的”页面中查看</Col>
-                        </Row>
-                      </Col>
-
-                      <Col span={24} className="margin-top-2" >
-                        <Row>
-                          <Col span={24} className="font-size-10 textclolor-white">地址</Col>
-                          <Col span={24} className="font-size-8 textclolor-black-low ">{detailData.course.address||''}</Col>
-                          <Col span={24} className="font-size-10 textclolor-white margin-top-2" onClick={()=>{
+                          <Col span={24} className="font-size-default textclolor-white">门店地址</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.address||''}</Col>
+                          <Col span={24} className="font-size-small textclolor-white margin-top-2" onClick={()=>{
                             this.openMap(detailData.course.latitude, detailData.course.longitude)
                           }}>点击查看地图</Col>
+                        </Row>
+                      </Col>
+                      <Col span={24} className="margin-top-2" >
+                        <Row>
+                          <Col span={24} className="font-size-default textclolor-white">课程教案</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.title||''}</Col>
                         </Row>
                       </Col>
                     </Row>
@@ -183,10 +197,10 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-3">
                 <Buttons
-                  text="确认提交"
+                  text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     
                   }}

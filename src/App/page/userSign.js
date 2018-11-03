@@ -100,14 +100,14 @@ class UserSignd extends BaseView {
     render() {
         const {detailData, userInfo, courseDetial} = this.state;
         let obg = UrlSearch();
+        const self = this;
         let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
-        console.log(userInfo);
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" align="center" content="flex-start">
               <Col className="border-radius-5f overflow-hide relative minheight-20 border-all border-color-000">
                 <Row className="padding-all margin-top-5r" justify="center" >
-                  <Col className="zindex-10 text-align-left font-size-12 textclolor-white">{courseDetial.title || '塑形训练课'}</Col>
+                  <Col className="zindex-10 text-align-left font-size-normal textclolor-white">{courseDetial.title || '塑形训练课'}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
@@ -130,14 +130,14 @@ class UserSignd extends BaseView {
                       </Col>
                       <Col span={24} className="margin-top-2 border-bottom border-color-333" >
                         <Row className="line-height-3r">
-                          <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'android-time '} size={'140%'} iconColor={'#fff'} /></Col>
-                          <Col span={20} className="font-size-8 textclolor-white ">时间：{courseDetial.startDate}</Col>
+                          <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'android-time '} size={'140%'} iconColor={'#fff'} /></Col>
+                          <Col span={20} className="font-size-small textclolor-white ">时间：{courseDetial.startDate}</Col>
                         </Row>
                       </Col>
                       <Col span={24} className="margin-top-2" >
                         <Row className="line-height-3r">
-                          <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'ios-location '} size={'140%'} iconColor={'#fff'} /></Col>
-                          <Col span={20} className="font-size-8 textclolor-white ">门店地址：{courseDetial.address}</Col>
+                          <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'ios-location '} size={'140%'} iconColor={'#fff'} /></Col>
+                          <Col span={20} className="font-size-small textclolor-white ">门店地址：{courseDetial.address}</Col>
                         </Row>
                       </Col>
                     </Row>
@@ -146,12 +146,12 @@ class UserSignd extends BaseView {
                 <Row>
                   <Col span={24} className="margin-top-2 bg-000" >
                     <Row className="line-height-3r">
-                      <Col span={3} className="font-size-10 textclolor-white"><Icon iconName={'briefcase '} size={'140%'} iconColor={'#fff'} /></Col>
-                      <Col span={20} className="font-size-8 textclolor-white font-size-12">课程准备</Col>
+                      <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'briefcase '} size={'140%'} iconColor={'#fff'} /></Col>
+                      <Col span={20} className="font-size-small textclolor-white font-size-normal">课程准备</Col>
                     </Row>
                   </Col>
                   <Col className="bg-0D0D0D padding-all">
-                      <div className="font-size-8 textclolor-black-low">{courseDetial.prepare}</div>
+                      <div className="font-size-small textclolor-black-low">{courseDetial.prepare}</div>
                   </Col>
                 </Row>
               </Col>
@@ -162,7 +162,7 @@ class UserSignd extends BaseView {
                   text="取消课程"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     
                   }}
@@ -173,7 +173,7 @@ class UserSignd extends BaseView {
                   text="课程改期"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     
                   }}
@@ -184,9 +184,10 @@ class UserSignd extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    hashHistory.goBack();
+                    // hashHistory.goBack();
+                    self.goLink('/Tab')
                   }}
                 />
               </Col>

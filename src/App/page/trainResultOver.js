@@ -79,7 +79,7 @@ class TrainResultOver extends BaseView {
                   <div className="icon middle icon-result" />
                   </Col>
                   <Col className="zindex-10 text-align-center textclolor-white margin-top-1r">恭喜你完成训练</Col>
-                  <Col className="zindex-10 text-align-center font-size-8 textclolor-white">{nowTime}</Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-white">{nowTime}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-1 heightp-100 absolute-left zindex-9"></div>
                 <div className="width-100 absolute-left zindex-6 heightp-100 bg bg2"  />
@@ -95,8 +95,8 @@ class TrainResultOver extends BaseView {
                   </Col>
                   <Col span={12} className="textclolor-white ">
                     <Row>
-                      <Col className="textclolor-white font-size-16 line-height-3r">你很棒哦！</Col>
-                      <Col  className="textclolor-white font-size-8 textclolor-black-low">不断坚持，才能靠近梦想</Col>
+                      <Col className="textclolor-white font-size-large line-height-3r">你很棒哦！</Col>
+                      <Col  className="textclolor-white font-size-small textclolor-black-low">不断坚持，才能靠近梦想</Col>
                     </Row>
                   </Col>
                 </Row>
@@ -107,7 +107,7 @@ class TrainResultOver extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     self.goLink('/Tab', {tab: 3}); 
                   }}

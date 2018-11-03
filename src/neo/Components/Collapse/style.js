@@ -19,13 +19,15 @@ export default {
   panelHeader: {
     float: 'left',
     position: 'relative',
-    padding: '5px',
     cursor: 'pointer',
     width: '100%',
     zIndex: '10',
     boxSizing: 'border-box',
     color: '#fff',
     backgroundColor: '#000'
+  },
+  hasPadding:{
+    padding: '5px',
   },
   show: {
     width: '100%',

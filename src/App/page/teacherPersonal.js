@@ -96,16 +96,16 @@ class PersonalFiles extends BaseView {
         const topDom = trateInfo&&trateInfo.top4 ? trateInfo.top4.map((itm,idx)=>{
           return (<Row className="images-half float-left" key={`rs-${idx}`}>
             <Col span={4}><div className="icon icon-sport margin-top-p4r" /></Col>
-            <Col span={20} className="font-size-8 textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
+            <Col span={20} className="font-size-small textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
           </Row>)
-        }) :  <div className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</div>;
+        }) :  <div className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</div>;
 
         const otherDom = trateInfo&&trateInfo.other ? trateInfo.other.map((itm,idx)=>{
           return (<Row className="images-33 float-left padding-all" key={`rsd-${idx}`}>
-            <Col className="font-size-8 textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
+            <Col className="font-size-small textclolor-black-low line-height-2r">{JSON.stringify(itm)}</Col>
             <Col><div className="icon icon-boy margin-top-p4r" /></Col>
         </Row>)
-        }) :  <div className="text-align-center font-size-8 textclolor-white line-height-4r">暂无数据</div>;
+        }) :  <div className="text-align-center font-size-small textclolor-white line-height-4r">暂无数据</div>;
 
         return(
           <section className="padding-all bg-000 minheight-100">
@@ -131,9 +131,9 @@ class PersonalFiles extends BaseView {
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
                     {/* <Row>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">粉丝 173人</span></Col>
-                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-8 textclolor-white">关注 26人</span></Col>
-                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-8 textclolor-white">积分 290</span></Col>
+                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-small textclolor-white">粉丝 173人</span></Col>
+                      <Col span={8} className="text-align-center border-left border-right border-color-fff heighr-1 line-height-1r"><span className="font-size-small textclolor-white">关注 26人</span></Col>
+                      <Col span={8} className="text-align-center line-height-1r"><span className="font-size-small textclolor-white">积分 290</span></Col>
                     </Row> */}
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
@@ -195,7 +195,7 @@ class PersonalFiles extends BaseView {
                   text="提交"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     hashHistory.goBack();
                   }}

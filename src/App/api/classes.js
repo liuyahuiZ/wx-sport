@@ -250,6 +250,17 @@ export function userMoves(req){
     })
 }
 
+export function userMsgCount(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `user/msgCount`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
 
 export function courselastKeep(req){
     return new Promise((resolve, reject)=>{

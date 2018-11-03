@@ -31,10 +31,26 @@ class Appointment extends Component {
     componentDidMount(){
         this.getMyClass()
     }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+          status: nextProps.status
+        })
+        const self = this;
+        if(nextProps.status){
+            this.setState({
+                userInfo: storage.getStorage('userInfo')||{},
+            },()=>{
+                self.getMyClass()
+            })
+            
+        }
+    }
     getMyClass(){
         const self = this;
+        let userId = storage.getStorage('userId');
+        if(!userId) { return; }
         myClass({
-            userId: storage.getStorage('userId')
+            userId: userId
         }).then((res)=>{
             if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
             let data = res.result;
@@ -75,33 +91,33 @@ class Appointment extends Component {
             return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
             onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>
-                    <Col span={12} className="zindex-10 font-size-12 text-align-left">{itm.name}</Col>
-                    <Col span={12} className="zindex-10 font-size-8 text-align-right line-height-2r">{itm.date}</Col>
+                    <Col span={12} className="zindex-10 font-size-normal text-align-left">{itm.name}</Col>
+                    <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
                 </Row>
                 <Row className="margin-top-1r">
                     <Col span={8} className="zindex-10 text-align-left">
                         <Row>
-                            <Col className="font-size-8">训练天数</Col>
-                            <Col className="font-size-16">{itm.trainingDays}</Col>
+                            <Col className="font-size-small">训练天数</Col>
+                            <Col className="font-size-large">{itm.trainingDays}</Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-center">
                         <Row>
-                            <Col className="font-size-8">完成比例</Col>
-                            <Col className="font-size-16">{computed.accMul(itm.completePercent||0, 100).toFixed(2)}%</Col>
+                            <Col className="font-size-small">完成比例</Col>
+                            <Col className="font-size-large">{computed.accMul(itm.completePercent||0, 100).toFixed(2)}%</Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-right">
                         <Row>
-                            <Col className="font-size-8">训练时常/分钟</Col>
-                            <Col className="font-size-16">{`${parseInt(itm.trainingMinutes/60)}:${parseInt(itm.trainingMinutes%60)}`}</Col>
+                            <Col className="font-size-small">训练时常/分钟</Col>
+                            <Col className="font-size-large">{`${parseInt(itm.trainingMinutes/60)}:${parseInt(itm.trainingMinutes%60)}`}</Col>
                         </Row>
                     </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
                 <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
             </div>)
-        }) : <Row ><Col className="text-align-center font-size-8 textclolor-white line-height-2r">{loadText}</Col></Row>;
+        }) : <Row ><Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col></Row>;
         return(
           <section className="bg-000 minheight-90">
             <div className="padding-all minheight-100">
@@ -112,7 +128,7 @@ class Appointment extends Component {
                   <Col span={8}>
                     <Row>
                         <Col className={"text-align-center font-size-26 textclolor-white"}>{dataDetail.mySignInCount||0}</Col>
-                        <Col className={"text-align-center font-size-8 textclolor-black-low"}>累计打卡/天</Col>
+                        <Col className={"text-align-center font-size-small textclolor-black-low"}>累计打卡/天</Col>
                     </Row>
                   </Col>
                   <Col span={8} className="text-align-center zindex-10">
@@ -124,7 +140,7 @@ class Appointment extends Component {
                   <Col span={8}>
                     <Row>
                         <Col className={"text-align-center font-size-26 textclolor-white"}>{dataDetail.myCompletedPlanCount||0}</Col>
-                        <Col className={"text-align-center font-size-8 textclolor-black-low"}>累计完成计划/天</Col>
+                        <Col className={"text-align-center font-size-small textclolor-black-low"}>累计完成计划/天</Col>
                     </Row>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
@@ -136,7 +152,7 @@ class Appointment extends Component {
             <div className='margin-top-2 border-radius-5f overflow-hide bg-0D0D0D '>
             <Row content="flex-start">
                 <Col span={1} className="line-height-2r "></Col>
-                <Col span={22} className="font-size-10 textclolor-white line-height-2r ">计划记录</Col>
+                <Col span={22} className="font-size-default textclolor-white line-height-2r ">计划记录</Col>
                 <Col className="bg-1B1B1B padding-all">
                     {appintArrDom}
                 </Col>

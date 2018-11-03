@@ -68,6 +68,7 @@ class MyPlanRecode extends BaseView {
     getCoursePlan(itm){
       const self = this;
       coursePlanRecordsDetail({
+        userId: storage.getStorage('userId'),
         planId: itm.planId,
         feedbackId: itm.id,
         courseId: itm.courseId
@@ -142,26 +143,26 @@ class MyPlanRecode extends BaseView {
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
             return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
               <Col className="textclolor-white" span={8}>
-                <Row><Col>{itme.name}</Col><Col className={"font-size-8 textclolor-black-low"}>{itme.intension}分强度</Col></Row>
+                <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
               <Col className="textclolor-white" span={4}>
                 <Row>
-                  <Col className={"font-size-8 textclolor-black-low"}>重量kg</Col>
-                  <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.weight}</Col>
+                  <Col className={"font-size-small textclolor-black-low"}>重量kg</Col>
+                  <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{itme.weight}</Col>
                 </Row>
               </Col>
               <Col className="textclolor-white" span={3}>
-                <Row><Col className={"font-size-8 textclolor-black-low"}>组数</Col>
-                <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.groupNum}</Col></Row>
+                <Row><Col className={"font-size-small textclolor-black-low"}>组数</Col>
+                <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{itme.groupNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={3}>
-                <Row><Col className={"font-size-8 textclolor-black-low"}>次数</Col>
-                <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.cycleNum}</Col></Row>
+                <Row><Col className={"font-size-small textclolor-black-low"}>次数</Col>
+                <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{itme.cycleNum}</Col></Row>
               </Col>
               <Col className="textclolor-white" span={6}>
                 <Row>
-                  <Col className={"font-size-8 textclolor-black-low"}>持续时间</Col>
-                  <Col className={"padding-all-2 font-size-12 border-radius-5f textcolor-8EBF66"}>{itme.time}</Col></Row>
+                  <Col className={"font-size-small textclolor-black-low"}>持续时间</Col>
+                  <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{itme.time}</Col></Row>
               </Col>
             </Row>)
           }) : <div />;
@@ -177,7 +178,7 @@ class MyPlanRecode extends BaseView {
           </Col>
           <Col className="bg-000 line-height-3r"> 
             <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
-            <span className="textcolor-8EBF66 font-size-12 margin-right-1">{itm.restTime}</span>
+            <span className="textcolor-8EBF66 font-size-normal margin-right-1">{itm.restTime}</span>
             <span className="textclolor-black-low">每个动作之间休息时间</span>
           </Col>
           <Col>{itmDom}</Col>
@@ -224,12 +225,12 @@ class MyPlanRecode extends BaseView {
               </Col>
               <Col className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row className="padding-all">
-                  <Col span={4} className={"textclolor-black-low text-align-center font-size-8"}>动作总数</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>训练时间</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-8"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-12"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-12"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
+                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
+                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
@@ -270,7 +271,7 @@ class MyPlanRecode extends BaseView {
                   text="返回"
                   type={'primary'}
                   size={'large'}
-                  style={{backgroundColor: '#80EA46', color:'#333'}}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     hashHistory.goBack();
                   }}
