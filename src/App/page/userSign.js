@@ -107,7 +107,7 @@ class UserSignd extends BaseView {
             <Row className="minheight-100" justify="center" align="center" content="flex-start">
               <Col className="border-radius-5f overflow-hide relative minheight-20 border-all border-color-000">
                 <Row className="padding-all margin-top-5r" justify="center" >
-                  <Col className="zindex-10 text-align-left font-size-normal textclolor-white">{courseDetial.title || '塑形训练课'}</Col>
+                  <Col className="zindex-10 text-align-left font-size-normal textclolor-white font-weight-700">{courseDetial.title || '塑形训练课'}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                 <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
@@ -129,13 +129,13 @@ class UserSignd extends BaseView {
                         </Row>
                       </Col>
                       <Col span={24} className="margin-top-2 border-bottom border-color-333" >
-                        <Row className="line-height-3r">
+                        <Row className="line-height-2r">
                           <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'android-time '} size={'140%'} iconColor={'#fff'} /></Col>
                           <Col span={20} className="font-size-small textclolor-white ">时间：{courseDetial.startDate}</Col>
                         </Row>
                       </Col>
                       <Col span={24} className="margin-top-2" >
-                        <Row className="line-height-3r">
+                        <Row className="line-height-2r">
                           <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'ios-location '} size={'140%'} iconColor={'#fff'} /></Col>
                           <Col span={20} className="font-size-small textclolor-white ">门店地址：{courseDetial.address}</Col>
                         </Row>
@@ -147,7 +147,7 @@ class UserSignd extends BaseView {
                   <Col span={24} className="margin-top-2 bg-000" >
                     <Row className="line-height-3r">
                       <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'briefcase '} size={'140%'} iconColor={'#fff'} /></Col>
-                      <Col span={20} className="font-size-small textclolor-white font-size-normal">课程准备</Col>
+                      <Col span={20} className="font-size-small textclolor-white font-size-normal font-weight-700">课程准备</Col>
                     </Row>
                   </Col>
                   <Col className="bg-0D0D0D padding-all">

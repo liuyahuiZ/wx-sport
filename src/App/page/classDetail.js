@@ -149,7 +149,7 @@ class OcrDoc extends BaseView {
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row content="flex-start">
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-list '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">训练计划简介</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">训练计划简介</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col span={24} className="font-size-small textclolor-black-low margin-bottom-3 ">
@@ -184,21 +184,21 @@ class OcrDoc extends BaseView {
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">注意事项</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">注意事项</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col className="font-size-small textclolor-black-low ">{dataDetail.ps}</Col>
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">养身计划</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">养身计划</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row gutter={8}>
                       {bodyPlanDom}
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r ">健身步骤</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">健身步骤</Col>
                   <Col className="bg-1B1B1B padding-all">
                     { stepDom }
                     <Row>

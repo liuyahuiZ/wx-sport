@@ -91,7 +91,7 @@ class Appointment extends Component {
             return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
             onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>
-                    <Col span={12} className="zindex-10 font-size-normal text-align-left">{itm.name}</Col>
+                    <Col span={12} className="zindex-10 font-size-normal text-align-left font-weight-700">{itm.name}</Col>
                     <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
                 </Row>
                 <Row className="margin-top-1r">
@@ -152,7 +152,7 @@ class Appointment extends Component {
             <div className='margin-top-2 border-radius-5f overflow-hide bg-0D0D0D '>
             <Row content="flex-start">
                 <Col span={1} className="line-height-2r "></Col>
-                <Col span={22} className="font-size-default textclolor-white line-height-2r ">计划记录</Col>
+                <Col span={22} className="font-size-default textclolor-white line-height-2r font-weight-700">计划记录</Col>
                 <Col className="bg-1B1B1B padding-all">
                     {appintArrDom}
                 </Col>

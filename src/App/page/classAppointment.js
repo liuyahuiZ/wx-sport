@@ -169,7 +169,7 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Row content="flex-start">
                       <Col span={1}></Col>
-        <Col span={11} className="font-size-default textclolor-white line-height-2r ">预约人数 ({detailData&&detailData.course? `${detailData.course.currentPeople}/${detailData.course.maxPeople}` : ''})</Col>
+        <Col span={11} className="font-size-default textclolor-white line-height-2r font-weight-700">预约人数 ({detailData&&detailData.course? `${detailData.course.currentPeople||0}/${detailData.course.maxPeople||0}` : ''})</Col>
                       <Col span={10} className="font-size-small textclolor-white text-align-right line-height-2r "></Col>
                     </Row>
                   </Col>
@@ -178,7 +178,7 @@ class OcrDoc extends BaseView {
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-default textclolor-white">门店地址</Col>
+                          <Col span={24} className="font-size-default textclolor-white font-weight-700">门店地址</Col>
                           <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.address||''}</Col>
                           <Col span={24} className="font-size-small textclolor-white margin-top-2" onClick={()=>{
                             this.openMap(detailData.course.latitude, detailData.course.longitude)
@@ -187,7 +187,7 @@ class OcrDoc extends BaseView {
                       </Col>
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-default textclolor-white">课程教案</Col>
+                          <Col span={24} className="font-size-default textclolor-white font-weight-700">课程教案</Col>
                           <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.title||''}</Col>
                         </Row>
                       </Col>

@@ -211,21 +211,21 @@ class OcrDoc extends BaseView {
                 <Row content="flex-start">
                   <Col>
                     <Collapse >
-                      <Panel title={'计划要点'}>
+                      <Panel title={<span className="font-weight-700">计划要点</span>}>
                         <div>{detailData.kernel}</div>
                       </Panel>
                     </Collapse>
                   </Col>
                   <Col>
                     <Collapse >
-                      <Panel title={'训练计划入门课注意事项'}>
+                      <Panel title={<span className="font-weight-700">训练计划入门课注意事项</span>}>
                         <div>{detailData.careful}</div>
                       </Panel>
                     </Collapse>
                   </Col>
                   <Col>
                     <Collapse >
-                      <Panel title={'训练动作'}>
+                      <Panel title={<span className="font-weight-700">训练动作</span>}>
                         <Row className="bg-1B1B1B padding-top-2">
                           <Col>{movesDom}</Col>
                           {/* <Col className={"text-align-center line-height-2r bg-262626"} span={8} onClick={()=>{
@@ -257,7 +257,7 @@ class OcrDoc extends BaseView {
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-default textclolor-white">门店地址</Col>
+                          <Col span={24} className="font-size-default textclolor-white font-weight-700">门店地址</Col>
                           <Col span={24} className="font-size-small textclolor-black-low ">{detailData.address}</Col>
                           <Col span={24} className="font-size-small textclolor-white margin-top-2" onClick={()=>{
                             this.openMap(detailData.latitude, detailData.longitude)

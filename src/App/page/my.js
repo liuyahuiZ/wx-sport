@@ -51,7 +51,6 @@ class OcrDoc extends Component {
           storage.removeStorage('userInfo');
           storage.removeStorage('userId');
         }
-        storage.setStorage('authCode', obg.code);
         if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
           this.getUserinfo(obg.code);
         }
@@ -73,6 +72,10 @@ class OcrDoc extends Component {
       this.setState({
         status: nextProps.status
       })
+      if(nextProps.status){
+        this.getUserInfoMation();
+        this.getUserMoves();
+      }
     }
 
     getUserInfoMation(){

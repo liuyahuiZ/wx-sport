@@ -130,7 +130,7 @@ class OcrDoc extends BaseView {
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col span={24} className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
-                  <Col className="text-align-left textclolor-white">整体训练强度</Col>
+                  <Col className="text-align-left textclolor-white font-weight-700">整体训练强度</Col>
                   <Col className="margin-bottom-1r">
                   <ProgressDrag percent={feelCore} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
                  bgColor={'#333'} style={{height: '7px'}} barRoundStyle={{ 'width': '1.3rem','height': '1.3rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
@@ -145,7 +145,7 @@ class OcrDoc extends BaseView {
               </Col>
               <Col className="margin-top-2 padding-all relative border-radius-5f overflow-hide bg-1B1B1B">
                 <Row>
-                  <Col className="textclolor-white line-height-3r">训练感受:</Col>
+                  <Col className="textclolor-white line-height-3r font-weight-700">训练感受:</Col>
                 </Row>
                 <Row>
                   <Col ><Textarea
@@ -190,7 +190,7 @@ class OcrDoc extends BaseView {
               
               <Col className="margin-top-2 padding-all relative border-radius-5f overflow-hide bg-1B1B1B">
                 <Row>
-                  <Col className="textclolor-white line-height-3r">疑问动作描述:</Col>
+                  <Col className="textclolor-white line-height-3r font-weight-700">疑问动作描述:</Col>
                 </Row>
                 <Row>
                 <Col ><Textarea

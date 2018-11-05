@@ -346,7 +346,7 @@ class ClassList extends BaseView {
                   </Row>
                 </Col>
                 <Col className={"text-align-center font-size-small textclolor-black-low"}>还需支付</Col>
-                <Col className={"text-align-center font-size-large textcolor-79EF44"}>¥{formate.formateMoney(it.price)}</Col>
+                <Col className={"text-align-center font-size-huge textcolor-79EF44 font-weight-700"}>¥{formate.formateMoney(it.price)}</Col>
               </Row>
               <Row className={"padding-all-1r"}>
                 <Col span={24} className="font-size-default textclolor-white">温馨提示</Col>
@@ -395,7 +395,7 @@ class ClassList extends BaseView {
                 </Col>
                 <Col className="margin-top-1r" span={13}>
                   <Row >
-                    <Col className="zindex-10 font-size-small textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
+                    <Col className="zindex-10 font-size-normal textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
                     <Col className="zindex-10 font-size-7 textclolor-black-low">{it.desc}</Col>
                     <Col className="zindex-10 font-size-7 textcolor-79EF44">{it.startTime}-{it.endTime} ¥{formate.formateMoney(it.price)}</Col>
                   </Row>

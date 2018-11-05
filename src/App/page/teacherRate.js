@@ -167,7 +167,7 @@ class TeacherRate extends BaseView {
                     <span className="zindex-10 textclolor-white">{userInfo.nickName}</span>
                   </Col>
                   <Col className="zindex-10 text-align-center ">
-                    <span className="zindex-10 font-size-small textclolor-white">{detailData.title || ''}</span>
+                    <span className="zindex-10 font-size-small textclolor-white font-weight-700">{detailData.title || ''}</span>
                   </Col>
                   <Col className="zindex-10 text-align-center ">
                     <span className="zindex-10 font-size-small textclolor-white">{detailData.startDate || ''}</span>
@@ -222,7 +222,7 @@ class TeacherRate extends BaseView {
                       </Col>
                     </Row>
                   </Col>
-                  <Col className="text-align-center textclolor-white margin-top-1r">选择开始课程的第一天</Col>
+                  <Col className="text-align-center textclolor-white margin-top-1r font-weight-700">选择开始课程的第一天</Col>
                   <Col className="text-align-center textclolor-black-low margin-top-1r">设定7天内开始</Col>
                 </Row>
                 <Row className="margin-top-1r">{clenderDom}</Row>

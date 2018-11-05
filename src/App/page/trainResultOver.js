@@ -78,7 +78,7 @@ class TrainResultOver extends BaseView {
                   <Col span={8} className="zindex-10 text-align-center margin-top-2r">
                   <div className="icon middle icon-result" />
                   </Col>
-                  <Col className="zindex-10 text-align-center textclolor-white margin-top-1r">恭喜你完成训练</Col>
+                  <Col className="zindex-10 text-align-center textclolor-white margin-top-1r font-weight-700">恭喜你完成训练</Col>
                   <Col className="zindex-10 text-align-center font-size-small textclolor-white">{nowTime}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-1 heightp-100 absolute-left zindex-9"></div>

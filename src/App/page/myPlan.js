@@ -234,14 +234,14 @@ class MyClassDetail extends BaseView {
                     <Row justify="center">
                       <Col>
                         <Collapse >
-                          <Panel title={'计划要点'}>
+                          <Panel title={<span className="font-weight-700">计划要点</span>}>
                             <div>{detailData.kernel}</div>
                           </Panel>
                         </Collapse>
                       </Col>
                       <Col>
                         <Collapse >
-                          <Panel title={'当天训练提示'}>
+                          <Panel title={<span className="font-weight-700">当天训练提示</span>}>
                             <div>{detailData.tips}</div>
                           </Panel>
                         </Collapse>

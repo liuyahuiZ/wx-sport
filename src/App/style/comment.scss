@@ -114,6 +114,16 @@ body{
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
+    &.bg4{
+        background: url('./images/picturePost.png'); 
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+    &.bg5{
+        background: url('./images/logobot.png'); 
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
 }
 .icon{
     width: 1.5rem;
@@ -253,4 +263,12 @@ body{
         background-size: 1.4rem;
     }
 
+}
+
+.all-bg{
+    width: 1.5rem;
+    height: 1.5rem;
+    background: url('./images/allbg.png');
+    background-repeat: no-repeat;
+    background-size: 1.4rem;
 }

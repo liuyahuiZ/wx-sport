@@ -170,7 +170,7 @@ class MyPlanRecode extends BaseView {
           <Col span={24} className="margin-top-2 border-bottom border-color-333 padding-top-3 padding-bottom-3" >
             <Row >
               <Col className="text-align-center heighr-5 line-height-5r overflow-hide relative">
-               <span className="zindex-10 textclolor-white relative margin-top-2">{itm.name} ({itm.cycleNum})</span>
+               <span className="zindex-10 textclolor-white relative margin-top-2">{itm.name} {itm.cycleNum}轮</span>
                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
               </Col>
@@ -207,14 +207,14 @@ class MyPlanRecode extends BaseView {
                       <Col></Col>
                       <Col>
                         <Collapse >
-                          <Panel title={'计划要点'}>
+                          <Panel title={<span className="font-weight-700">计划要点</span>}>
                             <div>{detailData.kernel}</div>
                           </Panel>
                         </Collapse>
                       </Col>
                       <Col>
                         <Collapse >
-                          <Panel title={'训练提示'}>
+                          <Panel title={<span className="font-weight-700">训练提示</span>}>
                             <div>{detailData.tips}</div>
                           </Panel>
                         </Collapse>

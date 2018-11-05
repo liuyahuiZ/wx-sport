@@ -8,6 +8,7 @@ import moment from 'moment';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
 import html2canvas from "html2canvas";
+import formate from '../utils/formate';
 
 
 const {
@@ -45,10 +46,10 @@ class ImgPoster extends BaseView {
       });
     }
     _viewAppear(){
-      Loade.show();
-      setTimeout(()=>{
-        this.doCanvas()
-      }, 2000)
+      // Loade.show();
+      // setTimeout(()=>{
+      //   this.doCanvas()
+      // }, 4000)
     }
     convertCanvasToImage(canvas) {
       console.log(canvas);
@@ -114,7 +115,7 @@ class ImgPoster extends BaseView {
         const {article, feelCore, query, userInfo, imgBox, showCanvas} = this.state;
         const self = this;
         let picUrl = sessions.getStorage('picUrl') || 'http://pdc6cusp9.bkt.clouddn.com/1535618433';
-        console.log(picUrl)
+        console.log(picUrl, query)
         let keepTimeM = parseInt(query.keepTime/60);
         let keepTimeS = parseInt(query.keepTime%60);
         let time = new Date();
@@ -131,29 +132,35 @@ class ImgPoster extends BaseView {
                   <img src="/dist/css/images/logo.png" className="absolute top-0 margin-left-5 margin-top-5 icon icon-logo" />
                 </div>
               </div>
-              <div className="zindex-6 absolute bottom-0 float-left padding-all heighr-15">
-                <div className="float-left relative width-40 text-align-center heighr-8">
-                  <img src="/dist/css/images/personRond.png" className="absolute-left float-left icon icon-personRond zindex-6" />
-                  <img src={userInfo.imgUrl} className="icon float-left absolute-left icon-personRond-inner border-radius-round overflow-hide zindex-10" />
-                </div>
-                <div className="float-right textclolor-white width-60 line-height-25">
-                <div className="width-100">{userInfo.nickName}</div>
-                  <div className="width-100">{nowTime}</div>
-                </div>
-                <div className="float-left width-100 padding-all ">
-                    <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-left textclolor-black-low line-height-25 textcolor-8EBF66">时长</div>
-                      <div className="float-left width-100 text-align-left textclolor-white font-size-normal line-height-25">{keepTimeM}分{keepTimeS}</div>
-                    </div>
-                    <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-center textclolor-black-low line-height-25 textcolor-8EBF66">动作</div>
-                      <div className="float-left width-100 text-align-center textclolor-white font-size-normal line-height-25">{'2 组'}</div>
-                    </div>
-                    <div className="float-left width-30">
-                      <div className="float-left width-100 text-align-right textclolor-black-low line-height-25 textcolor-8EBF66">消耗</div>
-                      <div className="float-left width-100 text-align-right textclolor-white font-size-normal line-height-25">{query.keepTime*10}卡</div>
-                    </div>
-                </div>
+              <div className="zindex-6 width-100 absolute bottom-0 padding-all heighr-13">
+                <Row className="relative text-align-center heighr-8">
+                  <Col span={10} className="relative">
+                    <img src="/dist/css/images/personRond.png" className="absolute-left icon icon-personRond zindex-6" />
+                    <img src={userInfo.imgUrl} className="icon absolute-left icon-personRond-inner border-radius-round overflow-hide zindex-10" />
+                  </Col>
+                  <Col span={14} className="margin-top-2 textclolor-white text-align-left width-60 line-height-25">
+                    <div className="width-100">{userInfo.nickName}</div>
+                    <Row className="width-100">
+                      <Col span={12}>{decodeURIComponent(query.courseName)}</Col>
+                      <Col span={12}>{query.time}</Col>
+                    </Row>
+                  </Col>
+                </Row>
+                
+                <Row className="width-100 padding-all ">
+                    <Col span={12} className="line-height-25">
+                      <Row>
+                        <Col span={12} className="textcolor-8EBF66 text-align-right">天数</Col>
+                        <Col span={12} className="textclolor-white font-size-normal padding-left-3">{query.date||0}/{query.days||0}</Col>
+                      </Row>
+                    </Col>
+                    <Col span={12} className="line-height-25">
+                      <Row>
+                        <Col span={8} className="textcolor-8EBF66 text-align-right">时间</Col>
+                        <Col span={16} className="textclolor-white font-size-normal padding-left-3">{formate.minutes(query.date||0)}</Col>
+                      </Row>
+                    </Col>
+                </Row>
               </div>
             </div>
             <div className={`absolute-left ${showCanvas ? '': 'display-none'}`} ref={(r) => { self.$$outBox = r; }}>

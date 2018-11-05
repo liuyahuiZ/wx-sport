@@ -121,7 +121,7 @@ class HomeDoc extends BaseView {
               <Row>
                   <Col span={19}>
                     <Row>
-                      <Col className="font-size-big textclolor-white">{itm.title}</Col>
+                      <Col className="font-size-big textclolor-white font-weight-700">{itm.title}</Col>
                       <Col className="font-size-small textclolor-white">{itm.smallTitle}</Col>
                     </Row>
                   </Col>
