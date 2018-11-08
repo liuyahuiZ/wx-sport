@@ -421,7 +421,7 @@ class ClassList extends BaseView {
           return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ self.setData(itm); console.log(itm);}}>
           <Row><Col className="font-size-small textclolor-black-low text-align-center">{itm.dateName}</Col>
           <Col className="font-size-small textclolor-black-low text-align-center">
-          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
+          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 textclolor-333' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
           </Col></Row>
           </Col>)
         }) : <Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col>;

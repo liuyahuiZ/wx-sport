@@ -122,7 +122,7 @@ class TeacherStudent extends BaseView {
         let courseTypesDom = studentList&&studentList.length > 0 ?
         studentList.map((itm, idx)=>{
           return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
-          onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
+          onClick={()=>{self.goLink('/StudentPlanRecode', {userId: itm.userId, courseId: itm.id, courseTypeId: itm.courseTypeId})}}>
               <Row>
                   <Col span={12} className="zindex-10 font-size-normal text-align-left">{itm.name}</Col>
                   <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>

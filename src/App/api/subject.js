@@ -68,6 +68,28 @@ export function teacherStudents(req){
     })
 }
 
+export function teacherStudentRecords(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `teacher/student/records`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function teacherStudentRecordRevert(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `teacher/student/record/revert`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
 export function teacherSignInPage(req){
     return new Promise((resolve, reject)=>{
         order(config.API_URL+ `teacher/signInPage`,{ method: 'POST', data: req})

@@ -146,7 +146,7 @@ class TeacherRate extends BaseView {
           return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ console.log(itm); self.setState({'selectDay': itm}); }}>
           <Row><Col className="font-size-small textclolor-black-low text-align-center">{itm.dateName}</Col>
           <Col className="font-size-small textclolor-black-low text-align-center">
-          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 ' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
+          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 textclolor-333' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
           </Col></Row>
           </Col>)
         }) : <Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col>;
@@ -186,7 +186,7 @@ class TeacherRate extends BaseView {
                       <Col span={6}>
                         <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">课程难度</div>
                       </Col>
-                      <Col span={18}>
+                      <Col span={18} className="font-size-9">
                         <TagRadio options={[{ value: 1, text: '简单', checked: true }, { value: 2, text: '中等' }, { value: 4, text: '困难' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
@@ -199,7 +199,7 @@ class TeacherRate extends BaseView {
                       <Col span={6}>
                         <div className="margin-top-p4r  font-size-small textclolor-black-low text-align-center line-height-20">讲解问题</div>
                       </Col>
-                      <Col span={18}>
+                      <Col span={18} className="font-size-9">
                       <TagRadio options={[{ value: 1, text: '不清晰', checked: true }, { value: 2, text: '模糊' }, { value: 4, text: '清晰' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{
@@ -212,7 +212,7 @@ class TeacherRate extends BaseView {
                       <Col span={6}>
                         <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">疑问解答</div>
                       </Col>
-                      <Col span={18}>
+                      <Col span={18} className="font-size-9">
                         <TagRadio options={[{ value: 1, text: '能', checked: true }, { value: 2, text: '基本可以' }, { value: 4, text: '不能' } ]}
                         checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
                         onChange={(v)=>{

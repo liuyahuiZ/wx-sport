@@ -25,7 +25,7 @@ const {
   } = Components;
 const { sessions, storage } = utils;
 //"https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FTab"
-const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html";
+const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FTeachers";
 const appId = 'wx9a7768b6cd7f33d0';
 class Teachers extends BaseView {
     constructor(props) {
@@ -42,9 +42,9 @@ class Teachers extends BaseView {
             "id": 107,
             "name": "James",
             "img": "http://thirdwx.qlogo.cn/mmopen/vi_32/CrZnia8VYOicbLWhkSOw6nnYjuc8JoFDDCRXsiajVldZnlYiaLVMNcOLO6wsmn85VuVibspLc5dicGrrUaRGluS8s9hQ/132",
-            "answerNum": 2,
-            "courseNum": 2,
-            "studentNum": 1,
+            "answerNum": 1,
+            "courseNum": 0,
+            "studentNum": 0,
             "courseTypes": [
                 {
                     "id": 1,
@@ -79,9 +79,26 @@ class Teachers extends BaseView {
       };
     }
     componentDidMount(){
+      let obg = UrlSearch();
+      let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
+      if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''){
+          storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
+        }
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          this.getUserinfo(obg.code);
+        }
+      }else{
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+        }
+      }
       if((userId&&userId!=='')){
-        this.getMyClass('107');
+        // this.getMyClass(userId);
+        this.getMyClass(userId);
+        // this.getCourseRatio(userId);
       }
     }
 
@@ -91,6 +108,26 @@ class Teachers extends BaseView {
       })
     }
 
+    getUserinfo(code){
+      const self = this;
+      getToken({code: code}).then((data)=>{
+        console.log(data);
+       if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
+          storage.setStorage('userId', data.id);
+          // self.getMyClass(data.id);
+          // self.getCourseRatio(data.id);
+          // self.registry();
+          self.setState({
+            userInfo: data,
+            userId: data.id
+          })
+          self.getMyClass(data.id)
+        }
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
+    }
 
     getMyClass(userId){
       const self = this;

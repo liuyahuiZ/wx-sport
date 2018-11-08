@@ -179,6 +179,12 @@ const AllPicturePoster = (location, cb) => {
   },'AllPicturePoster')
 };
 
+const StudentPlanRecode = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/studentPlanRecode').default)
+  },'StudentPlanRecode')
+};
+
 // const PicturePoster = (location, cb) => {
 //   require.ensure([], require => {
 //       cb(null, require('./page/picturePoster').default)
@@ -227,6 +233,7 @@ class MyRouter extends Component{
         <Route path={'TeacherStudent'} getComponent={TeacherStudent} />
         <Route path={'ParqPage'} getComponent={ParqPage} />
         <Route path={'AllPicturePoster'} getComponent={AllPicturePoster} />
+        <Route path={'StudentPlanRecode'} getComponent={StudentPlanRecode} />
       </Route>
     </Router>
     )

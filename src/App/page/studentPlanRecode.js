@@ -8,7 +8,7 @@ import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import formate from '../utils/formate';
 import { coursePlanRecords, coursePlanRecordsDetail} from '../api/classes';
-
+import { teacherStudentRecords, teacherStudentRecordRevert } from '../api/subject';
 const {
     Buttons,
     Toaster,
@@ -20,11 +20,12 @@ const {
     Loade,
     Collapse,
     Panel,
-    ActionSheet
+    ActionSheet,
+    Textarea
 } = Components;
 const { sessions, storage } = utils;
 
-class MyPlanRecode extends BaseView {
+class StudentPlanRecode extends BaseView {
     constructor(props) {
       super(props);
       this.state = {
@@ -39,6 +40,7 @@ class MyPlanRecode extends BaseView {
           coursePlan: {},
           feedback: {},
           userId: storage.getStorage('userId'),
+          revert: ''
       };
     }
     _viewAppear(){
@@ -49,8 +51,8 @@ class MyPlanRecode extends BaseView {
       let obg = UrlSearch();
       Loade.show();
       const self = this;
-      coursePlanRecords({
-        userId: storage.getStorage('userId'),
+      teacherStudentRecords({
+        studentUserId: obg.userId,
         courseId: obg.courseId
       }).then((res)=>{
         Loade.hide();
@@ -123,9 +125,20 @@ class MyPlanRecode extends BaseView {
         }
       });
     }
-
+    submitBack(){
+      const { revert } = this.state;
+      teacherStudentRecordRevert({
+        teacherId: storage.getStorage('userId'),
+        revert: revert
+      }).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        
+      }).catch((e)=>{
+        console.log(e)
+      })
+    }
     render() {
-        const {selectRecode, recodes, detailData, status, itmStatus, feedback} = this.state;
+        const {selectRecode, recodes, detailData, status, itmStatus, feedback, revert} = this.state;
         const self = this;
         const carouselMap = feedback&&feedback.doubtImageUrl ?  
          [{ tabName: 'idx', content: (<img alt="text" src={feedback.doubtImageUrl} />), isActive: false }]
@@ -263,8 +276,29 @@ class MyPlanRecode extends BaseView {
                   <Col className="textclolor-white line-height-2r bg-0C0C0C padding-left-3">教练反馈:</Col>
                 </Row>
                 <Row>
-                <Col className="textclolor-black-low padding-all">{feedback.revert}</Col>
+                <Col className="textclolor-black-low padding-all">
+                <Textarea
+                  placeholder="请输入"
+                  style={{backgroundColor: '#1B1B1B', border: '0', color:'#fff'}}
+                  maxLength={100}
+                  maxLengthShow={false}
+                  onChange={(v)=>{
+                    self.setValue('revert', v);
+                  }}
+                />
+                </Col>
                 </Row>
+              </Col>
+              <Col className="margin-top-3">
+                <Buttons
+                  text="提交"
+                  type={'primary'}
+                  size={'large'}
+                  style={{backgroundColor: '#9eea6a', color:'#333'}}
+                  onClick={()=>{
+                    self.submitBack();
+                  }}
+                />
               </Col>
               <Col className="margin-top-3">
                 <Buttons
@@ -282,4 +316,4 @@ class MyPlanRecode extends BaseView {
         );
     }
 }
-export default MyPlanRecode;
+export default StudentPlanRecode;
