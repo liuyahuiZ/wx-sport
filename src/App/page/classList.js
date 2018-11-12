@@ -171,6 +171,31 @@ class ClassList extends BaseView {
         (val) => { console.log(val) });
     }
 
+    doSheet2(){
+      const {meatType } = this.state;
+      PopSelect.formConfirm({
+        title: '',
+        content: 'this is a warning',
+        options: [
+        {
+            "text": "深圳店",
+            "value": "1"
+        }
+        ],
+        btnSure: {
+          text: '完成',
+          type: 'link'
+        },
+        btnCancle: {
+          text: '取消',
+          type: 'link'
+        } },
+        (val) => {
+          console.log(val)
+         },
+        (val) => { console.log(val) });
+    }
+
     doSheet1(){
       const {meatType } = this.state;
       let type = sessions.getStorage('nowSubject');
@@ -346,7 +371,7 @@ class ClassList extends BaseView {
                   </Row>
                 </Col>
                 <Col className={"text-align-center font-size-small textclolor-black-low"}>还需支付</Col>
-                <Col className={"text-align-center font-size-huge textcolor-79EF44 font-weight-700"}>¥{formate.formateMoney(it.price)}</Col>
+                <Col className={"text-align-center font-size-huge textcolor-9eea6a font-weight-700"}>¥{formate.formateMoney(it.price)}</Col>
               </Row>
               <Row className={"padding-all-1r"}>
                 <Col span={24} className="font-size-default textclolor-white">温馨提示</Col>
@@ -383,21 +408,21 @@ class ClassList extends BaseView {
         
         const classListDom = classList&&classList.length > 0 ? classList.map((itm, idx) => {
           let itmDom = itm.children&&itm.children.length > 0 ? itm.children.map((it, id)=>{
-            let statusDom = it.currentPeople < it.maxPeople ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-default border-all border-color-9eea6a textcolor-79EF44 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
+            let statusDom = (it.currentPeople < it.maxPeople) && !it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-default border-all border-color-9eea6a textcolor-8EBF66 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
           : <Col span={3.5} className="margin-top-2r zindex-10 border-all border-color-999  bg-1B1B1B textclolor-black-low font-size-default  text-align-center border-radius-3 heighr-2 line-height-2r" >结束</Col>;
           return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B border-bottom border-color-333" key={`${id}-lit`} >
             <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >
               <Row className="zindex-10 ">
-                <Col span={7} className="margin-top-1r">
+                <Col span={6} className="margin-top-3">
                   <div className="middle-round border-radius-round overflow-hide">
                     <img className="width-100 heighr-4" alt="text" src={it.coachImgUrl} />
                   </div>
                 </Col>
-                <Col className="margin-top-1r" span={13}>
+                <Col className="margin-top-3" span={14}>
                   <Row >
-                    <Col className="zindex-10 font-size-normal textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
+                    <Col className="zindex-10 font-size-default textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
                     <Col className="zindex-10 font-size-7 textclolor-black-low">{it.desc}</Col>
-                    <Col className="zindex-10 font-size-7 textcolor-79EF44">{it.startTime}-{it.endTime} ¥{formate.formateMoney(it.price)}</Col>
+                    <Col className="zindex-10 font-size-7 textcolor-8EBF66">{it.startTime}-{it.endTime}</Col>
                   </Row>
                 </Col>
                 {statusDom}
@@ -406,10 +431,10 @@ class ClassList extends BaseView {
             </Row>)
           }) : <div className="text-align-center font-size-small textclolor-white line-height-2r">暂无数据</div>;
           let doms = (<Row content="flex-start" className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D" key={`${idx}-s`}>
-            <Col span={1}></Col>
+            {/* <Col span={1}></Col>
             <Col span={11} className="font-size-default textclolor-white line-height-2r ">{itm.cityName}</Col>
             <Col span={10} className="font-size-small textclolor-white text-align-right line-height-2r " onClick={()=>{this.openMap()}}>查看地图</Col>
-            <Col span={2} className="line-height-2r"><Icon iconName={'chevron-right '} size={'90%'} iconColor={'#333'} /></Col>
+            <Col span={2} className="line-height-2r"><Icon iconName={'chevron-right '} size={'90%'} iconColor={'#333'} /></Col> */}
             <Col>{itmDom}</Col>
         </Row>)
           return  doms;
@@ -434,7 +459,8 @@ class ClassList extends BaseView {
               <Col className="margin-top-2 border-radius-5f overflow-hide bg-101111">
                 <Row className="bg-0D0D0D">
                 <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>地区 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
-                <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet1()}}>课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
+                <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet2()}}>门店 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
+                {/* <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet1()}}>课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col> */}
                 </Row>
                 <Row className="margin-top-2 padding-all">{clenderDom}</Row>
               </Col>

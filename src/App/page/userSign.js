@@ -48,8 +48,10 @@ class UserSignd extends BaseView {
       courseDetail({id: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        let data = res.result;
-        self.setValue('courseDetial', data)
+        if(res.code>0&&res.result){
+          let data = res.result;
+          self.setValue('courseDetial', data)
+        }
       }).catch((err)=>{
         Loade.hide();
         console.log(err)
@@ -110,7 +112,7 @@ class UserSignd extends BaseView {
                   <Col className="zindex-10 text-align-left font-size-normal textclolor-white font-weight-700">{courseDetial.title || '塑形训练课'}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                <img className="width-100 absolute-left zindex-6" alt="text" src={`${config.IMG_URL}getphotoPal/2018-7-29/15328581446009.png`} />
+                <div className="width-100 absolute-left zindex-6 heightp-100 bg post-bg2"></div>
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
@@ -187,7 +189,7 @@ class UserSignd extends BaseView {
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     // hashHistory.goBack();
-                    self.goLink('/Tab')
+                    self.goLink('/Tab',{tab: 3})
                   }}
                 />
               </Col>

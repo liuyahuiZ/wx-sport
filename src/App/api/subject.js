@@ -37,7 +37,7 @@ export function createOrder(req){
 
 export function userSign(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `course/signIn`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `course/signIn`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -48,7 +48,7 @@ export function userSign(req){
 
 export function teacherInfo(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `teacher/info`,{ method: 'GET', data: req})
+        fetch(config.API_URL+ `teacher/info`,{ method: 'GET', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -59,7 +59,18 @@ export function teacherInfo(req){
 
 export function teacherStudents(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `teacher/students`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `teacher/students`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function teacherMark(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `teacher/mark`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -70,7 +81,7 @@ export function teacherStudents(req){
 
 export function teacherStudentRecords(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `teacher/student/records`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `teacher/student/records`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -81,7 +92,7 @@ export function teacherStudentRecords(req){
 
 export function teacherStudentRecordRevert(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `teacher/student/record/revert`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `teacher/student/record/revert`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -92,7 +103,7 @@ export function teacherStudentRecordRevert(req){
 
 export function teacherSignInPage(req){
     return new Promise((resolve, reject)=>{
-        order(config.API_URL+ `teacher/signInPage`,{ method: 'POST', data: req})
+        fetch(config.API_URL+ `teacher/signInPage`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

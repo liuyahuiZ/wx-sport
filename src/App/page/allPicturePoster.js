@@ -8,6 +8,7 @@ import moment from 'moment';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
 import html2canvas from "html2canvas";
+import formate from '../utils/formate';
 
 
 const {
@@ -113,10 +114,6 @@ class AllImgPoster extends BaseView {
     render() {
         const {article, feelCore, query, userInfo, imgBox, showCanvas} = this.state;
         const self = this;
-        let picUrl = sessions.getStorage('picUrl') || 'http://pdc6cusp9.bkt.clouddn.com/1535618433';
-        console.log(picUrl)
-        let keepTimeM = parseInt(query.keepTime/60);
-        let keepTimeS = parseInt(query.keepTime%60);
         let time = new Date();
         let nowTime = moment(time).format('dddd') + ' ' + moment(time).format('MM.DD hh:mm:ss'); // 八月 19日 2018, 5:15:55 下午
          
@@ -124,8 +121,8 @@ class AllImgPoster extends BaseView {
           <section className="bg-000 relative" >
             <div className={`bg-000 heighth-100 relative`} ref={(r) => { self.$$screen = r; }}>
               <Row className="padding-all-1r bg-1B1B1B border-radius-5f relative heighr-12">
-                <Col className="margin-top-3r text-align-center zindex-10 font-size-normal textcolor-8EBF66">您共完成 06:20:05 训练</Col>
-                <Col className="text-align-center zindex-10 textclolor-white">训练天数4/6天</Col>
+                <Col className="margin-top-3r text-align-center zindex-10 font-size-normal textcolor-8EBF66">您共完成 {formate.minutes(query.practiceTime)} 训练</Col>
+                <Col className="text-align-center zindex-10 textclolor-white">训练天数{query.practiceDays}天</Col>
                 <Col className="margin-top-3r text-align-center zindex-10" >
                   <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
                       <img src={userInfo.imgUrl} className="width-100" />
@@ -140,29 +137,29 @@ class AllImgPoster extends BaseView {
                   <Row>
                     <Col className="margin-top-1r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg1">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">{query.startDate}</Col>
                         <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg2">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">总共消耗</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.calorieCount||0}</span>卡路里</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg3">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">XXXXXXX</Col>
+                        <Col className="text-align-right textclolor-white font-size-small">XXXXXXXXXXXX</Col>
                       </Row>
                     </Col>
                   </Row>
@@ -174,29 +171,29 @@ class AllImgPoster extends BaseView {
                   <Row>
                     <Col className="margin-top-7r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg4">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">您一个完成</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.actionCount||0}</span>次强度染指动作</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg5">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">一共举起</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.weightCount||0}</span>公斤(磅)的重量</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">
                       <Row>
-                        <Col className="heighr-5 overflow-hide border-radius-5f">
-                          <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" />
+                        <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg6">
+                          {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white">2018.9.10</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">开启了你的养身之旅</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">XXXXXXX</Col>
+                        <Col className="text-align-right textclolor-white font-size-small">XXXXXXXXXXXX</Col>
                       </Row>
                     </Col>
                   </Row>

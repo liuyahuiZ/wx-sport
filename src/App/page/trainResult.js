@@ -88,12 +88,12 @@ class OcrDoc extends BaseView {
         userId: userId,
         courseId: obg.courseId,
         coursePlanId: obg.coursePlanId,
-        intension: feelCore,
+        intension: parseFloat(feelCore.toFixed(2)),
         feel: feel,
         doubtText: question,
         doubtImageUrl: picture,
         doubtMvUrl: theVieo,
-        practiveTime: obg.keepTime
+        practiceTime: obg.keepTime
       }).then((res)=>{
         console.log(res);
         Loade.hide();

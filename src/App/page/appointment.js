@@ -6,6 +6,7 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import computed from '../utils/computed'
 import { coursePlanRecords, myClass } from '../api/classes'
+import formate from '../utils/formate';
 
 const {
     Buttons,
@@ -91,26 +92,27 @@ class Appointment extends Component {
             return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
             onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>
-                    <Col span={12} className="zindex-10 font-size-normal text-align-left font-weight-700">{itm.name}</Col>
+                    <Col span={12} className="zindex-10 font-size-normal text-align-left font-weight-700">{itm.name}
+                    {itm.questions>0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
                     <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
                 </Row>
                 <Row className="margin-top-1r">
                     <Col span={8} className="zindex-10 text-align-left">
                         <Row>
                             <Col className="font-size-small">训练天数</Col>
-                            <Col className="font-size-large">{itm.trainingDays}</Col>
+                            <Col className="font-size-largeM font-weight-700">{itm.trainingDays}</Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-center">
                         <Row>
                             <Col className="font-size-small">完成比例</Col>
-                            <Col className="font-size-large">{computed.accMul(itm.completePercent||0, 100).toFixed(2)}%</Col>
+                            <Col className="font-size-largeM font-weight-700">{computed.accMul(itm.completePercent||0, 100).toFixed(0)}%</Col>
                         </Row>
                     </Col>
                     <Col span={8} className="zindex-10 text-align-right">
                         <Row>
                             <Col className="font-size-small">训练时常/分钟</Col>
-                            <Col className="font-size-large">{`${parseInt(itm.trainingMinutes/60)}:${parseInt(itm.trainingMinutes%60)}`}</Col>
+                            <Col className="font-size-largeM font-weight-700">{`${parseInt(itm.trainingMinutes/60)}`}</Col>
                         </Row>
                     </Col>
                 </Row>

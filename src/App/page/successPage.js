@@ -97,7 +97,7 @@ class Success extends BaseView {
                           <img src={userInfo.imgUrl} className="width-100" />
                           <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                           {
-                            type == 'registor' ? <Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={'#8EBF66'} 
+                            type == 'registor' ? <Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={'#9eea6a'} 
                             style={{'top':'0.2rem', 'position':'absolute','right': '1.4rem', 'zIndex': '10'}} /> 
                           : ''}
                           {
@@ -105,8 +105,8 @@ class Success extends BaseView {
                           : ''}
                       </div>
                   </Col>
-                  <Col className="text-align-center textcolor-79EF44">
-                      { type == 'registor' ? '' :  <Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={'#8EBF66'} style={{'top':'0.2rem', 'position':'relative','marginRight': '0.2rem'}} /> } 
+                  <Col className="text-align-center textcolor-8EBF66">
+                      { type == 'registor' ? '' :  <Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={'#9eea6a'} style={{'top':'0.2rem', 'position':'relative','marginRight': '0.2rem'}} /> } 
                       { type == 'appoint' ? '购买' : '签到' }成功
                   </Col>
                 </Row>

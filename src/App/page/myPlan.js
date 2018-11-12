@@ -126,7 +126,7 @@ class MyClassDetail extends BaseView {
           btn: {
             text: '确定',
             type: 'link',
-            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0', 'color': '#79EF44'}
+            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0', 'color': '#9eea6a'}
           }, 
           type: 'large'
         },
@@ -159,7 +159,7 @@ class MyClassDetail extends BaseView {
         ];
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
-            return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center" onClick={()=>{self.setVideo(itme)}}>
+            return (<Row key={`${idxs}-st`} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center" onClick={()=>{self.setVideo(itme)}}>
               <Col className="textclolor-white" span={8}>
                 <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
@@ -255,9 +255,9 @@ class MyClassDetail extends BaseView {
                   <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>

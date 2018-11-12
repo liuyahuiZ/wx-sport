@@ -7,6 +7,7 @@ import BaseView from '../core/app';
 import moment from 'moment';
 import { UrlSearch } from '../utils';
 import { userMark, userInfo, courseDetail } from '../api/classes';
+import { teacherMark } from '../api/subject';
 
 const {
     Buttons,
@@ -29,9 +30,9 @@ class TeacherRate extends BaseView {
       this.state = {
           userInfo: {},
           resourceKey: '1',
-          kcnd: {},
-          jjwt: {},
-          ywjd: {},
+          kcnd: { value: 1, text: '简单', checked: true },
+          jjwt: { value: 1, text: '不清晰', checked: true },
+          ywjd: { value: 1, text: '能', checked: true },
           selectDay: {},
           detailData: {}
       };
@@ -50,9 +51,11 @@ class TeacherRate extends BaseView {
       courseDetail({id: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        self.setState({
-          detailData: res.result
-        })
+        if(res.code>0&&res.result){
+          self.setState({
+            detailData: res.result
+          })
+        }
       }).catch((err)=>{
         Loade.hide();
       })
@@ -104,16 +107,27 @@ class TeacherRate extends BaseView {
       })
     }
 
+    goLink(link, itm){
+      if(link) {
+        hashHistory.push({
+          pathname: link,
+          query: itm || ''
+        });
+      }
+    }
+
     submitMark(){
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
+      const self = this;
       const {kcnd, jjwt, ywjd, selectDay} = this.state;
       Loade.show();
-      userMark({
-        userId: obg.teacherId,
-        kcnd: kcnd.text,
-        jjwt: jjwt.text,
-        ywjd: ywjd.text,
+      teacherMark({
+        teacherId: obg.teacherId,
+        userId: userId,
+        kcnd: kcnd.value,
+        jjwt: jjwt.value,
+        ywjd: ywjd.value,
         courseId: obg.courseId,
         onlineDate: selectDay.dateTime
       }).then((res)=>{
@@ -129,7 +143,9 @@ class TeacherRate extends BaseView {
           }, 
           type: 'large'
           },
-          () => { console.log('nult callback'); });
+          () => { 
+            self.goLink('/Tab')
+          });
         }
       }).catch((e)=>{
         Loade.hide();
@@ -180,18 +196,19 @@ class TeacherRate extends BaseView {
              
               <Col span={24} className="bg-1B1B1B margin-top-2 padding-top-2r padding-bottom-2r border-radius-5f">
                 <Row justify="center">
-                  <Col className="text-align-center textclolor-black-low font-size-small">我们希望获得您的反馈，以持续改善我们的计划内容</Col>
-                  <Col span={22} className="border-bottom border-color-333 padding-bottom-1r">
+                  <Col className="text-align-center textclolor-black-low font-size-small">我们希望获得您的反馈，以持续改善</Col>
+                  <Col className="text-align-center textclolor-black-low font-size-small">我们的计划内容</Col>
+                  <Col span={22} className="border-bottom border-color-333 margin-top-1r padding-bottom-1r">
                     <Row justify="center" className="margin-top-2">
                       <Col span={6}>
                         <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">课程难度</div>
                       </Col>
                       <Col span={18} className="font-size-9">
-                        <TagRadio options={[{ value: 1, text: '简单', checked: true }, { value: 2, text: '中等' }, { value: 4, text: '困难' } ]}
-                        checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
-                        onChange={(v)=>{
-                          console.log(v)
-                          self.setValue('kcnd', v)
+                        <TagRadio options={[{ value: 1, text: '简单', checked: true }, { value: 5, text: '中等' }, { value: 10, text: '困难' } ]}
+                        checkStyle={{"backgroundColor":"rgb(158, 234, 106)","color": '#000'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
+                        onChange={(v, it)=>{
+                          console.log(it)
+                          self.setValue('kcnd', it)
                         }} />
                       </Col>
                     </Row>
@@ -200,11 +217,11 @@ class TeacherRate extends BaseView {
                         <div className="margin-top-p4r  font-size-small textclolor-black-low text-align-center line-height-20">讲解问题</div>
                       </Col>
                       <Col span={18} className="font-size-9">
-                      <TagRadio options={[{ value: 1, text: '不清晰', checked: true }, { value: 2, text: '模糊' }, { value: 4, text: '清晰' } ]}
-                        checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
-                        onChange={(v)=>{
-                          console.log(v)
-                          self.setValue('jjwt', v)
+                      <TagRadio options={[{ value: 1, text: '不清晰', checked: true }, { value: 5, text: '模糊' }, { value: 10, text: '清晰' } ]}
+                        checkStyle={{"backgroundColor":"rgb(158, 234, 106)","color": '#000'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
+                        onChange={(v, it)=>{
+                          console.log(it)
+                          self.setValue('jjwt', it)
                         }} />
                       </Col>
                     </Row>
@@ -213,11 +230,11 @@ class TeacherRate extends BaseView {
                         <div className="margin-top-p4r font-size-small textclolor-black-low text-align-center line-height-20">疑问解答</div>
                       </Col>
                       <Col span={18} className="font-size-9">
-                        <TagRadio options={[{ value: 1, text: '能', checked: true }, { value: 2, text: '基本可以' }, { value: 4, text: '不能' } ]}
-                        checkStyle={{"backgroundColor":"#5AA134","color": '#fff'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
-                        onChange={(v)=>{
-                          console.log(v)
-                          self.setValue('ywjd', v)
+                        <TagRadio options={[{ value: 1, text: '能', checked: true }, { value: 5, text: '基本可以' }, { value: 10, text: '不能' } ]}
+                        checkStyle={{"backgroundColor":"rgb(158, 234, 106)","color": '#000'}} normalStyle={{"backgroundColor":"#333","color": '#1a1a1a'}}
+                        onChange={(v, it)=>{
+                          console.log(it)
+                          self.setValue('ywjd', it)
                         }} />
                       </Col>
                     </Row>

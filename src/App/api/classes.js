@@ -1,6 +1,7 @@
 import fetch from '../servise/fetch';
 // import Service from '../servise/service';
 import config from '../config/config';
+import order from '../servise/order';
 
 
 export function userRegistry(req){
@@ -144,7 +145,7 @@ export function courseMoves(req){
 
 export function courseMovesUpdate(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `course/moves/update`,{ method: 'POST', data: req})
+        order(config.API_URL+ `course/moves/update`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -242,6 +243,17 @@ export function userStudents(req){
 export function userMoves(req){
     return new Promise((resolve, reject)=>{
         fetch(config.API_URL+ `user/moves`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function userMovesUpdate(req){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `user/moves/update `,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

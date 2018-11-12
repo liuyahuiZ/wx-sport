@@ -101,9 +101,10 @@ class StudentPlanRecode extends BaseView {
     doSheet(){
       const {recodes, selectRecode } = this.state;
       const self = this;
-      let selected = { text: selectRecode.date, value: selectRecode.id};
+      let days = ['一','二','三','四','五','六','七','八','九','十', '十一'];
+      let selected = { text: `第${days[0]}天 ${selectRecode.date}`, value: selectRecode.id};
       let optionsArr = recodes&&recodes.length>0 ? recodes.map((itm, idx)=>{
-        return { text: itm.date, value: itm.id, obg: itm}
+        return { text: `第${days[idx]}天 ${itm.date}`, value: itm.id, obg: itm}
       }) : [];
       ActionSheet.formConfirm({
         content: 'this is a warning',
@@ -119,16 +120,22 @@ class StudentPlanRecode extends BaseView {
         successCallback: (val) => {
           console.log(val);
           self.setState({
-            selectRecode: val.obg,
+            selectRecode: {
+              date: val.obg.date,
+              id: val.value,
+              value: val.value,
+              ...val
+            },
           });
           self.getCoursePlan(val.obg)
         }
       });
     }
     submitBack(){
-      const { revert } = this.state;
+      const { revert, selectRecode } = this.state;
       teacherStudentRecordRevert({
         teacherId: storage.getStorage('userId'),
+        feedbackId: selectRecode.id,
         revert: revert
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
@@ -154,7 +161,7 @@ class StudentPlanRecode extends BaseView {
         
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
-            return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
+            return (<Row key={`${idxs}-st`} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
               <Col className="textclolor-white" span={8}>
                 <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
@@ -241,9 +248,9 @@ class StudentPlanRecode extends BaseView {
                   <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>

@@ -110,7 +110,7 @@ class OcrDoc extends BaseView {
           return (<Row justify='center' key={`stp-${idx}`}>
           <Col span={18} className="bg-000 padding-all border-radius-6r overflow-hide">
               <div className="text-align-center">
-                <span className="display-inline-block bg-8EBF66 font-size-small textclolor-white small-round text-align-center border-radius-100">{idx+1}</span>
+                <span className="display-inline-block bg-8EBF66 font-size-small textclolor-333 small-round text-align-center border-radius-100">{idx+1}</span>
                 <span className="display-inline-block font-size-small textclolor-black-low padding-left-3">{itm}</span>
               </div>
               {/* <Row justify='center'>
@@ -132,7 +132,7 @@ class OcrDoc extends BaseView {
               <Col span={10} className="text-align-left zindex-10"><Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={itm.id==chosePlanTypeId ? '#8EBF66': '#999'} /></Col>
             </Row>
             <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-            <img className="width-100 absolute-left zindex-6 " src={itm.bgiUrl}  />
+            <img className="width-100 absolute-left zindex-6 " src={itm.bgiUrl.split(',')[0]}  />
           </Col>
         }) : <div />;
         
@@ -183,21 +183,30 @@ class OcrDoc extends BaseView {
                       </Col> */}
                     </Row>
                   </Col>
-                  <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
+                  <Col span={2} className="line-height-4r ">
+                  {/* <Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} />  */}
+                    <span className="icon icon-focus-small margin-top-1fr"></span>
+                  </Col>
                   <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">注意事项</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col className="font-size-small textclolor-black-low ">{dataDetail.ps}</Col>
                     </Row>
                   </Col>
-                  <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
+                  <Col span={2} className="line-height-4r ">
+                  <Icon iconName={'ios-heart-outline '} size={'150%'} iconColor={'#fff'} /> 
+                      {/* <span className="icon icon-working-small margin-top-1fr"></span> */}
+                  </Col>
                   <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">养身计划</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row gutter={8}>
                       {bodyPlanDom}
                     </Row>
                   </Col>
-                  <Col span={2} className="line-height-4r "><Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} /> </Col>
+                  <Col span={2} className="line-height-4r ">
+                   {/* <Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} />  */}
+                   <span className="icon icon-working-small margin-top-1fr"></span>
+                  </Col>
                   <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">健身步骤</Col>
                   <Col className="bg-1B1B1B padding-all">
                     { stepDom }

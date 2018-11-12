@@ -59,7 +59,7 @@ class MyPlanRecode extends BaseView {
         self.getCoursePlan(res.result[0]);
         self.setState({
           recodes: res.result,
-          selectRecode: res.result[0]
+          selectRecode: {text: `第一天 ${res.result[0].date}`, obg:res.result[0]}
         })
       }).catch((err)=>{
         Loade.hide();
@@ -99,9 +99,10 @@ class MyPlanRecode extends BaseView {
     doSheet(){
       const {recodes, selectRecode } = this.state;
       const self = this;
-      let selected = { text: selectRecode.date, value: selectRecode.id};
+      let days = ['一','二','三','四','五','六','七','八','九','十', '十一'];
+      let selected = { text: `第${days[0]}天 ${selectRecode.date}`, value: selectRecode.id};
       let optionsArr = recodes&&recodes.length>0 ? recodes.map((itm, idx)=>{
-        return { text: itm.date, value: itm.id, obg: itm}
+        return { text: `第${days[idx]}天 ${itm.date}`, value: itm.id, obg: itm}
       }) : [];
       ActionSheet.formConfirm({
         content: 'this is a warning',
@@ -117,7 +118,12 @@ class MyPlanRecode extends BaseView {
         successCallback: (val) => {
           console.log(val);
           self.setState({
-            selectRecode: val.obg,
+            selectRecode: {
+              date: val.obg.date,
+              id: val.value,
+              value: val.value,
+              ...val
+            },
           });
           self.getCoursePlan(val.obg)
         }
@@ -141,7 +147,7 @@ class MyPlanRecode extends BaseView {
         
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
-            return (<Row key={`${idxs}-st`} gutter={16} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
+            return (<Row key={`${idxs}-st`} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center">
               <Col className="textclolor-white" span={8}>
                 <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
@@ -189,7 +195,7 @@ class MyPlanRecode extends BaseView {
             <Row className="minheight-100" justify="center" content="flex-start">
               <Col className="border-radius-5f overflow-hide bg-1B1B1B" onClick={()=>{self.doSheet()}}>
                 <Row className="textclolor-white padding-all" gutter={16}>
-                  <Col span={16} className="text-align-right">{selectRecode.date}</Col>
+                  <Col span={16} className="text-align-right">{selectRecode.text}</Col>
                   <Col span={8} className="text-align-left">
                     <Icon iconName={'chevron-down '} size={'100%'} iconColor={'#fff'} />
                   </Col>
@@ -228,9 +234,9 @@ class MyPlanRecode extends BaseView {
                   <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-79EF44 text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-79EF44 text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>

@@ -7,7 +7,7 @@ $font-size-list:7,8,9,10,12,16,18,20,22,26,30,40,50;
 @each $fonts in $font-size-list{
 	.font-size-#{$fonts}{font-size:#{$fonts*10%};}
 }
-@each $fontsr, $size in (small, 0.8), (default, 1.1), (normal, 1.2), (big, 1.5), (large, 1.6), (huge, 3){
+@each $fontsr, $size in (small, 0.8), (default, 1.1), (normal, 1.2), (big, 1.5), (large, 1.6), (largeM, 2), (huge, 3){
 	.font-size-#{$fontsr}{font-size:#{$size}rem;}
 }
 $font-weight-list:400,500,600,700;
@@ -170,7 +170,7 @@ $paddingr-list:1,2,3,4,5,8;
 .padding-all-1r{padding: 1rem!important;}
 $breakpoint-map: (
     left-1: (p: left,v:1%),left-3: (p: left, v:3%), left-5: (p: left,v:5%),left-d-2r: (p: left,v:-2rem),left-d-5: (p: left,v:5px),left-10: (p: left,v:10%),left-20x: (p: left,v:20px),left-30x: (p: left,v:30px),
-    top-1: (p: top,v:1%),top-p4r: (p: top,v:0.4rem),top-1r: (p: top,v:1rem),top-2: (p: top, v:2%),top-2r: (p: top, v:2rem), top-3: (p: top, v:3%),top-3r: (p: top, v:3rem), top-5: (p: top,v:5%),top-5x: (p: top,v:5px),top-5r: (p: top,v:5rem),top-7r: (p: top,v:7rem),top-10: (p: top,v:10%),top-d-10:(p: top,v:-10px),top-60x:(p: top,v:60px),top-120x:(p: top,v:120px),top-300x:(p: top,v:300px),
+    top-1: (p: top,v:1%),top-p4r: (p: top,v:0.4rem),top-1r: (p: top,v:1rem),top-1fr: (p: top,v:1.2rem),top-2: (p: top, v:2%),top-2r: (p: top, v:2rem), top-3: (p: top, v:3%),top-3r: (p: top, v:3rem), top-5: (p: top,v:5%),top-5x: (p: top,v:5px),top-5r: (p: top,v:5rem),top-7r: (p: top,v:7rem),top-10: (p: top,v:10%),top-d-10:(p: top,v:-10px),top-60x:(p: top,v:60px),top-120x:(p: top,v:120px),top-300x:(p: top,v:300px),
     right-1: (p: right,v:1%),right-1r: (p: right,v:1rem),right-1fr: (p: right,v:1.3rem),right-3: (p: right, v:3%), right-5: (p: right,v:5%),right-d-5: (p: right,v:5px),right-10: (p: right,v:10%),right-20x: (p: right,v:20px),right-30x: (p: right,v:30px),
     bottom-1: (p: bottom,v:1%),bottom-1r: (p: bottom,v:1rem),bottom-2r: (p: bottom, v:2rem),bottom-3: (p: bottom, v:3%), bottom-5: (p: bottom,v:5%),bottom-5x: (p: bottom,v:5px),bottom-10: (p: bottom,v:10%),bottom-60x: (p: bottom,v:60px),bottom-80x: (p: bottom,v:80px),bottom-110x: (p: bottom,v:110px)
 );
@@ -248,7 +248,7 @@ $position-map: (
 
 /*text-color*/
 @each $textname,$color in (textclolor-red,#fd5023),(textclolor-black,#000),(textclolor-black-low,#999),(textclolor-333,#333),(textclolor-white,#fff),(textclolor-gray,#ccc),(textclolor-gray-red,#fc9378),(textclolor-blue-white,#66ccf5),(textclolor-blue,#9db9c5),(textclolor-green,#38c49f),(textclolor-666,#666),(textclolor-333,#333),(textclolor-alink,#2391e5),(textcolor-bg,#50afd6),(textcolor-yellow,#ffe082),(textcolor-quan-red,#f1483a),(textcolor-quan-gold,#ffa439),(textcolor-quan-brown,#dbb181),(textcolor-quan-detail,#8b501a),(textcolor-407b99,#407b99),(textcolor-be8116,#be8116),(textcolor-51b0d6,#51b0d6),(textcolor-ea3a3a,#ea3a3a),(textcolor-ff9b27,#ff9b27),(textcolor-2d2d2d,#2d2d2d),
-(textcolor-aeaeae,#aeaeae),(textcolor-8EBF66, #80EA46),(textcolor-79EF44, #79EF44),(textcolor-313132,#313132),(textcolor-515151,#5b5b5b){
+(textcolor-aeaeae,#aeaeae),(textcolor-8EBF66, #9eea6a),(textcolor-79EF44, #9eea6a),(textcolor-9eea6a, #9eea6a),(textcolor-313132,#313132),(textcolor-515151,#5b5b5b){
   .#{$textname}{color: $color;}
 }
 /*backgound-color*/

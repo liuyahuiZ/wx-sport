@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { myClass, userRegistry, courseRatio, userInfo, userMoves } from '../api/classes';
+import { myClass, userRegistry, courseRatio, userInfo, userMoves, userMovesUpdate } from '../api/classes';
 import { getToken } from '../api/index';
 
 const {
@@ -47,7 +47,7 @@ class OcrDoc extends Component {
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
-        if(userInfo&&userInfo!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
           storage.removeStorage('userInfo');
           storage.removeStorage('userId');
         }
@@ -260,7 +260,7 @@ class OcrDoc extends Component {
             "weight": userMoveArr[i].value
           }
         }
-        courseMovesUpdate({data: newArr}).then((res)=>{
+        userMovesUpdate({data: newArr}).then((res)=>{
           Loade.hide();
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         }).catch((err)=>{
@@ -358,11 +358,11 @@ class OcrDoc extends Component {
           return (<div className="images-33 float-left bg-1B1B1B padding-all" key={`${idx}-ke`}>
             <Row className="text-align-center">
             <Col className="textclolor-white">{itm.text}</Col>
-            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-79EF44">
+            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-9eea6a">
               <Input
                 placeholder="请输入"
                 value={itm.value}
-                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#79EF44","textAlign":"center"}}
+                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#9eea6a","textAlign":"center"}}
                 maxLength={100}
                 onChange={(e,t,v)=>{
                     // self.setValue('weight',v)

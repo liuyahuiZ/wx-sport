@@ -142,7 +142,7 @@ class ImgPoster extends BaseView {
                     <div className="width-100">{userInfo.nickName}</div>
                     <Row className="width-100">
                       <Col span={12}>{decodeURIComponent(query.courseName)}</Col>
-                      <Col span={12}>{query.time}</Col>
+                      <Col span={12}>{query.date}</Col>
                     </Row>
                   </Col>
                 </Row>
@@ -150,14 +150,14 @@ class ImgPoster extends BaseView {
                 <Row className="width-100 padding-all ">
                     <Col span={12} className="line-height-25">
                       <Row>
-                        <Col span={12} className="textcolor-8EBF66 text-align-right">天数</Col>
-                        <Col span={12} className="textclolor-white font-size-normal padding-left-3">{query.date||0}/{query.days||0}</Col>
+                        <Col span={8} className="textcolor-8EBF66 text-align-right">天数</Col>
+                        <Col span={16} className="textclolor-white font-size-normal padding-left-3">{query.days||0}</Col>
                       </Row>
                     </Col>
                     <Col span={12} className="line-height-25">
                       <Row>
                         <Col span={8} className="textcolor-8EBF66 text-align-right">时间</Col>
-                        <Col span={16} className="textclolor-white font-size-normal padding-left-3">{formate.minutes(query.date||0)}</Col>
+                        <Col span={16} className="textclolor-white font-size-normal padding-left-3">{query.date||''}</Col>
                       </Row>
                     </Col>
                 </Row>

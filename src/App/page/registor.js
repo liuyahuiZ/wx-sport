@@ -48,7 +48,7 @@ class Registor extends BaseView {
         let userInfo = storage.getStorage('userInfo')
         let userId = storage.getStorage('userId');
         if(obg.code&&obg.code!==''){
-          if(userInfo&&userInfo!==''){
+          if(userInfo&&userInfo!==''&&obg.clean){
             storage.removeStorage('userInfo');
             storage.removeStorage('userId');
           }

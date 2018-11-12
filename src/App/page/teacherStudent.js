@@ -38,30 +38,7 @@ class TeacherStudent extends BaseView {
           ratioList: [],
           loadText: '加载中',
           userId: storage.getStorage('userId') ||{},
-          studentList: [
-            {
-                "id": 9,
-                "name": "James",
-                "courseTypeId": 1,
-                "date": "2018-10-23",
-                "trainingDays": 4,
-                "trainingMinutes": 756,
-                "completePercent": 0.4,
-                "userId": 106,
-                "userImage": "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJcS8JFW5URGUbYPbSDibkSQiauvwsBU8sFvFu3zmS3cz4ZslANmc70fbEu7QbicNLZxckhSrDHoGvqg/132"
-            },
-            {
-                "id": 10,
-                "name": "会飞的猫",
-                "courseTypeId": 2,
-                "date": "2018-10-23",
-                "trainingDays": 1,
-                "trainingMinutes": 0,
-                "completePercent": 0.1,
-                "userId": 106,
-                "userImage": "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJcS8JFW5URGUbYPbSDibkSQiauvwsBU8sFvFu3zmS3cz4ZslANmc70fbEu7QbicNLZxckhSrDHoGvqg/132"
-            }
-        ]
+          studentList: []
       };
     }
 
@@ -85,7 +62,7 @@ class TeacherStudent extends BaseView {
         let data = res.result;
         if(data && data.length > 0){
           self.setState({
-            teacherInfos: data
+            studentList: data
           })
         } else {
           self.setState({
@@ -124,7 +101,7 @@ class TeacherStudent extends BaseView {
           return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
           onClick={()=>{self.goLink('/StudentPlanRecode', {userId: itm.userId, courseId: itm.id, courseTypeId: itm.courseTypeId})}}>
               <Row>
-                  <Col span={12} className="zindex-10 font-size-normal text-align-left">{itm.name}</Col>
+                  <Col span={12} className="zindex-10 font-size-normal text-align-left line-height-2r">{itm.name} {itm.questions>0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
                   <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
               </Row>
               <Row className="">
@@ -135,16 +112,16 @@ class TeacherStudent extends BaseView {
                       />
                     </div>
                   </Col>
-                  <Col span={8} className="zindex-10 text-align-left margin-top-1r">
+                  <Col span={8} className="zindex-10 text-align-left margin-top-3">
                       <Row>
                           <Col className="font-size-small">训练天数</Col>
-                          <Col className="font-size-large">{itm.trainingDays}</Col>
+                          <Col className="font-size-largeM">{itm.trainingDays}</Col>
                       </Row>
                   </Col>
-                  <Col span={8} className="zindex-10 text-align-center margin-top-1r">
+                  <Col span={8} className="zindex-10 text-align-center margin-top-3">
                       <Row>
                           <Col className="font-size-small">完成比例</Col>
-                          <Col className="font-size-large">{computed.accMul(itm.completePercent||0, 100)}%</Col>
+                          <Col className="font-size-largeM">{computed.accMul(itm.completePercent||0, 100)}%</Col>
                       </Row>
                   </Col>
               </Row>

@@ -38,44 +38,7 @@ class Teachers extends BaseView {
           ratioList: [],
           loadText: '加载中',
           userId: storage.getStorage('userId') ||{},
-          teacherInfos: {
-            "id": 107,
-            "name": "James",
-            "img": "http://thirdwx.qlogo.cn/mmopen/vi_32/CrZnia8VYOicbLWhkSOw6nnYjuc8JoFDDCRXsiajVldZnlYiaLVMNcOLO6wsmn85VuVibspLc5dicGrrUaRGluS8s9hQ/132",
-            "answerNum": 1,
-            "courseNum": 0,
-            "studentNum": 0,
-            "courseTypes": [
-                {
-                    "id": 1,
-                    "name": "上身计划",
-                    "bgiUrl": "http://img.daimg.com/uploads/allimg/180801/3-1PP11I058.jpg",
-                    "createTime": 1540095060000,
-                    "updateTime": 1540095202000
-                },
-                {
-                    "id": 2,
-                    "name": "下身计划",
-                    "bgiUrl": "http://img.daimg.com/uploads/allimg/180801/3-1PP11I058.jpg",
-                    "createTime": 1540095066000,
-                    "updateTime": 1540095203000
-                },
-                {
-                    "id": 3,
-                    "name": "核心计划",
-                    "bgiUrl": "http://img.daimg.com/uploads/allimg/180801/3-1PP11I058.jpg",
-                    "createTime": 1540095103000,
-                    "updateTime": 1540095203000
-                },
-                {
-                    "id": 4,
-                    "name": "打包计划",
-                    "bgiUrl": "http://img.daimg.com/uploads/allimg/180801/3-1PP11I058.jpg",
-                    "createTime": 1540095117000,
-                    "updateTime": 1540095204000
-                }
-            ]
-        }
+          teacherInfos: {}
       };
     }
     componentDidMount(){
@@ -83,7 +46,7 @@ class Teachers extends BaseView {
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
-        if(userInfo&&userInfo!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
           storage.removeStorage('userInfo');
           storage.removeStorage('userId');
         }
@@ -136,7 +99,7 @@ class Teachers extends BaseView {
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
-        if(data && data.length > 0){
+        if(data){
           self.setState({
             teacherInfos: data
           })
@@ -176,10 +139,10 @@ class Teachers extends BaseView {
         teacherInfos.courseTypes.map((itm, idx)=>{
           return (<Row key={`${idx}-type`} className="relative text-align-center margin-top-2" 
           onClick={()=>{self.goLink('/TeacherStudent', {teacherId: userId, courseTypeId:itm.id})}}>
-            <Col className="relative text-align-center">
+            <Col className="relative text-align-center overflow-hide">
               <span className="line-height-6r  textclolor-white zindex-10 relative">{itm.name}</span>
               <div className="width-100 bg-000 opacity-5 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-              <img src={itm.bgiUrl} className="width-100 absolute-left zindex-6 heightp-100 bg" />
+              <img src={itm.bgiUrl.split(',')[1]} className="width-100 absolute-left zindex-6 bg" />
             </Col>
           </Row>)
         }) : ''
@@ -209,7 +172,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">解答次数</Col>
                             <Col >
-                              <span className="font-size-large textcolor-79EF44">{teacherInfos.answerNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.answerNum||0}</span>
                               <span className="font-size-small textclolor-black-low">次</span>
                             </Col>
                         </Row>
@@ -218,7 +181,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">完成课程</Col>
                             <Col className="">
-                              <span className="font-size-large textcolor-79EF44">{teacherInfos.courseNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.courseNum||0}</span>
                               <span className="font-size-small textclolor-black-low">个</span>
                             </Col>
                         </Row>
@@ -227,7 +190,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">总用户</Col>
                             <Col className="">
-                              <span className="font-size-large textcolor-79EF44">{teacherInfos.studentNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.studentNum||0}</span>
                               <span className="font-size-small textclolor-black-low">人</span>
                             </Col>
                         </Row>

@@ -49,15 +49,16 @@ class Cell extends Component {
     const options = this.state.options;
     const leftCon = Object.assign({}, styles.leftCon);
     const rightX = Object.assign({}, styles.rightX);
-
     const contentMaxHeight = options.maxHeight ? { maxHeight: options.maxHeight } : '';
     const option = options.options.map((im, idx) => {
       const activeStyle = im.value === self.state.active? styles.active : '';
       const noIconStyle = options.showIcon ? '' : styles.noIcon;
-      const item = (<div key={`${idx}-d`} style={arrayUtils.merge([styles.opeationItem, styles.textAlignLeft, activeStyle, noIconStyle])} onClick={()=> {
+      const item = (<div key={`${idx}-d`} style={arrayUtils.merge([styles.opeationItem, styles.textAlignCenter, activeStyle, noIconStyle])} onClick={()=> {
         this.setValue(im);
         options.successCallback(im);
-      }}>{ im.value === self.state.active && options.showIcon ? <Icon iconName={'android-done'} size={'100%'} iconColor={ '#fff' } style={styles.activeIcon} />: '' }{im.text}</div>);
+      }}>
+      {/* { im.value === self.state.active && options.showIcon ? <Icon iconName={'android-done'} size={'100%'} iconColor={ '#fff' } style={styles.activeIcon} />: '' } */}
+      {im.text}</div>);
       return item;
     })
 

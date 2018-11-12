@@ -48,7 +48,7 @@ class OcrDoc extends BaseView {
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
-        if(userInfo&&userInfo!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
           storage.removeStorage('userInfo');
           storage.removeStorage('userId');
         }
@@ -83,7 +83,7 @@ class OcrDoc extends BaseView {
       let obg = UrlSearch();
       const self = this;
       Loade.show();
-      courseDetail({id: obg.id}).then((res)=>{
+      courseDetail({id: obg.courseId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         self.setState({
@@ -169,26 +169,28 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Row content="flex-start">
                       <Col span={1}></Col>
-        <Col span={11} className="font-size-default textclolor-white line-height-2r font-weight-700">预约人数 ({detailData&&detailData.course? `${detailData.course.currentPeople||0}/${detailData.course.maxPeople||0}` : ''})</Col>
+        <Col span={11} className="font-size-default textclolor-white line-height-2r font-weight-700">预约人数 ({detailData&&detailData.course? `${detailData.peoples.length||0}/${detailData.course.maxPeople||0}` : ''})</Col>
                       <Col span={10} className="font-size-small textclolor-white text-align-right line-height-2r "></Col>
                     </Row>
                   </Col>
                   <Col className="bg-1B1B1B padding-all">
                     {personDom}
-                    <Row className="width-100">
+                  </Col>
+                  <Col className="bg-1B1B1B">
+                  <Row className="width-100">
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-default textclolor-white font-weight-700">门店地址</Col>
-                          <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.address||''}</Col>
-                          <Col span={24} className="font-size-small textclolor-white margin-top-2" onClick={()=>{
+                          <Col span={1} className="bg-0D0D0D"></Col><Col span={23} className="font-size-default textclolor-white font-weight-700 bg-0D0D0D">门店地址</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low padding-all">{detailData&&detailData.course&&detailData.course.address||''}</Col>
+                          <Col span={24} className="font-size-small textclolor-white margin-top-2 padding-all" onClick={()=>{
                             this.openMap(detailData.course.latitude, detailData.course.longitude)
                           }}>点击查看地图</Col>
                         </Row>
                       </Col>
                       <Col span={24} className="margin-top-2" >
                         <Row>
-                          <Col span={24} className="font-size-default textclolor-white font-weight-700">课程教案</Col>
-                          <Col span={24} className="font-size-small textclolor-black-low ">{detailData&&detailData.course&&detailData.course.title||''}</Col>
+                          <Col span={1} className="bg-0D0D0D"></Col><Col span={23} className="font-size-default textclolor-white font-weight-700 bg-0D0D0D">课程教案</Col>
+                          <Col span={24} className="font-size-small textclolor-black-low padding-all">{detailData&&detailData.course&&detailData.course.title||''}</Col>
                         </Row>
                       </Col>
                     </Row>

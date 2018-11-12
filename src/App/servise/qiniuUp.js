@@ -1,13 +1,14 @@
 import * as qiniu from 'qiniu-js';
 import config from '../config/config';
-import fetch from '../servise/fetch';
+import fetch from './fetch';
 const fileDoman = 'http://pdc6cusp9.bkt.clouddn.com/'
 
 export function fileUp(file) {
     return new Promise((resolve, reject)=>{
-        fetch(config.ROOT_URL+ 'wx/getUpToken',{ method: 'GET'}).then(data => {
-            console.log(data.respBody.uploadToken);
-            let token = data.respBody.uploadToken;
+        console.log(config.API_URL+ 'qiniu/token')
+        fetch(config.API_URL+ 'qiniu/token',{ method: 'POST', data:{}}).then(data => {
+            console.log(data.result.token);
+            let token = data.result.token;
             let key = Date.parse(new Date)/1000;
             let putExtra = {
                 fname: file.name,

@@ -51,7 +51,7 @@ class OcrDoc extends BaseView {
       let userInfo = storage.getStorage('userInfo')
       let userId = storage.getStorage('userId');
       if(obg.code&&obg.code!==''){
-        if(userInfo&&userInfo!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
           storage.removeStorage('userInfo');
           storage.removeStorage('userId');
         }
@@ -166,11 +166,11 @@ class OcrDoc extends BaseView {
           return (<div className="images-33 float-left bg-1B1B1B " key={`${idx}-ke`}>
             <Row className="text-align-center">
             <Col className="textclolor-white">{itm.text}</Col>
-            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-79EF44">
+            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-9eea6a">
               <Input
                 placeholder="请输入"
                 value={itm.value}
-                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#79EF44","textAlign":"center"}}
+                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#9eea6a","textAlign":"center"}}
                 maxLength={100}
                 onChange={(e,t,v)=>{
                     // self.setValue('weight',v)
@@ -275,7 +275,8 @@ class OcrDoc extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    hashHistory.goBack();
+                    // hashHistory.goBack();
+                    self.goLink('/Tab')
                   }}
                 />
               </Col>

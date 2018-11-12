@@ -43,7 +43,10 @@ class Radio extends Component {
       text: item.iteText,
       checked: item.iteValue
     });
-    this.props.onChange(event, item);
+    this.props.onChange(event, {
+      value: item.iteValue,
+      text: item.iteText
+    });
   }
   render() {
     const { disabled, style, checkStyle, normalStyle } = this.props;
