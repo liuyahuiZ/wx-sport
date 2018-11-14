@@ -408,7 +408,7 @@ class ClassList extends BaseView {
         
         const classListDom = classList&&classList.length > 0 ? classList.map((itm, idx) => {
           let itmDom = itm.children&&itm.children.length > 0 ? itm.children.map((it, id)=>{
-            let statusDom = (it.currentPeople < it.maxPeople) && !it.isOver ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-default border-all border-color-9eea6a textcolor-8EBF66 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
+            let statusDom = (it.currentPeople < it.maxPeople) && !it.over ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-default border-all border-color-9eea6a textcolor-8EBF66 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
           : <Col span={3.5} className="margin-top-2r zindex-10 border-all border-color-999  bg-1B1B1B textclolor-black-low font-size-default  text-align-center border-radius-3 heighr-2 line-height-2r" >结束</Col>;
           return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B border-bottom border-color-333" key={`${id}-lit`} >
             <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >

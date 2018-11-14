@@ -133,15 +133,13 @@ class MyPlanRecode extends BaseView {
     render() {
         const {selectRecode, recodes, detailData, status, itmStatus, feedback} = this.state;
         const self = this;
+        console.log(feedback.doubtImageUrl);
         const carouselMap = feedback&&feedback.doubtImageUrl ?  
          [{ tabName: 'idx', content: (<img alt="text" src={feedback.doubtImageUrl} />), isActive: false }]
         : [
           {
             tabName: 1,
             content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg' />),
-          },{
-            tabName: 2,
-            content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png'/>)
           }
         ];
         
@@ -168,7 +166,7 @@ class MyPlanRecode extends BaseView {
               <Col className="textclolor-white" span={6}>
                 <Row>
                   <Col className={"font-size-small textclolor-black-low"}>持续时间</Col>
-                  <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{itme.time}</Col></Row>
+                  <Col className={"padding-all-2 font-size-normal border-radius-5f textcolor-8EBF66"}>{formate.minutes(itme.time)}</Col></Row>
               </Col>
             </Row>)
           }) : <div />;

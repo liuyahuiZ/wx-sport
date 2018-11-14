@@ -7,6 +7,7 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import moment from 'moment';
 import { teacherInfo } from '../api/subject';
+import { getToken } from '../api/index';
 
 const {
     Buttons,
@@ -60,6 +61,7 @@ class Teachers extends BaseView {
       }
       if((userId&&userId!=='')){
         // this.getMyClass(userId);
+        this.checkTeacher();
         this.getMyClass(userId);
         // this.getCourseRatio(userId);
       }
@@ -81,6 +83,7 @@ class Teachers extends BaseView {
           // self.getMyClass(data.id);
           // self.getCourseRatio(data.id);
           // self.registry();
+          self.checkTeacher();
           self.setState({
             userInfo: data,
             userId: data.id
@@ -121,6 +124,16 @@ class Teachers extends BaseView {
       } else {
         window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
       }
+    }
+
+    checkTeacher(){
+      let userInfo =  storage.getStorage('userInfo')
+      if (userInfo) {
+        if(userInfo.userType==0){
+          window.location.href='https://jinshuju.net/f/r15c2C'
+        }
+      }
+      
     }
     
     goLink(link, itm){

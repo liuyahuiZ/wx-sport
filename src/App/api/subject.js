@@ -70,7 +70,7 @@ export function teacherStudents(req){
 
 export function teacherMark(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `teacher/mark`,{ method: 'POST', data: req})
+        order(config.API_URL+ `teacher/mark`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -81,7 +81,7 @@ export function teacherMark(req){
 
 export function teacherStudentRecords(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `teacher/student/records`,{ method: 'POST', data: req})
+        order(config.API_URL+ `teacher/student/records`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {
@@ -92,7 +92,7 @@ export function teacherStudentRecords(req){
 
 export function teacherStudentRecordRevert(req){
     return new Promise((resolve, reject)=>{
-        fetch(config.API_URL+ `teacher/student/record/revert`,{ method: 'POST', data: req})
+        order(config.API_URL+ `teacher/student/record/revert`,{ method: 'POST', data: req})
         .then(data => {
             resolve(data)
         }).catch(error => {

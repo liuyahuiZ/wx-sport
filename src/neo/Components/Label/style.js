@@ -8,11 +8,13 @@ export default {
   },
   span: {
     display: 'inline-block',
-    padding: '5px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
     fontSize: '90%',
     border: '1px solid',
     borderRadius: '10px',
-    margin: '0 5px'
+    margin: '0 5px',
+    mraginBottom: '5px'
   },
   borderRadius: {
     borderRadius: '10px'

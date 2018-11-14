@@ -19,7 +19,8 @@ const {
     Carousel,
     Loade,
     ProgressDrag,
-    Checkbox
+    Checkbox,
+    LabelGroup
 } = Components;
 const { sessions, storage } = utils;
 
@@ -137,8 +138,9 @@ class OcrDoc extends BaseView {
         }) : <div />;
         
         const poepleFirst = dataDetail&&dataDetail.fitPeoples ? dataDetail.fitPeoples.map((itm, idx)=>{
-          return <span key={`${idx}-sp`} className={"padding-all-2 bg-8EBF66 border-radius-5f margin-right-1 font-size-small"}>{itm}</span>
-        }) : '';
+          return {text: itm, styles: {background: '#9eea6a'}} 
+          //<span key={`${idx}-sp`} className={"padding-all-2 bg-8EBF66 border-radius-5f margin-right-1 font-size-small"}>{itm}</span>
+        }) : [];
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" content="flex-start">
@@ -158,7 +160,8 @@ class OcrDoc extends BaseView {
                       <Col span={24} className="margin-top-2" >
                         <Row>
                           <Col span={24} className="font-size-default textclolor-white">适用人群</Col>
-                          <Col span={24} className="font-size-small textclolor-333 padding-top-1r padding-bottom-1r">{poepleFirst}</Col>
+                          <Col span={24} className="font-size-small textclolor-333 padding-top-1r padding-bottom-1r line-height-2r">
+                          <LabelGroup options={poepleFirst} /></Col>
                         </Row>
                       </Col>
 
@@ -168,7 +171,7 @@ class OcrDoc extends BaseView {
                           <Col span={24} className="font-size-small textclolor-black-low padding-all">
                           <ProgressDrag percent={difficulty} barColor={'linear-gradient(90deg, #93C770 40%, #3FEFEC 60%)'}
                           bgColor={'#333'} style={{height: '5px'}} barRoundStyle={{ 'width': '1.1rem','height': '1.1rem','background': '#333','border': '3px solid #4CF6C7'}} radius={20}
-                          onChange={(v)=>{ console.log(v); self.setState({difficulty: v})}} barWidthDisable />
+                          onChange={(v)=>{ console.log(v); self.setState({difficulty: v})}} barWidthDisable enableDrag={false} />
                           </Col>
                           <Col span={8} className="text-align-left font-size-small textclolor-black-low">简单</Col>
                           <Col span={8} className="text-align-center font-size-small textclolor-black-low">一般</Col>

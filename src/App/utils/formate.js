@@ -178,9 +178,9 @@ export default {
   minutes: function(value){
     let result = ''
     if(value/60>60){
-      result = `${patchZero(parseInt(value/60/60))} : ${patchZero(parseInt(value/60%60))} : ${patchZero(parseInt(value%60))}`
+      result = `${patchZero(parseInt(value/60/60))}:${patchZero(parseInt(value/60%60))}:${patchZero(parseInt(value%60))}`
     } else {
-      result = `00 : ${patchZero(parseInt(value/60))} : ${patchZero(parseInt(value%60))}`
+      result = `00:${patchZero(parseInt(value/60))}:${patchZero(parseInt(value%60))}`
     }
     return result
   }

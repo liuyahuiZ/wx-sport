@@ -145,6 +145,7 @@ class MyClassDetail extends BaseView {
     render() {
         const {detailData, status, itmStatus, mvVideo} = this.state;
         const self = this;
+        console.log('detailData', detailData, detailData.doubtImageUrl);
         const carouselMap = detailData&&detailData.imgUrlList ?  
         detailData.imgUrlList.map((itm, idx)=>{
           return { tabName: idx, content: (<img alt="text" src={itm} />), isActive: false } 
@@ -152,14 +153,11 @@ class MyClassDetail extends BaseView {
           {
             tabName: 1,
             content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg' />),
-          },{
-            tabName: 2,
-            content: (<img alt="text" src='https://static1.keepcdn.com/2018/03/01/15/1519888737768_315x315.png'/>)
           }
         ];
         const coursePlanActionsDom = detailData&&detailData.coursePlanActions ? detailData.coursePlanActions.map((itm, idx)=>{
           const itmDom = itm.detailList&&itm.detailList.length > 0 ? itm.detailList.map((itme, idxs)=>{
-            return (<Row key={`${idxs}-st`} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center" onClick={()=>{self.setVideo(itme)}}>
+            return (<Row key={`${idxs}-st`} gutter={4} className="padding-top-1r padding-bottom-1r border-bottom border-color-333 text-align-center" onClick={()=>{self.setVideo(itme)}}>
               <Col className="textclolor-white" span={8}>
                 <Row><Col>{itme.name}</Col><Col className={"font-size-small textclolor-black-low"}>{itme.intension}分强度</Col></Row>
               </Col>
@@ -180,7 +178,7 @@ class MyClassDetail extends BaseView {
               <Col className="textclolor-white" span={6}>
                 <Row>
                   <Col className={"font-size-small textclolor-black-low"}>持续时间</Col>
-                  <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{itme.time}</Col></Row>
+                  <Col className={"padding-all-2 bg-8EBF66 border-radius-5f textclolor-black"}>{formate.minutes(itme.time)}</Col></Row>
               </Col>
             </Row>)
           }) : <div />;
