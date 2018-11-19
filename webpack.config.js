@@ -31,9 +31,9 @@ module.exports = {
         }
       }
     }),
-    new LocalServer({
-      port: 9091
-    })
+    // new LocalServer({
+    //   port: 9092
+    // })
   ],
   module: {
     rules: [
@@ -41,14 +41,14 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
-      },
+      }, 
       {
         test: /(\.jp(e)g|\.png|\.gif|\.svg)$/,
         exclude: /node_modules/,
         use: {
           loader: 'file-loader',
           options: {
-            outputPath: './images/',
+            outputPath: '../css/images/',
             publicPath: 'images/'
           }
         }

@@ -191,12 +191,12 @@ class StudentPlanRecode extends BaseView {
                <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
                <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
               </Col>
+              {itm.restTime !==0 ? <Col className="bg-000 line-height-3r"> 
+                  <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
+                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
+                  <span className="textclolor-black-low">每个动作之间休息时间</span>
+                  </Col> : ''}
             </Row>
-          </Col>
-          <Col className="bg-000 line-height-3r"> 
-            <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
-            <span className="textcolor-8EBF66 font-size-normal margin-right-1">{itm.restTime}</span>
-            <span className="textclolor-black-low">每个动作之间休息时间</span>
           </Col>
           <Col>{itmDom}</Col>
       </Row>)
@@ -246,8 +246,8 @@ class StudentPlanRecode extends BaseView {
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
                   <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>

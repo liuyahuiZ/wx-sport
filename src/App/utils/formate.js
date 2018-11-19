@@ -183,5 +183,14 @@ export default {
       result = `00:${patchZero(parseInt(value/60))}:${patchZero(parseInt(value%60))}`
     }
     return result
+  },
+  minute: function(value){
+    let result = ''
+    if(value/60>60){
+      result = `${patchZero(parseInt(value/60/60))}:${patchZero(parseInt(value/60%60))}:${patchZero(parseInt(value%60))}`
+    } else {
+      result = `${patchZero(parseInt(value/60))}:${patchZero(parseInt(value%60))}`
+    }
+    return result
   }
 };

@@ -156,6 +156,7 @@ class OcrDoc extends BaseView {
                     <Row>
                       <Col span={24} className="font-size-small textclolor-black-low margin-bottom-3 ">
                       {dataDetail.intro}
+                      {/* {dataDetail&&dataDetail.intro&&dataDetail.intro.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${dataDetail.intro}</p>`}} /> : dataDetail.intro} */}
                       </Col>                    
                       <Col span={24} className="margin-top-2" >
                         <Row>

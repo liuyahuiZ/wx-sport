@@ -148,7 +148,7 @@ class OcrDoc extends BaseView {
             "weight": courseMovesArr[i].value
           }
         }
-        courseMovesUpdate({data: newArr}).then((res)=>{
+        courseMovesUpdate(newArr).then((res)=>{
           Loade.hide();
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         }).catch((err)=>{

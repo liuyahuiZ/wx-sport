@@ -185,7 +185,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">解答次数</Col>
                             <Col >
-                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.answerNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a font-weight-700">{teacherInfos.answerNum||0}</span>
                               <span className="font-size-small textclolor-black-low">次</span>
                             </Col>
                         </Row>
@@ -194,7 +194,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">完成课程</Col>
                             <Col className="">
-                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.courseNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a font-weight-700">{teacherInfos.courseNum||0}</span>
                               <span className="font-size-small textclolor-black-low">个</span>
                             </Col>
                         </Row>
@@ -203,7 +203,7 @@ class Teachers extends BaseView {
                         <Row>
                             <Col className="font-size-small textclolor-white">总用户</Col>
                             <Col className="">
-                              <span className="font-size-large textcolor-9eea6a">{teacherInfos.studentNum||0}</span>
+                              <span className="font-size-large textcolor-9eea6a font-weight-700">{teacherInfos.studentNum||0}</span>
                               <span className="font-size-small textclolor-black-low">人</span>
                             </Col>
                         </Row>

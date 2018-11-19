@@ -72,8 +72,8 @@ class TeacherRate extends BaseView {
       let weekOfday = moment().format('dddd');
       var today = moment().format('YYYY-MM-DD');
       let dataArr=[];
-      let length = 7;
-      for(let i=0;i<length;i++){
+      let length = 8;
+      for(let i=1;i<length;i++){
         let Name = moment().add('days', i).format('dddd')
         if(i===0){ Name = '今天'} else if(i===1) {Name = '明天'}
         dataArr.push({

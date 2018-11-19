@@ -121,7 +121,7 @@ class TeacherStudent extends BaseView {
                   <Col span={8} className="zindex-10 text-align-center margin-top-3">
                       <Row>
                           <Col className="font-size-small">完成比例</Col>
-                          <Col className="font-size-largeM">{computed.accMul(itm.completePercent||0, 100)}%</Col>
+                          <Col className="font-size-largeM">{computed.accMul(itm.completePercent||0, 100).toFixed(0)}%</Col>
                       </Row>
                   </Col>
               </Row>

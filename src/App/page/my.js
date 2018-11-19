@@ -260,7 +260,7 @@ class OcrDoc extends Component {
             "weight": userMoveArr[i].value
           }
         }
-        userMovesUpdate({data: newArr}).then((res)=>{
+        userMovesUpdate(newArr).then((res)=>{
           Loade.hide();
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         }).catch((err)=>{

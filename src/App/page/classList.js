@@ -54,7 +54,7 @@ class ClassList extends BaseView {
       let weekOfday = moment().format('dddd');
       var today = moment().format('YYYY-MM-DD');
       let dataArr=[];
-      let length = 7;
+      let length = 14;
       for(let i=0;i<length;i++){
         let Name = moment().add('days', i).format('dddd')
         if(i===0){ Name = '今天'} else if(i===1) {Name = '明天'}
@@ -411,10 +411,10 @@ class ClassList extends BaseView {
             let statusDom = (it.currentPeople < it.maxPeople) && !it.over ? <Col span={3.5} className="margin-top-2r zindex-10 bg-1B1B1B font-size-default border-all border-color-9eea6a textcolor-8EBF66 text-align-center border-radius-3 heighr-2 line-height-2r" onClick={()=>{ console.log('123'); this.ordeRing(it)}}>预约</Col>
           : <Col span={3.5} className="margin-top-2r zindex-10 border-all border-color-999  bg-1B1B1B textclolor-black-low font-size-default  text-align-center border-radius-3 heighr-2 line-height-2r" >结束</Col>;
           return (<Row className="padding-top-3 padding-left-3 padding-right-3 bg-1B1B1B border-bottom border-color-333" key={`${id}-lit`} >
-            <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? 'margin-bottom-3': ''}`} >
+            <Col className={`relative heighr-6 overflow-hide ${ id==(itm.children.length-1 )? '': ''}`} >
               <Row className="zindex-10 ">
                 <Col span={6} className="margin-top-3">
-                  <div className="middle-round border-radius-round overflow-hide">
+                  <div className="middle-round-4r border-radius-round overflow-hide">
                     <img className="width-100 heighr-4" alt="text" src={it.coachImgUrl} />
                   </div>
                 </Col>
@@ -446,7 +446,7 @@ class ClassList extends BaseView {
           return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ self.setData(itm); console.log(itm);}}>
           <Row><Col className="font-size-small textclolor-black-low text-align-center">{itm.dateName}</Col>
           <Col className="font-size-small textclolor-black-low text-align-center">
-          <div className={`${selectDay.dateName==itm.dateName ? 'bg-8EBF66 textclolor-333' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
+          <div className={`${selectDay.date==itm.date ? 'bg-8EBF66 textclolor-333' :'' } display-inline-block font-size-small textclolor-white small-round text-align-center border-radius-100`}>{itm.date}</div>
           </Col></Row>
           </Col>)
         }) : <Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col>;
@@ -457,11 +457,14 @@ class ClassList extends BaseView {
                 <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'10rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
               </Col> */}
               <Col className="margin-top-2 border-radius-5f overflow-hide bg-101111">
-                <Row className="bg-0D0D0D">
+                {/* <Row className="bg-0D0D0D">
                 <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet()}}>地区 <Icon iconName={'chevron-down '} size={'90%'} iconColor={'#999'} /></Col>
                 <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet2()}}>门店 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
-                {/* <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet1()}}>课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col> */}
-                </Row>
+                <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" >广州</Col>
+                <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" >广州门店 </Col>
+                
+                <Col span={12} className="padding-all font-size-default textclolor-black-low text-align-center" onClick={()=>{this.doSheet1()}}>课程类型 <Icon iconName={'chevron-up '} size={'90%'} iconColor={'#999'} /></Col>
+                </Row> */}
                 <Row className="margin-top-2 padding-all">{clenderDom}</Row>
               </Col>
               <Col>

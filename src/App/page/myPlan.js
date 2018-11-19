@@ -66,14 +66,16 @@ class MyClassDetail extends BaseView {
         this.setState({[key]: val});
     }
     submitClick(){
-      Loade.show();
       const self = this;
       const { detailData } = this.state;
       const keepTime = self.$$TimeRunner.getData();
       console.log(keepTime);
+      if(keepTime<30) { Toaster.toaster({ type: 'error', content: '训练时间要大于30秒哦', time: 3000 });return;}
+      this.$$TimeRunner.stop()
       let allKeepTime = Number(keepTime.hour)*60*60 + Number(keepTime.minute)*60 + Number(keepTime.second)
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
+      Loade.show();
       coursePlanOver({
         userId: userId,
         courseId: obg.courseId,
@@ -190,9 +192,15 @@ class MyClassDetail extends BaseView {
                   <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
                   <img src={itm.bg} className={'width-100 absolute-left zindex-6'} />
                   </Col>
+                  {itm.restTime !==0 ? <Col className="bg-000 line-height-3r"> 
+                  <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
+                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
+                  <span className="textclolor-black-low">每个动作之间休息时间</span>
+                  </Col> : ''}
                 </Row>}>
               <Row>
-                <Col>{itmDom}</Col>
+              
+              <Col>{itmDom}</Col>
               </Row>
             </Panel>
           </Collapse>
@@ -201,7 +209,7 @@ class MyClassDetail extends BaseView {
         }) : <div />
         return(
           <section className="padding-all bg-000">
-            <Row className="minheight-100" justify="center" content="flex-start">
+            <Row className={`${mvVideo&&mvVideo!==''? 'margin-bottom-21r' : 'margin-bottom-4r'} minheight-100`} justify="center" content="flex-start">
               <Col>
                 <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'10rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
               </Col>
@@ -254,16 +262,18 @@ class MyClassDetail extends BaseView {
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
                   <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
                   <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minutes(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
-              { detailData&&detailData.mvUrl ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
+            </Row>
+            <Row className="fixed bottom-0 bg-000 zindex-10 width-100 padding-all left-0">
+            { mvVideo&&mvVideo!='' ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
                 src={mvVideo} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>: <div />}
-              { detailData&&detailData.mvUrl ? <Col className="textclolor-white text-align-center margin-top-3">
+              { mvVideo&&mvVideo!='' ? <Col className="textclolor-white text-align-center margin-top-3">
                 <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
               </Col> : <div />}
               {
@@ -299,12 +309,11 @@ class MyClassDetail extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    this.$$TimeRunner.stop()
                     this.submitClick()
                   }}
                 />
               </Col>
-                </Row>) :  detailData&&detailData.mvUrl ? (<Col className="margin-top-3">
+                </Row>) :  mvVideo&&mvVideo!='' ? (<Col className="margin-top-3">
                 <Buttons
                   text="开始训练"
                   type={'primary'}
@@ -330,7 +339,6 @@ class MyClassDetail extends BaseView {
                     hashHistory.goBack();
                   }}
                 /></Col>
-            
             </Row>
           </section>
         );
