@@ -31,8 +31,8 @@ class OcrDoc extends BaseView {
       this.state = {
           article: {},
           feelCore: 50,
-          picture: 'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg',
-          theVieo: 'http://pdc6cusp9.bkt.clouddn.com/1534342816',
+          picture: '', //'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg',
+          theVieo: '',//'http://pdc6cusp9.bkt.clouddn.com/1534342816',
           query: UrlSearch(),
           feel: ''
       };
@@ -166,23 +166,26 @@ class OcrDoc extends BaseView {
                    <Row onClick={()=>{
                      this.$$img1.EditImg()
                    }}>
-                     <Col span={10} className="margin-top-3"><i className="icon icon-camera margin-top-3" /></Col>
+                     <Col span={10} className="margin-top-3"><i className="icon icon-video margin-top-3" /></Col>
                      <Col span={14} className="text-align-left">疑惑动作</Col>
                     </Row>
                   </Col>
                   <Col className={'zindex-6 absolute-left zindex-9'}>
+                  {/* || 'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg' */}
+                  
                   <FileUp
                   description={''}
-                  defaultSrc={ picture || 'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg'}
+                  defaultSrc={ theVieo }
                   ref={(r) => {
-                    this.$$img1 = r;
+                    this.$$img2 = r;
                   }}
                   fileReady={(v)=>{
-                    this.fileUps(v, 'picture')
+                    this.fileUps(v, 'theVieo')
                   }}
                   fileType={'blob'}
                   callType={'H5'}
                   maxSize={10}
+                  accept="video/*"
                   ></FileUp> </Col>
                 </Row>
                 {/* <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div> */}
@@ -211,24 +214,25 @@ class OcrDoc extends BaseView {
                    <Row onClick={()=>{
                      this.$$img2.EditImg()
                    }}>
-                     <Col span={10} className="margin-top-3"><i className="icon icon-video margin-top-3" /></Col>
+                     <Col span={10} className="margin-top-3"><i className="icon  icon-camera margin-top-3" /></Col>
                      <Col span={14} className="text-align-left">照片上传</Col></Row>
                   </Col>
                   <Col className={'zindex-6 absolute-left zindex-9'}>
+                  {/* || 'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg' */}
                   <FileUp
                   description={''}
-                  defaultSrc={ theVieo || 'https://static1.keepcdn.com/2018/01/24/14/1516774341982_315x315.jpg'}
+                  defaultSrc={ picture }
                   ref={(r) => {
-                    this.$$img2 = r;
+                    this.$$img1 = r;
                   }}
                   fileReady={(v)=>{
-                    this.fileUps(v, 'theVieo')
+                    this.fileUps(v, 'picture')
                   }}
                   fileType={'blob'}
                   callType={'H5'}
                   maxSize={10}
-                  accept="video/*"
-                  ></FileUp> </Col>
+                  ></FileUp> 
+                  </Col>
                 </Row>
               </Col>
           

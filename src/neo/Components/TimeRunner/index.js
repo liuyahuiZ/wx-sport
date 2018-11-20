@@ -18,6 +18,7 @@ class TimeRunner extends Component {
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.getData = this.getData.bind(this);
+    this.setData =  this.setData.bind(this);
   }
   componentDidMount() {
     // this.start();
@@ -71,6 +72,9 @@ class TimeRunner extends Component {
     return this.state;
   }
 
+  setData(obg){
+    this.setState(obg)
+  }
   splitStr(second){
     let showSecond = '';
     if(second > 9) {

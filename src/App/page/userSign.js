@@ -153,7 +153,11 @@ class UserSignd extends BaseView {
                     </Row>
                   </Col>
                   <Col className="bg-0D0D0D padding-all">
-                      <div className="font-size-small textclolor-black-low">{courseDetial.prepare}</div>
+                      <div className="font-size-small textclolor-black-low">
+                      {/* {courseDetial.careful} */}
+                      {/* {courseDetial&&courseDetial.prepare&&courseDetial.prepare.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: courseDetial.prepare}} /> : courseDetial.prepare} */}
+                      {courseDetial&&courseDetial.careful&&courseDetial.careful.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: courseDetial.careful}} /> : courseDetial.careful}
+                      </div>
                   </Col>
                 </Row>
               </Col>

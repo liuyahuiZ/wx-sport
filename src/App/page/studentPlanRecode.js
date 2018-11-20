@@ -225,7 +225,7 @@ class StudentPlanRecode extends BaseView {
                       <Col>
                         <Collapse >
                           <Panel title={<span className="font-weight-700">计划要点</span>}>
-                            <div>{detailData.kernel}</div>
+                            <div>{detailData&&detailData.kernel&&detailData.kernel.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.kernel}</p>`}} /> : detailData.kernel}</div>
                           </Panel>
                         </Collapse>
                       </Col>

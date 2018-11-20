@@ -155,8 +155,8 @@ class OcrDoc extends BaseView {
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col span={24} className="font-size-small textclolor-black-low margin-bottom-3 ">
-                      {dataDetail.intro}
-                      {/* {dataDetail&&dataDetail.intro&&dataDetail.intro.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${dataDetail.intro}</p>`}} /> : dataDetail.intro} */}
+                      {/* {dataDetail.intro} */}
+                      {dataDetail&&dataDetail.intro&&dataDetail.intro.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${dataDetail.intro}</p>`}} /> : dataDetail.intro}
                       </Col>                    
                       <Col span={24} className="margin-top-2" >
                         <Row>
@@ -194,7 +194,9 @@ class OcrDoc extends BaseView {
                   <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">注意事项</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
-                      <Col className="font-size-small textclolor-black-low ">{dataDetail.ps}</Col>
+                      <Col className="font-size-small textclolor-black-low ">
+                      {dataDetail&&dataDetail.ps&&dataDetail.ps.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${dataDetail.ps}</p>`}} /> : dataDetail.ps}
+                      </Col>
                     </Row>
                   </Col>
                   <Col span={2} className="line-height-4r ">

@@ -159,7 +159,7 @@ class FileUp extends React.Component {
       <div className={"nemo-fileup container"}>
         <img className={"img"} src={defaultSrc} onClick={this.EditImg} ref={(r) => { this.$$img = r; }} alt="" />
         <div className={`addFile ${hasdesStyle}`} onClick={this.EditImg}>
-          {addFile}
+          {/* {addFile} */}
           {des}
         </div>
         {this.props.children}

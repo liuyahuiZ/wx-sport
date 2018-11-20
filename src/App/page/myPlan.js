@@ -34,11 +34,20 @@ class MyClassDetail extends BaseView {
           mvVideo: '',
           detailData: {
             coursePlanDetails: {}
-          }
+          },
+          keepTime: sessions.getStorage('keepTime')
       };
     }
     _viewAppear(){
       this.getCoursePlan();
+      const self = this;
+      const { keepTime } = this.state
+      console.log(keepTime);
+      if(keepTime&&keepTime!==''&&self.$$TimeRunner){
+        setTimeout(()=>{
+          self.$$TimeRunner.setData(keepTime);
+        }, 2000)
+      }
     }
     getCoursePlan(){
       let obg = UrlSearch();
@@ -139,8 +148,16 @@ class MyClassDetail extends BaseView {
     }
     setVideo(itm){
       console.log(itm);
+      const self = this;
+      const {keepTime} = this.state;
       this.setState({
         mvVideo: itm.description
+      },()=>{
+        if(keepTime&&keepTime!==''&&self.$$TimeRunner){
+          setTimeout(()=>{
+            self.$$TimeRunner.setData(keepTime);
+          }, 1000)
+        }
       })
     }
 
@@ -209,7 +226,7 @@ class MyClassDetail extends BaseView {
         }) : <div />
         return(
           <section className="padding-all bg-000">
-            <Row className={`${mvVideo&&mvVideo!==''? 'margin-bottom-21r' : 'margin-bottom-4r'} minheight-100`} justify="center" content="flex-start">
+            <Row className={`${mvVideo&&mvVideo!==''? 'margin-bottom-21r' : 'margin-bottom-4r'} heighth-100 overflow-y-scroll`} justify="center" content="flex-start">
               <Col>
                 <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'10rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
               </Col>
@@ -241,7 +258,7 @@ class MyClassDetail extends BaseView {
                       <Col>
                         <Collapse >
                           <Panel title={<span className="font-weight-700">计划要点</span>}>
-                            <div>{detailData.kernel}</div>
+                            <div>{detailData&&detailData.kernel&&detailData.kernel.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.kernel}</p>`}} /> : detailData.kernel}</div>
                           </Panel>
                         </Collapse>
                       </Col>
@@ -287,6 +304,8 @@ class MyClassDetail extends BaseView {
                   onClick={()=>{
                     this.$$TimeRunner.stop();
                     this.$$videos.pause();
+                    let keepTime = this.$$TimeRunner.getData();
+                    sessions.setStorage('keepTime', keepTime);
                     self.setValue('itmStatus', false)
                   }}
                 /> : <Buttons
@@ -309,6 +328,7 @@ class MyClassDetail extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
+                    sessions.setStorage('keepTime', 0);
                     this.submitClick()
                   }}
                 />
