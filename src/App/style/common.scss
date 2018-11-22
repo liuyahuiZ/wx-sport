@@ -149,7 +149,9 @@ $heighr-list:1,2,3,4,5,6,8,10,12,13,15,20,25,30;
 @each $heighr in $heighr-list{
 	.heighr-#{$heighr}{height:#{$heighr*1rem};}
 }
-
+.heighr-4f{
+  height: 4.5rem 
+}
 $paddingx-list:1,2,3,4,5,8,10,15,20,25,30;
 @each $paddingx in $paddingx-list{
 	.padding-all-#{$paddingx}x{padding:#{$paddingx}px;}

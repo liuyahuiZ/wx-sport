@@ -104,7 +104,7 @@ class StudentPlanRecode extends BaseView {
       let days = ['一','二','三','四','五','六','七','八','九','十', '十一'];
       let selected = { text: `第${days[0]}天 ${selectRecode.date}`, value: selectRecode.id};
       let optionsArr = recodes&&recodes.length>0 ? recodes.map((itm, idx)=>{
-        return { text: `第${days[idx]}天 ${itm.date}`, value: itm.id, obg: itm}
+        return { text: (<div>第{days[idx]}天 {itm.date}{itm.readed == false ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</div>), value: itm.id, obg: itm}
       }) : [];
       ActionSheet.formConfirm({
         content: 'this is a warning',
@@ -139,7 +139,19 @@ class StudentPlanRecode extends BaseView {
         revert: revert
       }).then((res)=>{
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        
+        if(res.code>0){
+          Modal.alert({ title: '回复成功',
+          content: "您对该学员回复成功!",
+          btn: {
+            text: '确定',
+            type: 'link',
+            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+          }, 
+          type: 'large'
+          },
+          () => {
+          });
+        }
       }).catch((e)=>{
         console.log(e)
       })

@@ -158,8 +158,8 @@ class AllImgPoster extends BaseView {
                         <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg3">
                           {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white font-weight-700">XXXXXXX</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">XXXXXXXXXXXX</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">共完成了</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.calorieCount||0}</span>分钟的训练动作</Col>
                       </Row>
                     </Col>
                   </Row>
@@ -192,8 +192,8 @@ class AllImgPoster extends BaseView {
                         <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg6">
                           {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white font-weight-700">XXXXXXX</Col>
-                        <Col className="text-align-right textclolor-white font-size-small">XXXXXXXXXXXX</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">{query.endDate}</Col>
+                        <Col className="text-align-right textclolor-white font-size-small">完成训练计划</Col>
                       </Row>
                     </Col>
                   </Row>

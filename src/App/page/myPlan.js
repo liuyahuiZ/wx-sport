@@ -23,6 +23,8 @@ const {
     Modal
 } = Components;
 const { sessions, storage } = utils;
+const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%2F%23%2FMyPlan";
+const appId = 'wx9a7768b6cd7f33d0';
 
 class MyClassDetail extends BaseView {
     constructor(props) {
@@ -39,7 +41,27 @@ class MyClassDetail extends BaseView {
       };
     }
     _viewAppear(){
-      this.getCoursePlan();
+      let obg = UrlSearch();
+      let userInfo = storage.getStorage('userInfo')
+      let userId = storage.getStorage('userId');
+      if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
+          storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
+        }
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          this.getCoursePlan();
+        }
+      }else{
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+        }
+      }
+      if((userId&&userId!=='')){
+        this.getCoursePlan();
+      }
+
+      
       const self = this;
       const { keepTime } = this.state
       console.log(keepTime);

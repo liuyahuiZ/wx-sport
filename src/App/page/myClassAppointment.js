@@ -151,6 +151,18 @@ class OcrDoc extends BaseView {
         courseMovesUpdate(newArr).then((res)=>{
           Loade.hide();
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+          if(res.code>0){
+            Modal.alert({ title: '',
+            content: "提交成功!",
+            btn: {
+              text: '确定',
+              type: 'link',
+              style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+            }, 
+            type: 'large'
+            },
+            () => {});
+          }
         }).catch((err)=>{
           Loade.hide();
         })

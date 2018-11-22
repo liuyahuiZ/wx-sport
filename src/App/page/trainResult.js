@@ -140,7 +140,7 @@ class OcrDoc extends BaseView {
                   <Col span={5} className="text-align-center textclolor-white font-size-small">有点吃力</Col>
                   <Col span={5} className="text-align-center textclolor-white font-size-small">吃力</Col>
                   <Col span={5} className="text-align-center textclolor-white font-size-small">非常吃力</Col>
-                  <Col span={5} className="text-align-right font-size-small textclolor-white">无法轻松</Col>
+                  <Col span={5} className="text-align-right font-size-small textclolor-white">无法完成</Col>
                 </Row>
               </Col>
               <Col className="margin-top-2 padding-all relative border-radius-5f overflow-hide bg-1B1B1B">
