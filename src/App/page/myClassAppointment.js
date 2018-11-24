@@ -89,6 +89,12 @@ class OcrDoc extends BaseView {
       courseDetail({id: obg.id}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let nowDate = new Date();
+        let startDate = res.result&&res.result.startDate ? res.result.startDate.split(' ')[0] : ''
+        console.log(startDate.indexOf(nowDate.getDate()))
+        if(startDate.indexOf(nowDate.getDate())<0){
+          self.goLink('/Tab'); return;
+        }
         self.setState({
           detailData: res.result
         })
@@ -101,7 +107,8 @@ class OcrDoc extends BaseView {
       let obg = UrlSearch();
       const self = this;
       Loade.show();
-      courseMoves({courseId: obg.id}).then((res)=>{
+      let userId = storage.getStorage('userId')
+      courseMoves({courseId: obg.id, userId: userId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
        
@@ -216,7 +223,7 @@ class OcrDoc extends BaseView {
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low"></Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
+                <div className="width-100 absolute-left heightp-100 zindex-6 bg bgy" />
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
@@ -224,14 +231,18 @@ class OcrDoc extends BaseView {
                   <Col>
                     <Collapse >
                       <Panel title={<span className="font-weight-700">计划要点</span>}>
-                        <div>{detailData.kernel}</div>
+                        <div>
+                        {detailData&&detailData.kernel&&detailData.kernel.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.kernel}</p>`}} /> : detailData.kernel}
+                        </div>
                       </Panel>
                     </Collapse>
                   </Col>
                   <Col>
                     <Collapse >
                       <Panel title={<span className="font-weight-700">训练计划入门课注意事项</span>}>
-                        <div>{detailData.careful}</div>
+                        <div>
+                        {detailData&&detailData.careful&&detailData.careful.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.careful}</p>`}} /> : detailData.careful}
+                        </div>
                       </Panel>
                     </Collapse>
                   </Col>

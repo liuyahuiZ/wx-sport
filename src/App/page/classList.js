@@ -319,7 +319,7 @@ class ClassList extends BaseView {
       let obg = UrlSearch();
       const self = this;
       const { userInfoMation } = this.state;
-      if(userInfoMation&&userInfoMation.phone=='') {
+      if(userInfoMation&&(!userInfoMation.phoneNo)) {
         self.goLink('/Registor')
         return ;
       }
@@ -415,7 +415,7 @@ class ClassList extends BaseView {
               <Row className="zindex-10 ">
                 <Col span={6} className="margin-top-3">
                   <div className="middle-round-4r border-radius-round overflow-hide">
-                    <img className="width-100 heighr-4f" alt="text" src={it.coachImgUrl} />
+                    <img className="width-100" alt="text" src={it.coachImgUrl} />
                   </div>
                 </Col>
                 <Col className="margin-top-3" span={14}>

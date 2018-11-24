@@ -124,6 +124,21 @@ body{
         background-repeat: no-repeat;
         background-size: 100%;
     }
+    &.bgx{
+        background: url('./images/bgx.png'); 
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+    &.bgy{
+        background: url('./images/bgy.png'); 
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+    &.bgz{
+        background: url('./images/bgz.png'); 
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
     &.post-bg1{
         background: url('./images/1.png'); 
         background-repeat: no-repeat;
@@ -289,7 +304,7 @@ body{
     &.icon-focus-small{
         background: url('./images/syei17.png');
         background-repeat: no-repeat;
-        background-size: 1.5rem;
+        background-size: 1.4rem;
     }
     &.icon-working-a{
         background: url('./images/syei4-a.png');

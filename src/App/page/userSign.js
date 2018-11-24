@@ -112,7 +112,7 @@ class UserSignd extends BaseView {
                   <Col className="zindex-10 text-align-left font-size-normal textclolor-white font-weight-700">{courseDetial.title || '塑形训练课'}</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                <div className="width-100 absolute-left zindex-6 heightp-100 bg post-bg2"></div>
+                <div className="width-100 absolute-left zindex-6 heightp-100 bg bgz"></div>
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">

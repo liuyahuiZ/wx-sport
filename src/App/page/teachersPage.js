@@ -175,7 +175,7 @@ class Teachers extends BaseView {
                     <span className="textclolor-white">{teacherInfos.name || '请登陆'}</span>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bg1" />
+                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bgx" />
                 </Row>
                 </TransAnimal>
               </Col>

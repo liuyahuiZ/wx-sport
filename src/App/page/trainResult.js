@@ -98,7 +98,7 @@ class OcrDoc extends BaseView {
         console.log(res);
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        self.goLink('/TrainResultOver', {keepTime: obg.keepTime}); 
+        self.goLink('/TrainResultOver', {keepTime: obg.keepTime, teacherId: obg.teacherId}); 
         // Modal.alert({ title: '上传成功',
         //   content: '训练成功上传成功',
         //   btn: {

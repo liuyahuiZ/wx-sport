@@ -8,6 +8,7 @@ import moment from 'moment';
 import BaseView from '../core/app';
 import wx from 'weixin-js-sdk';
 import { transOverUp } from '../api/classes';
+import { teacherInfo } from '../api/subject';
 
 const {
     Buttons,
@@ -30,13 +31,17 @@ class TrainResultOver extends BaseView {
       this.state = {
           article: {},
           feelCore: 50,
-          query: UrlSearch()
+          query: UrlSearch(),
+          teacherInfos: {}
       };
       moment.locale('en', {
         weekdays : [
             "周日", "周一", "周二", "周三", "周四", "周五", "周六"
           ]
       });
+    }
+    _viewAppear(){
+      this.getTercherInfo();
     }
     setValue(key,val){
         this.setState({[key]: val});
@@ -60,10 +65,30 @@ class TrainResultOver extends BaseView {
         }
       });
     }
+    getTercherInfo(){
+      let obg = UrlSearch();
+      teacherInfo({teacherId: obg.teacherId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        if(data){
+          self.setState({
+            teacherInfos: data
+          })
+        } else {
+          self.setState({
+            loadText: '暂无数据'
+          })
+        }
+      }).catch((e)=>{
+        Loade.hide();
+        console.log(e)
+      })
+    }
 
 
     render() {
-        const { query } = this.state;
+        const { query, teacherInfos } = this.state;
         const self = this;
         let keepTimeM = parseInt(query.keepTime/60);
         let keepTimeS = parseInt(query.keepTime%60);
@@ -76,7 +101,7 @@ class TrainResultOver extends BaseView {
               <Col className="margin-top-2 border-radius-5f overflow-hide relative minheight-30">
                 <Row className="padding-all" justify="center" >
                   <Col span={8} className="zindex-10 text-align-center margin-top-2r">
-                  <div className="icon middle icon-result" />
+                    <div className="icon middle icon-result" />
                   </Col>
                   <Col className="zindex-10 text-align-center textclolor-white margin-top-1r font-weight-700">恭喜你完成训练</Col>
                   <Col className="zindex-10 text-align-center font-size-small textclolor-white">{nowTime}</Col>
@@ -89,7 +114,7 @@ class TrainResultOver extends BaseView {
                 <Row>
                   <Col span={8}>
                   <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide relative" >
-                      <img src={''} className="width-100" />
+                      <img src={teacherInfos.img} className="width-100" />
                       <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                   </div>
                   </Col>

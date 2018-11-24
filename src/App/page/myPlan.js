@@ -37,7 +37,7 @@ class MyClassDetail extends BaseView {
           detailData: {
             coursePlanDetails: {}
           },
-          keepTime: sessions.getStorage('keepTime')
+          keepTime: sessions.getStorage('keepTime'),
       };
     }
     _viewAppear(){
@@ -113,7 +113,7 @@ class MyClassDetail extends BaseView {
       }).then((res)=>{
         console.log(res);
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        self.goLink('/TrainResult', {keepTime: allKeepTime, courseId: detailData.courseId, coursePlanId: detailData.id})
+        self.goLink('/TrainResult', {keepTime: allKeepTime, courseId: detailData.courseId, coursePlanId: detailData.id, teacherId: obg.teacherId||0 })
         Loade.hide();
       }).catch((e)=>{
         Loade.hide();

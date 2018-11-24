@@ -149,8 +149,8 @@ class AllImgPoster extends BaseView {
                         <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg2">
                           {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white font-weight-700">总共消耗</Col>
-                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.calorieCount||0}</span>卡路里</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">{query.practiceDays||0}天总共消耗</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.calorieCount||0}</span>大卡热量</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">
@@ -158,8 +158,8 @@ class AllImgPoster extends BaseView {
                         <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg3">
                           {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white font-weight-700">共完成了</Col>
-                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.calorieCount||0}</span>分钟的训练动作</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">{query.practiceDays||0}天共完成了</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.practiceTime||0}</span>分钟的训练</Col>
                       </Row>
                     </Col>
                   </Row>
@@ -174,8 +174,8 @@ class AllImgPoster extends BaseView {
                         <Col className="heighr-5 overflow-hide border-radius-5f bg post-bg4">
                           {/* <img className="width-100" src="https://static1.keepcdn.com/2018/03/05/17/1520240773072_315x315.jpg" /> */}
                         </Col>
-                        <Col className="text-align-right textclolor-white font-weight-700">您一个完成</Col>
-                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.actionCount||0}</span>次强度染指动作</Col>
+                        <Col className="text-align-right textclolor-white font-weight-700">完成了</Col>
+                        <Col className="text-align-right textclolor-white font-size-small"><span className="textcolor-9eea6a">{query.actionCount||0}</span>个训练动作</Col>
                       </Row>
                     </Col>
                     <Col className="margin-top-5r">

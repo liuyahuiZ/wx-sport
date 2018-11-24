@@ -161,7 +161,7 @@ class OcrDoc extends BaseView {
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">请让学员拿出微信“扫一扫”</Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
+                <div className="width-100 absolute-left heightp-100 zindex-6 bg bgy" />
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">

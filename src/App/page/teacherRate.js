@@ -132,7 +132,21 @@ class TeacherRate extends BaseView {
         onlineDate: selectDay.dateTime
       }).then((res)=>{
         Loade.hide();
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        if(res.code<=0) { 
+          Modal.alert({ title: '',
+          content: "您已对该教练评分，请勿重复评分!",
+          btn: {
+            text: '确定',
+            type: 'link',
+            style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+          }, 
+          type: 'large'
+          },
+          () => { 
+            self.goLink('/Tab')
+          });
+        }
+          //Toaster.toaster({ type: 'error', content: '您已对该教练评分，请勿重复评分！', time: 3000 }); return; }
         if(res.code>0){
           Modal.alert({ title: '评分成功',
           content: "您对该教练评分成功!",
@@ -189,7 +203,7 @@ class TeacherRate extends BaseView {
                     <span className="zindex-10 font-size-small textclolor-white">{detailData.startDate || ''}</span>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bg1" />
+                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bgx" />
                 </Row>
                 </TransAnimal>
               </Col>
