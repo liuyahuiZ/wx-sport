@@ -1,4 +1,5 @@
 import fetch from '../servise/fetch';
+import order from '../servise/order';
 import config from '../config/config';
 
 export function getAds(){
@@ -67,3 +68,28 @@ export function getSigns(url){
         })
     })
 }
+
+
+export function topUp(reqbody){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `topUp`,{ method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+
+export function topUpTemplateList(reqbody){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `topUp/template/list`,{ method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+

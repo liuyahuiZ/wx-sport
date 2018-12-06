@@ -32,7 +32,8 @@ class OcrDoc extends BaseView {
           dataDetail: {},
           subjectId: obg.subjectId,
           chosePlanTypeId: '',
-          difficulty: 0
+          difficulty: 0,
+          checkPro: true
       };
     }
     _viewAppear(){
@@ -47,7 +48,7 @@ class OcrDoc extends BaseView {
         if(JSON.stringify(data)!=='{}'){
           self.setState({
             dataDetail: data || {},
-            difficulty: data.difficuity
+            difficulty: Number(data.difficuity)
           })
           sessions.setStorage('nowSubject', data);
         } else {
@@ -80,10 +81,14 @@ class OcrDoc extends BaseView {
 
     doPlan(){
       let obg = UrlSearch();
-      const {chosePlanTypeId, difficulty} = this.state
+      const {chosePlanTypeId, difficulty, checkPro} = this.state
       if(!chosePlanTypeId&&chosePlanTypeId==='') {
           Toaster.toaster({ type: 'error', position: 'top', content: '请选择计划', time: 3000 }, true);
           return false;
+      }
+      if(!checkPro) {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请先执行阅读 风险PAR-Q 要求', time: 3000 }, true);
+        return false;
       }
       this.goLink('/ClassList', {
         subjectId : obg.subjectId,
@@ -94,10 +99,10 @@ class OcrDoc extends BaseView {
     }
 
     render() {
-        const { dataDetail, chosePlanTypeId, difficulty } = this.state;
+        const { dataDetail, chosePlanTypeId, difficulty, checkPro } = this.state;
         let obg = UrlSearch();
         const self = this;
-        const carouselMap = [];
+        let carouselMap = [];
         if(dataDetail&&dataDetail.slideImgUrlList) {
           for (let i=0; i< dataDetail.slideImgUrlList.length;i++){
             carouselMap.push({tabName: `f-${i}`, content: (<img alt="text" src={dataDetail.slideImgUrlList[i]} />), isActive: true })
@@ -126,16 +131,16 @@ class OcrDoc extends BaseView {
         }) : <div />;
 
         const bodyPlanDom = dataDetail&&dataDetail.courseTypes ? dataDetail.courseTypes.map((itm, idx)=>{
-          return <Col span={12} key={`${idx}-plan`} className="relative heighr-6 overflow-hide padding-all" onClick={()=>{self.chosePlan(itm)}}>
-            <Row className="heighr-6" justify="center" align="center">
+          return <div  key={`${idx}-plan`} className="width-50 relative overflow-hide float-left" onClick={()=>{self.chosePlan(itm)}}>
+            <Row className="heighr-6 padding-all" justify="center" align="center">
               <Col span={13} className={`${itm.id==chosePlanTypeId ? 'textclolor-white': 'textclolor-black-low'} text-align-right zindex-10`}>{itm.name}</Col>
               <Col span={1} />
               <Col span={10} className="text-align-left zindex-10"><Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={itm.id==chosePlanTypeId ? '#8EBF66': '#999'} /></Col>
             </Row>
             <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
             <img className="width-100 absolute-left zindex-6 " src={itm.bgiUrl.split(',')[0]}  />
-          </Col>
-        }) : <div />;
+          </div>
+        }) : <Col />;
         
         const poepleFirst = dataDetail&&dataDetail.fitPeoples ? dataDetail.fitPeoples.map((itm, idx)=>{
           return {text: itm, styles: {background: '#9eea6a'}} 
@@ -205,9 +210,7 @@ class OcrDoc extends BaseView {
                   </Col>
                   <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">养身计划</Col>
                   <Col className="bg-1B1B1B padding-all">
-                    <Row gutter={8}>
-                      {bodyPlanDom}
-                    </Row>
+                    {bodyPlanDom}
                   </Col>
                   <Col span={2} className="line-height-4r ">
                    {/* <Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} />  */}
@@ -218,9 +221,11 @@ class OcrDoc extends BaseView {
                     { stepDom }
                     <Row>
                       <Col span={3}><Checkbox
-                      options={[{ value: '1', text: '', checkStatus: 'checked' }]}
+                      options={[{ value: 'agree', text: '', checkStatus: checkPro ? 'checked': '' }]}
                       onChange={(data) => {
                         console.log(data);
+                        let check = data.agree.checkStatus == 'checked' ? true : false;
+                        this.setValue('checkPro',check);
                       }}
                       ref={(r) => { this.$$checkbox1 = r; }}
                       /></Col>

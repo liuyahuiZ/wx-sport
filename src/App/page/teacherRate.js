@@ -122,6 +122,7 @@ class TeacherRate extends BaseView {
       const self = this;
       const {kcnd, jjwt, ywjd, selectDay} = this.state;
       Loade.show();
+      let time = obg.isSingleOrder&&(obg.isSingleOrder=='true') ? '': selectDay.dateTime;
       teacherMark({
         teacherId: obg.teacherId,
         userId: userId,
@@ -129,7 +130,7 @@ class TeacherRate extends BaseView {
         jjwt: jjwt.value,
         ywjd: ywjd.value,
         courseId: obg.courseId,
-        onlineDate: selectDay.dateTime
+        onlineDate: time
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { 
@@ -171,7 +172,8 @@ class TeacherRate extends BaseView {
     render() {
         const { userInfo, kcnd, jjwt, ywjd, dateArr, selectDay, detailData } = this.state;
         const self = this;
-
+        let obg = UrlSearch();
+       
         const clenderDom = dateArr.length > 0 ? dateArr.map((itm, idx)=>{
           return (<Col key={`${idx}-date`} span={24/7} onClick={()=>{ console.log(itm); self.setState({'selectDay': itm}); }}>
           <Row><Col className="font-size-small textclolor-black-low text-align-center">{itm.dateName}</Col>
@@ -253,10 +255,16 @@ class TeacherRate extends BaseView {
                       </Col>
                     </Row>
                   </Col>
-                  <Col className="text-align-center textclolor-white margin-top-1r font-weight-700">选择开始课程的第一天</Col>
-                  <Col className="text-align-center textclolor-black-low margin-top-1r">设定7天内开始</Col>
+                  <Col>
+                    {obg.isSingleOrder&&(obg.isSingleOrder=='true') ? <div /> : <Row >
+                    <Col className="text-align-center textclolor-white margin-top-1r font-weight-700">选择开始课程的第一天</Col>
+                    <Col className="text-align-center textclolor-black-low margin-top-1r">设定7天内开始</Col>
+                    <Col className="margin-top-1r"><Row>{clenderDom}</Row></Col>
+                  </Row>}
+                  </Col>
+                  
                 </Row>
-                <Row className="margin-top-1r">{clenderDom}</Row>
+                
               </Col>
               <Col className="margin-top-3">
                 <Buttons

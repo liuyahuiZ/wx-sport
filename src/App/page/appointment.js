@@ -93,7 +93,7 @@ class Appointment extends Component {
             onClick={()=>{self.goLink('/MyPlanRecode', {courseId: itm.id})}}>
                 <Row>
                     <Col span={12} className="zindex-10 font-size-normal text-align-left font-weight-700">{itm.name}
-                    {itm.teacherMsgCount>0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
+                    {itm.studentMsgCount > 0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
                     <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
                 </Row>
                 <Row className="margin-top-1r">

@@ -164,7 +164,7 @@ class OcrDoc extends BaseView {
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
                   <Col className="border-radius-6r font-size-small overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
                    <Row onClick={()=>{
-                     this.$$img1.EditImg()
+                     this.$$img2.EditImg()
                    }}>
                      <Col span={10} className="margin-top-3"><i className="icon icon-video margin-top-3" /></Col>
                      <Col span={14} className="text-align-left">疑惑动作</Col>
@@ -212,7 +212,7 @@ class OcrDoc extends BaseView {
                 <Row className="flex-start zindex-10 heighr-12" align="center" justify="center">
                   <Col className="border-radius-6r font-size-small overflow-hide bg-8EBF66 zindex-10 heighr-2 text-align-center line-height-2r" span={7}>
                    <Row onClick={()=>{
-                     this.$$img2.EditImg()
+                     this.$$img1.EditImg()
                    }}>
                      <Col span={10} className="margin-top-3"><i className="icon  icon-camera margin-top-3" /></Col>
                      <Col span={14} className="text-align-left">照片上传</Col></Row>
@@ -231,6 +231,7 @@ class OcrDoc extends BaseView {
                   fileType={'blob'}
                   callType={'H5'}
                   maxSize={10}
+                  accept="*"
                   ></FileUp> 
                   </Col>
                 </Row>

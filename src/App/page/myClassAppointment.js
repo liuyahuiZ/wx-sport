@@ -246,7 +246,7 @@ class OcrDoc extends BaseView {
                       </Panel>
                     </Collapse>
                   </Col>
-                  <Col>
+                  {obg.isSingleOrder&&(obg.isSingleOrder=='true') ? <div /> : <Col>
                     <Collapse >
                       <Panel title={<span className="font-weight-700">训练动作</span>}>
                         <Row className="bg-1B1B1B padding-top-2">
@@ -275,7 +275,8 @@ class OcrDoc extends BaseView {
                           }}/>
                       </Col>
                     </Row>
-                  </Col>
+                  </Col>}
+                  
                   <Col className="bg-1B1B1B padding-all">
                     <Row className="width-100">
                       <Col span={24} className="margin-top-2" >

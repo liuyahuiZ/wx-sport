@@ -421,7 +421,9 @@ class ClassList extends BaseView {
                 <Col className="margin-top-3" span={14}>
                   <Row >
                     <Col className="zindex-10 font-size-default textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
-                    <Col className="zindex-10 font-size-7 textclolor-black-low">{it.desc}</Col>
+                    <Col className="zindex-10 font-size-7 textclolor-black-low">
+                    {it&&it.desc&&it.desc.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${it.desc}</p>`}} /> : it.desc}
+                    </Col>
                     <Col className="zindex-10 font-size-7 textcolor-8EBF66">{it.startTime}-{it.endTime}</Col>
                   </Row>
                 </Col>

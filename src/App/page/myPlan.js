@@ -186,7 +186,7 @@ class MyClassDetail extends BaseView {
     render() {
         const {detailData, status, itmStatus, mvVideo} = this.state;
         const self = this;
-        console.log('detailData', detailData, detailData.doubtImageUrl);
+        console.log('detailData', detailData);
         const carouselMap = detailData&&detailData.imgUrlList ?  
         detailData.imgUrlList.map((itm, idx)=>{
           return { tabName: idx, content: (<img alt="text" src={itm} />), isActive: false } 
@@ -224,7 +224,7 @@ class MyClassDetail extends BaseView {
             </Row>)
           }) : <div />;
           return (<Row key={`${idx}-stps`} className="padding-all bg-1B1B1B margin-top-2 border-radius-5f">
-          <Collapse >
+            <Col><Collapse >
             <Panel hideRight={true} title={<Row className="border-bottom border-color-333">
                   <Col className="text-align-center heighr-5 line-height-5r overflow-hide relative">
                   <span className="zindex-10 textclolor-white relative margin-top-2">{itm.name} {itm.cycleNum}轮</span>
@@ -235,15 +235,14 @@ class MyClassDetail extends BaseView {
                   <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
                   <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
                   <span className="textclolor-black-low">每个动作之间休息时间</span>
-                  </Col> : ''}
+                  </Col> : <div />}
                 </Row>}>
               <Row>
-              
               <Col>{itmDom}</Col>
               </Row>
             </Panel>
           </Collapse>
-          
+          </Col>
       </Row>)
         }) : <div />
         return(
@@ -265,7 +264,7 @@ class MyClassDetail extends BaseView {
                     <Row justify="center" className="padding-all">
                       <Col className="text-align-center textclolor-black-low">训练强度</Col>
                       <Col className="text-align-center"><i className="icon small icon-working" /></Col>
-                      <Col span="6">
+                      <Col span={6}>
                         <Buttons
                           text="强度表"
                           type={'primary'}
@@ -287,7 +286,7 @@ class MyClassDetail extends BaseView {
                       <Col>
                         <Collapse >
                           <Panel title={<span className="font-weight-700">当天训练提示</span>}>
-                            <div>{detailData.tips}</div>
+                            <div>{detailData&&detailData.tips&&detailData.tips.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.tips}</p>`}} /> : detailData.tips}</div>
                           </Panel>
                         </Collapse>
                       </Col>

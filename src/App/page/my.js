@@ -423,7 +423,7 @@ class OcrDoc extends Component {
                           size={'small'}
                           style={{backgroundColor: '#9eea6a', color:'#333'}}
                           onClick={()=>{
-                            console.log('123');
+                            this.goLink('/Recharge')
                           }}/>
                       </Col>
                     </Row>

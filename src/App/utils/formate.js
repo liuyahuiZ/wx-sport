@@ -8,6 +8,7 @@ function patchZero(v){
 export default {
   // 金额分转化元
   tofixed: money => ((parseFloat(money) || 0) / 100).toFixed(2),
+  tofix: money => ((parseFloat(money) || 0) / 100).toFixed(0),
   formateMoney: s => {
     let money = parseFloat(s);
     if (money) {

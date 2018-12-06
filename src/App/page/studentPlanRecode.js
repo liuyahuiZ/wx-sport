@@ -21,7 +21,8 @@ const {
     Collapse,
     Panel,
     ActionSheet,
-    Textarea
+    Textarea,
+    Modal
 } = Components;
 const { sessions, storage } = utils;
 
@@ -207,7 +208,7 @@ class StudentPlanRecode extends BaseView {
                   <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
                   <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
                   <span className="textclolor-black-low">每个动作之间休息时间</span>
-                  </Col> : ''}
+                  </Col> : <div />}
             </Row>
           </Col>
           <Col>{itmDom}</Col>
@@ -244,7 +245,7 @@ class StudentPlanRecode extends BaseView {
                       <Col>
                         <Collapse >
                           <Panel title={<span className="font-weight-700">训练提示</span>}>
-                            <div>{detailData.tips}</div>
+                          <div>{detailData&&detailData.tips&&detailData.tips.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${detailData.tips}</p>`}} /> : detailData.tips}</div>
                           </Panel>
                         </Collapse>
                       </Col>

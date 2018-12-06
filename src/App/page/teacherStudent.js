@@ -101,7 +101,7 @@ class TeacherStudent extends BaseView {
           return (<div key={`${idx}-train`}  className="overflow-hide relative heighr-8 textclolor-white padding-all margin-bottom-3"
           onClick={()=>{self.goLink('/StudentPlanRecode', {userId: itm.userId, courseId: itm.id, courseTypeId: itm.courseTypeId})}}>
               <Row>
-                  <Col span={12} className="zindex-10 font-size-normal text-align-left line-height-2r">{itm.name} {itm.studentMsgCount>0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
+                  <Col span={12} className="zindex-10 font-size-normal text-align-left line-height-2r">{itm.name} {itm.teacherMsgCount > 0 ? <Icon  iconName={'record'} size={'0.1rem'} iconColor={'#ea3a3a'} /> :  ''}</Col>
                   <Col span={12} className="zindex-10 font-size-small text-align-right line-height-2r">{itm.date}</Col>
               </Row>
               <Row className="">

@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
-import { userMarkRate } from '../api/classes'
+import { userMarkRate } from '../api/classes';
 
 const {
     Buttons,
@@ -87,7 +87,7 @@ class OcrDoc extends Component {
             <Col span={14} className="textclolor-white font-size-default margin-top-3">
               <Row>
                 <Col>{itm.nick_name}</Col>
-                <Col className="font-size-7 textcolor-aeaeae">运动量{itm.sumMark}h</Col>
+                <Col className="font-size-7 textcolor-aeaeae">运动量{ `${parseInt(itm.sumMark/60)}:${parseInt(itm.sumMark%60)}`}分钟</Col>
               </Row>
             </Col>
             <Col span={4} className="padding-all">
