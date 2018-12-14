@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
+import formate from '../utils/formate';
 import { myClass, userRegistry, courseRatio, userInfo, userMoves, userMovesUpdate } from '../api/classes';
 import { getToken } from '../api/index';
 
@@ -415,7 +416,7 @@ class OcrDoc extends Component {
                   <Col className="text-align-center margin-top-1r zindex-10">
                     <Row >
                       <Col span={8} className="text-align-center line-height-2r"><span className="font-size-small textclolor-white">积分 0</span></Col>
-                      <Col span={8} className="text-align-center heighr-2 line-height-2r"><span className="font-size-small textclolor-white">余额 0</span></Col>
+                      <Col span={8} className="text-align-center heighr-2 line-height-2r"><span className="font-size-small textclolor-white">余额 {formate.formateMoney(userInfoMation.balance || 0)}元</span></Col>
                       <Col span={6} className="text-align-center line-height-1r">
                       <Buttons
                           text="充值"

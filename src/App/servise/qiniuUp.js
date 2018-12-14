@@ -1,7 +1,8 @@
 import * as qiniu from 'qiniu-js';
 import config from '../config/config';
 import fetch from './fetch';
-const fileDoman = 'http://pdc6cusp9.bkt.clouddn.com/'
+// const fileDoman = 'http://pdc6cusp9.bkt.clouddn.com/'
+const fileDoman = 'http://media.avocadomethod.cn/'
 
 export function fileUp(file) {
     return new Promise((resolve, reject)=>{

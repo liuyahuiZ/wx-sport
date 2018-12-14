@@ -105,6 +105,7 @@ class Recharge extends BaseView {
     }
     
     getTmpList(){
+      const self = this;
       topUpTemplateList({}).then((res)=>{
         console.log(res);
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
@@ -125,14 +126,15 @@ class Recharge extends BaseView {
     }
     doRecharge(itm){
       console.log(itm);
+      const self = this;
       Loade.show();
       let userId = storage.getStorage('userId');
       topUp({
         "templateId": itm.id,
         "userId": userId
       }).then((res)=>{
-        console.log(res);
-        self.bought(res);
+        console.log(res.result);
+        self.bought(res.result);
       }).catch((err)=>{
         console.log(err);
       })

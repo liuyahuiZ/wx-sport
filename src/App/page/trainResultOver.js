@@ -67,6 +67,7 @@ class TrainResultOver extends BaseView {
     }
     getTercherInfo(){
       let obg = UrlSearch();
+      const self = this;
       teacherInfo({teacherId: obg.teacherId}).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }

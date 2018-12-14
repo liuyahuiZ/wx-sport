@@ -93,3 +93,15 @@ export function topUpTemplateList(reqbody){
     })
 }
 
+export function topUpBuyCourse(reqbody){
+    return new Promise((resolve, reject)=>{
+        order(config.API_URL+ `topUp/buyCourse`,{ method: 'POST', data: reqbody})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+

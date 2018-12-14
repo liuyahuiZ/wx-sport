@@ -9,6 +9,8 @@ import wx from 'weixin-js-sdk';
 import formate from '../utils/formate';
 import { subjectCourses, createOrder } from '../api/subject';
 import { userOrdeRing, userInfo } from '../api/classes'
+import { topUpBuyCourse } from '../api/index';
+import computed from '../utils/computed';
 
 const {
     Buttons,
@@ -314,6 +316,26 @@ class ClassList extends BaseView {
       });
     }
 
+    lestBought(it){
+      Loade.show();
+      const self = this;
+      topUpBuyCourse({
+        "userId": userId,
+        "courseId": it.courseId
+      }).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        Toaster.toaster({ type: 'error', content: '购买成功', time: 3000 });
+        self.goLink('/Success', Object.assign({},{
+          "type": 'appoint',
+          "courseId": it.courseId
+        }) )
+      }).catch((err)=>{
+        Loade.hide();
+        console.log(res);
+      })
+    }
+
     ordeRing(it){
       // console.log(it);
       let obg = UrlSearch();
@@ -343,6 +365,22 @@ class ClassList extends BaseView {
     doBought(it){
       console.log(it);
       const self = this;
+      const { userInfoMation } = this.state;
+      let disCount = userInfoMation.memberDiscount ? computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)) : Number(it.price);
+      let disCountDom = userInfoMation.memberDiscount ? `${formate.formateMoney(computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)))} 元`: '无折扣';
+      let rest = 0
+      if(userInfoMation.isMember==0) {
+        if(userInfoMation.balance >= disCount) {
+          rest = 0
+        } else if(userInfoMation.balance < disCount) {
+          rest = computed.subtr(Number(disCount), Number(userInfoMation.balance))
+        }
+        if(userInfoMation.balance == 0) {
+          rest = disCount
+        }
+      } else {
+        rest = it.price
+      }
       PopContainer.confirm({
         content: (<div className="bg-0D0D0D">
           <Row className="border-bottom border-color-e5e5e5 bg-101111 border-radius-5f bg-0D0D0D">
@@ -360,18 +398,18 @@ class ClassList extends BaseView {
                 </Col>
                 <Col className={"border-bottom border-color-333 textclolor-black-low"}>
                   <Row>
-                    <Col span={12}>会员折扣价：</Col>
-                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
+                    <Col span={12}>会员卡折后价：</Col>
+                    <Col span={12} className={"text-align-right"}>{disCountDom}</Col>
                   </Row>
                 </Col>
                 <Col className={"border-bottom border-color-333 textclolor-black-low"}>
                   <Row>
-                    <Col span={12}>会员卡折后价</Col>
-                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
+                    <Col span={12}>剩余额度</Col>
+                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(userInfoMation.balance||0)}元</Col>
                   </Row>
                 </Col>
                 <Col className={"text-align-center font-size-small textclolor-black-low"}>还需支付</Col>
-                <Col className={"text-align-center font-size-huge textcolor-9eea6a font-weight-700"}>¥{formate.formateMoney(it.price)}</Col>
+                <Col className={"text-align-center font-size-huge textcolor-9eea6a font-weight-700"}>¥{formate.formateMoney(rest)}</Col>
               </Row>
               <Row className={"padding-all-1r"}>
                 <Col span={24} className="font-size-default textclolor-white">温馨提示</Col>
@@ -386,7 +424,13 @@ class ClassList extends BaseView {
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     PopContainer.closeAll();
-                    self.undefindOrder(it)
+                    if(rest>0){
+                      self.undefindOrder(it)
+                    }else {
+                      //todo 扣除余额
+                      self.lestBought(it);
+                    }
+                    
                   }}
                 /></Col>
               </Row>

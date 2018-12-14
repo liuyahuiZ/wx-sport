@@ -126,7 +126,7 @@ class ImgPoster extends BaseView {
             <div className={`bg-000 heighth-100 relative ${showCanvas ? 'display-none': ''}`} ref={(r) => { self.$$screen = r; }}>
               <div >
                 <div className="zindex-10">
-                  <img src={ picUrl } className="absolute top-0 width-100" />
+                  <img src={ query.backImgUrl } className="absolute top-0 width-100" />
                 </div>
                 <div className="zindex-10">
                   <img src="/dist/css/images/logo.png" className="absolute top-0 margin-left-5 margin-top-5 icon icon-logo" />

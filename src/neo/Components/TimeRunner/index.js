@@ -19,6 +19,7 @@ class TimeRunner extends Component {
     this.stop = this.stop.bind(this);
     this.getData = this.getData.bind(this);
     this.setData =  this.setData.bind(this);
+    this.runner =  this.runner.bind(this);
   }
   componentDidMount() {
     // this.start();
@@ -64,13 +65,19 @@ class TimeRunner extends Component {
         hour: hour,
     })
     setTimeout(function() { 
-        self.timer(self) 
+        self.timer(self);
+        self.runner();
     },100);
   }
 
   getData(){
     return this.state;
   }
+
+  runner(){
+    this.props.runner(this.state)
+  }
+
 
   setData(obg){
     this.setState(obg)

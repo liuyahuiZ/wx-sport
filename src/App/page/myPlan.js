@@ -37,7 +37,7 @@ class MyClassDetail extends BaseView {
           detailData: {
             coursePlanDetails: {}
           },
-          keepTime: sessions.getStorage('keepTime'),
+          keepTime: storage.getStorage('keepTime'),
       };
     }
     _viewAppear(){
@@ -326,7 +326,7 @@ class MyClassDetail extends BaseView {
                     this.$$TimeRunner.stop();
                     this.$$videos.pause();
                     let keepTime = this.$$TimeRunner.getData();
-                    sessions.setStorage('keepTime', keepTime);
+                    storage.setStorage('keepTime', keepTime);
                     self.setValue('itmStatus', false)
                   }}
                 /> : <Buttons
