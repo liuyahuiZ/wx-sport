@@ -4,7 +4,7 @@ import fetch from './fetch';
 // const fileDoman = 'http://pdc6cusp9.bkt.clouddn.com/'
 const fileDoman = 'http://media.avocadomethod.cn/'
 
-export function fileUp(file) {
+export function fileUp(file, padding) {
     return new Promise((resolve, reject)=>{
         console.log(config.API_URL+ 'qiniu/token')
         fetch(config.API_URL+ 'qiniu/token',{ method: 'POST', data:{}}).then(data => {
@@ -20,7 +20,9 @@ export function fileUp(file) {
             };
             var observable = qiniu.upload(file, key, token, putExtra, config)
             var subscription = observable.subscribe(
-            (e)=>{},
+            (res)=>{
+                padding(res.total);
+            },
             (e)=>{}, 
             (res)=>{
                 console.log(res)

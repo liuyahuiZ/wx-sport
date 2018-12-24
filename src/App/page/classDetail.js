@@ -231,7 +231,7 @@ class OcrDoc extends BaseView {
                       /></Col>
                       <Col span={21} className="textclolor-black-low line-height-2r font-size-small" onClick={()=>{
                         this.goLink('/ParqPage')
-                      }}>购买训练计划前，需要执行阅读 风险PAR-Q 要求</Col>
+                      }}>购买训练计划前，需要执行阅读《风险PAR-Q 要求》</Col>
                     </Row>
                   </Col>
                 </Row>

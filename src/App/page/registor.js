@@ -5,7 +5,9 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import BaseView from '../core/app';
 import { UrlSearch } from '../utils';
-import { userMark, userUpdInfo } from '../api/classes';
+import valid from '../utils/validate';
+import { userMark, userUpdInfo, sendCheckCode } from '../api/classes';
+import Code from './component/code'
 
 const {
     Buttons,
@@ -75,12 +77,29 @@ class Registor extends BaseView {
         this.setState({[key]: val});
     }
 
+    sendCode(){
+        const { phone, userInfo } = this.state
+        if(!phone&&phone==='') {
+          Toaster.toaster({ type: 'error', position: 'top', content: '请填写手机号', time: 3000 }, true);
+          return false;
+        }
+        sendCheckCode({
+          "mobile": phone,
+          "openid": userInfo.wechatPid
+        }).then((res)=>{
+            
+          Toaster.toaster({ type: 'error', position: 'top', content: res.result.tip, time: 5000 });
+        }).catch((err)=>{
+          Toaster.toaster({ type: 'error', position: 'top', content: JSON.stringify(err), time: 5000 });
+        })
+      }
+
     submitMark(){
       let obg = UrlSearch();
       let userId = storage.getStorage('userId');
       let date = new Date;
       let nowYear = date.getFullYear()
-      const { height, weight, birthday, phone, history, expeirence, active, year, month, day } = this.state;
+      const { height, weight, birthday, phone, history, expeirence, active, year, month, day, msgCode } = this.state;
       if(!height&&height==='') {
           Toaster.toaster({ type: 'error', position: 'top', content: '请输入身高', time: 3000 }, true);
           return false;
@@ -93,16 +112,25 @@ class Registor extends BaseView {
         Toaster.toaster({ type: 'error', position: 'top', content: '请输入生日', time: 3000 }, true);
         return false;
       }
-      if(!phone&&phone==='') {
-        Toaster.toaster({ type: 'error', position: 'top', content: '请输入电话', time: 3000 }, true);
-        return false;
-      }
+      
       if(!history&&history==='') {
         Toaster.toaster({ type: 'error', position: 'top', content: '请输入伤病历史', time: 3000 }, true);
         return false;
       }
       if(!expeirence&&expeirence==='') {
         Toaster.toaster({ type: 'error', position: 'top', content: '请输入运动经验', time: 3000 }, true);
+        return false;
+      }
+      if(!phone&&phone==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入电话', time: 3000 }, true);
+        return false;
+      }
+      if(!valid.isPhone(phone)){
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入正确的电话', time: 3000 }, true);
+        return false;
+      }
+      if(!msgCode&&msgCode==='') {
+        Toaster.toaster({ type: 'error', position: 'top', content: '请输入验证码', time: 3000 }, true);
         return false;
       }
       Loade.show();
@@ -114,11 +142,17 @@ class Registor extends BaseView {
         injuryHistory : history,
         phoneNo: phone,
         exercise: expeirence,
+        msgCode: msgCode,
         sex: active
       }).then((res)=>{
         Loade.hide();
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        hashHistory.goBack();
+        if(res.code<=0) { 
+            Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; 
+        } else {
+            Toaster.toaster({ type: 'error', position: 'top', content: '注册成功', time: 3000 }, true);
+            hashHistory.goBack();
+        }
+        
       }).catch((e)=>{
         Loade.hide();
         console.log(e)
@@ -127,17 +161,17 @@ class Registor extends BaseView {
         
 
     render() {
-        const { userInfo, height, weight, birthday, phone, active, history, expeirence, year, month, day } = this.state;
+        const { userInfo, height, weight, birthday, phone, active, history, expeirence, year, month, day, msgCode } = this.state;
         const self = this;
 
         return(
-          <section className="padding-all bg-000 minheight-100">
+          <section className=" bg-000 minheight-100">
             <Row justify="center">
               <Col span={20} >
               <TransAnimal >
                 <Row justify="center" className="padding-all-1r overflow-hide relative">
                   <Col className="zindex-10 text-align-center margin-top-1r">
-                    <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r  overflow-hide">
+                    <div className="middle-round-6 border-radius-round bg-gray display-inline-block line-height-4r  overflow-hide">
                         <img src={userInfo.imgUrl} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
@@ -146,7 +180,7 @@ class Registor extends BaseView {
                     <span className="zindex-10 textclolor-white">{userInfo.nickName}</span>
                   </Col>
                   <Col span={16}>
-                    <Row justify="center">
+                    <Row justify="center" className="margin-top-3">
                         <Col span={9} onClick={()=>{self.setValue('active','man')}} className={`${active=='man'? 'bg-8EBF66 textclolor-333' : 'bg-000 textclolor-gray border-all border-color-e5e5e5'} margin-top-p4r font-size-small text-align-center border-radius-6r line-height-25`}>
                             <Icon iconName="female" size={'130%'} iconColor={`${active=='man'? '#333': '#fff'}`} />
                             <span>男</span>
@@ -165,7 +199,7 @@ class Registor extends BaseView {
                 </TransAnimal>
               </Col>
              
-              <Col span={20} className="bg-1B1B1B margin-top-2 border-radius-5f">
+              <Col span={20} className="bg-1B1B1B margin-top-2 border-radius-5f opacity-8">
                 <Row justify="center">
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">身高</Col>
@@ -233,21 +267,7 @@ class Registor extends BaseView {
                         />
                     </Col>
                 </Row>
-                <Row justify="center">
-                    <Col span={2} />
-                    <Col span={6} className="textclolor-white line-height-3r text-align-left">电话</Col>
-                    <Col span={16}>
-                    <Input
-                        placeholder="请输入电话"
-                        value={phone}
-                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
-                        maxLength={100}
-                        onChange={(e,t,v)=>{
-                            self.setValue('phone',v)
-                        }}
-                        />
-                    </Col>
-                </Row>
+                
                 <Row justify="center">
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">伤病历史</Col>
@@ -278,9 +298,44 @@ class Registor extends BaseView {
                         />
                     </Col>
                 </Row>
+                <Row justify="center">
+                    <Col span={2} />
+                    <Col span={6} className="textclolor-white line-height-3r text-align-left">电话</Col>
+                    <Col span={16}>
+                    <Input
+                        placeholder="请输入电话"
+                        value={phone}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
+                        maxLength={11}
+                        onChange={(e,t,v)=>{
+                            self.setValue('phone',v)
+                        }}
+                        />
+                    </Col>
+                </Row>
+                <Row justify="center">
+                    <Col span={2} />
+                    <Col span={6} className="textclolor-white line-height-3r text-align-left">验证码</Col>
+                    <Col span={8}>
+                    <Input
+                        placeholder="请输入验证码"
+                        value={msgCode}
+                        innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
+                        maxLength={100}
+                        onChange={(e,t,v)=>{
+                            self.setValue('msgCode',v)
+                        }}
+                        />
+                    </Col>
+                    <Col span={7} className="margin-top-2 padding-all-1">
+                    <Code isDisable={phone==''} callBack={()=>{
+                          self.sendCode()
+                        }} />
+                    </Col>
+                </Row>
               </Col>
               
-              <Col className="margin-top-3" span={20}>
+              <Col className="margin-top-2r" span={20}>
                 <Buttons
                   text="注 册"
                   type={'primary'}

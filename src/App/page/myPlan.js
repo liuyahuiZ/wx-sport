@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import config from '../config/config';
 import fetch from '../servise/fetch';
 import moment from 'moment';
+import wx from 'weixin-js-sdk';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import formate from '../utils/formate';
@@ -65,11 +66,15 @@ class MyClassDetail extends BaseView {
       const self = this;
       const { keepTime } = this.state
       console.log(keepTime);
-      if(keepTime&&keepTime!==''&&self.$$TimeRunner){
+      if(keepTime&&keepTime!==''){
         setTimeout(()=>{
           self.$$TimeRunner.setData(keepTime);
         }, 2000)
       }
+      this.hideShare();
+    }
+    hideShare(){
+      wx.hideAllNonBaseMenuItem();
     }
     getCoursePlan(){
       let obg = UrlSearch();
@@ -312,7 +317,9 @@ class MyClassDetail extends BaseView {
                 src={mvVideo} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>: <div />}
               { mvVideo&&mvVideo!='' ? <Col className="textclolor-white text-align-center margin-top-3">
-                <TimeRunner ref={(r) => { this.$$TimeRunner = r; }} />
+                <TimeRunner ref={(r) => { this.$$TimeRunner = r; }}   runner={(date)=>{
+                  storage.setStorage('keepTime', date);
+                }}/>
               </Col> : <div />}
               {
                 status ? (<Row className="width-100">
@@ -349,7 +356,7 @@ class MyClassDetail extends BaseView {
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    sessions.setStorage('keepTime', 0);
+                    storage.setStorage('keepTime', {});
                     this.submitClick()
                   }}
                 />

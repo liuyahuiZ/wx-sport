@@ -266,7 +266,7 @@ class OcrDoc extends Component {
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
           if(res.code>0){
             Modal.alert({ title: '',
-            content: "提交成功!",
+            content: (<Row><Col className="text-align-center">提交成功!</Col></Row>),
             btn: {
               text: '确定',
               type: 'link',

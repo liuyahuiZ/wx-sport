@@ -150,7 +150,7 @@ class TeacherRate extends BaseView {
           //Toaster.toaster({ type: 'error', content: '您已对该教练评分，请勿重复评分！', time: 3000 }); return; }
         if(res.code>0){
           Modal.alert({ title: '评分成功',
-          content: "您对该教练评分成功!",
+        content: (<Row><Col className="text-align-center">您对该教练评分成功!</Col></Row>),
           btn: {
             text: '确定',
             type: 'link',

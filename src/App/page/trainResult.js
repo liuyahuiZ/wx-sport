@@ -34,7 +34,9 @@ class OcrDoc extends BaseView {
           picture: '', //'https://static1.keepcdn.com/2017/03/09/11/1489030213487_375x375.jpg',
           theVieo: '',//'http://pdc6cusp9.bkt.clouddn.com/1534342816',
           query: UrlSearch(),
-          feel: ''
+          feel: '',
+          loadData: 0,
+          loadStatus: false,
       };
       moment.locale('en', {
         weekdays : [
@@ -67,11 +69,24 @@ class OcrDoc extends BaseView {
 
     fileUps(v, name){
       const self = this;
+      Loade.show();
       console.log(v);
-      fileUp(v).then((res)=>{
+      fileUp(v, (loding)=>{
+        self.setState({
+          loadStatus: true,
+          loadData: loding.percent
+        })
+      }).then((res)=>{
         console.log(res);
+        Loade.hide();
+        self.setState({
+          loadStatus: false,
+          loadData: 100
+        })
+        Toaster.toaster({ type: 'error', content: '上传成功！', time: 3000 });
         self.setValue(name, res);
       }).catch((e)=>{
+        Loade.hide();
         console.log(e);
       })
     }
@@ -118,7 +133,7 @@ class OcrDoc extends BaseView {
       })
     }
     render() {
-        const {article, feelCore, query, picture, theVieo} = this.state;
+        const {article, feelCore, query, picture, theVieo, loadData, loadStatus} = this.state;
         const self = this;
         let keepTimeM = parseInt(query.keepTime/60);
         let keepTimeS = parseInt(query.keepTime%60);
@@ -231,6 +246,7 @@ class OcrDoc extends BaseView {
                   fileType={'blob'}
                   callType={'H5'}
                   maxSize={10}
+                  compress
                   accept="*"
                   ></FileUp> 
                   </Col>
@@ -250,6 +266,7 @@ class OcrDoc extends BaseView {
               </Col>
             
             </Row>
+            { loadStatus ? <div className="loading-data font-size-largeM">{ loadData.toFixed(2)||0} %</div> : ''}
           </section>
         );
     }

@@ -84,7 +84,7 @@ class OcrDoc extends Component {
             />
             </div>
             </Col>
-            <Col span={14} className="textclolor-white font-size-default margin-top-3">
+            <Col span={9} className="textclolor-white font-size-default margin-top-3">
               <Row>
                 <Col>{itm.nick_name}</Col>
                 <Col className="font-size-7 textcolor-aeaeae">运动量{ `${parseInt(itm.sumMark/60)}:${parseInt(itm.sumMark%60)}`}分钟</Col>
@@ -92,6 +92,12 @@ class OcrDoc extends Component {
             </Col>
             <Col span={4} className="padding-all">
               <div className={`icon trophy ${idx < 3 ? `icon-trophy-${idx}`: ''}`} />
+            </Col>
+            <Col span={5} className="margin-top-3 font-size-default">
+              <Row>
+                <Col className="font-size-6 textcolor-aeaeae">打卡总次数</Col>
+                <Col className="font-size-large textcolor-9eea6a text-align-center">{itm.days||0}</Col>
+              </Row>
             </Col>
           </Row>)
         }) : <div />;

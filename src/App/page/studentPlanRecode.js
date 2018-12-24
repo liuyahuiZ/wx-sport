@@ -142,7 +142,7 @@ class StudentPlanRecode extends BaseView {
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         if(res.code>0){
           Modal.alert({ title: '回复成功',
-          content: "您对该学员回复成功!",
+          content: (<Row><Col className="text-align-center">您对该学员回复成功!</Col></Row>),
           btn: {
             text: '确定',
             type: 'link',

@@ -33,7 +33,6 @@ class OcrDoc extends BaseView {
           detailData: {},
           courseMovesArr: {},
           upMoves:[]
-
       };
     }
 
@@ -160,7 +159,7 @@ class OcrDoc extends BaseView {
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
           if(res.code>0){
             Modal.alert({ title: '',
-            content: "提交成功!",
+            content: (<Row><Col className="text-align-center">提交成功!</Col></Row>),
             btn: {
               text: '确定',
               type: 'link',
@@ -179,6 +178,8 @@ class OcrDoc extends BaseView {
         const {detailData, courseMovesArr, upMoves} = this.state;
         const self = this;
         let obg = UrlSearch();
+        let userInfo = storage.getStorage('userInfo')
+        console.log(userInfo);
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
         let startDate = detailData.startDate ? detailData.startDate.split(' ')[0] : ''
         const movesDom = courseMovesArr && courseMovesArr.length > 0 ? courseMovesArr.map((itm,idx)=>{
@@ -218,7 +219,8 @@ class OcrDoc extends BaseView {
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-normal textclolor-white">{detailData.title}</Col>
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">{startDate} {detailData.startTime}-{detailData.endTime}</Col>
-                  {/* <Col span={8} className="zindex-10 margin-top-2"><img className="width-100" src={`http://47.88.2.72:2019/files?text=https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html%23%2FSuccess%3FcourseId%3D${obg.courseId}%26type%3Dregistor%26teacherId%3D${userId}`} /></Col> */}
+                  <Col span={8} className="zindex-10 margin-top-2">
+                  {userInfo&&userInfo.wechatPid ? <img className="width-100" src={`http://avocadomethod.cn:2019/files?text=${userInfo.phoneNo||userInfo.wechatPid}`} /> : ''}</Col>
                   {/* <Col className="zindex-10 text-align-center font-size-small textclolor-black-low margin-top-2">该二维码用于开门</Col> */}
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low"></Col>
                 </Row>

@@ -6,7 +6,7 @@ import config from '../config/config';
 import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import { userInfo } from '../api/classes';
-import { topUpTemplateList, topUp} from '../api/index';
+import { topUpTemplateList, topUp, getToken} from '../api/index';
 import formate from '../utils/formate';
 import wx from 'weixin-js-sdk';
 
@@ -21,6 +21,8 @@ const {
     Loade
   } = Components;
 const { sessions, storage } = utils;
+const reditUrl = "https%3A%2F%2Favocadomethod.cn%2Fdist%2Findex.html";
+const appId = 'wx9a7768b6cd7f33d0';
 class Recharge extends BaseView {
     constructor(props) {
       super(props);
@@ -83,6 +85,49 @@ class Recharge extends BaseView {
     }
 
     _viewAppear(){
+      let obg = UrlSearch();
+      let userInfo = storage.getStorage('userInfo')
+      let userId = storage.getStorage('userId');
+      if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
+          storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
+        }
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          this.getUserinfo(obg.code);
+        }
+      }else{
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+        }
+      }
+
+      
+      this.getTmpList();
+    }
+
+    getUserinfo(code){
+      const self = this;
+      getToken({code: code}).then((data)=>{
+        console.log(data);
+       if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
+          storage.setStorage('userId', data.id);
+          // self.getMyClass(data.id);
+          // self.getCourseRatio(data.id);
+          // self.registry();
+          self.setState({
+            userInfo: data,
+            userId: data.id
+          })
+        }
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
+    }
+
+    
+    getUserInfoMation(){
       let userId = storage.getStorage('userId');
       const self = this;
       Loade.show();
@@ -101,9 +146,7 @@ class Recharge extends BaseView {
         Loade.hide();
         console.log(e)
       })
-      this.getTmpList();
     }
-    
     getTmpList(){
       const self = this;
       topUpTemplateList({}).then((res)=>{
@@ -150,7 +193,7 @@ class Recharge extends BaseView {
         paySign: res.paySign,
         success: function (respon) {
           Modal.alert({ title: '',
-            content: '充值成功，恭喜您成为会员',
+            content: (<Row><Col className="text-align-center">充值成功，恭喜您成为会员</Col></Row>),
             btn: {
               text: '确定',
               type: 'link',
@@ -228,8 +271,10 @@ class Recharge extends BaseView {
                     </Row>
                   </Col>
                   <Col><Row gutter={16}>{templateDom}</Row></Col>
-                  <Col className={"textclolor-black-low line-height-3r text-align-center"}>
-                    充值须知
+                  <Col className={"textclolor-black-low line-height-3r text-align-center"} onClick={()=>{
+                    self.goLink('/RechargeMind')
+                  }}>
+                    《充值须知》
                   </Col>
                 </Row>
                 </TransAnimal>

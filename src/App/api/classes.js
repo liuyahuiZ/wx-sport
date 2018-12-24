@@ -284,3 +284,14 @@ export function courselastKeep(req){
         })
     })
 }
+
+export function sendCheckCode(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `msg/send`,{ method: 'POST', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}

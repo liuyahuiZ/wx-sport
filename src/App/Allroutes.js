@@ -191,6 +191,12 @@ const Recharge = (location, cb) => {
   },'Recharge')
 };
 
+const RechargeMind = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/rechargeMind').default)
+  },'RechargeMind')
+};
+
 // const PicturePoster = (location, cb) => {
 //   require.ensure([], require => {
 //       cb(null, require('./page/picturePoster').default)
@@ -241,6 +247,7 @@ class MyRouter extends Component{
         <Route path={'AllPicturePoster'} getComponent={AllPicturePoster} />
         <Route path={'StudentPlanRecode'} getComponent={StudentPlanRecode} />
         <Route path={'Recharge'} getComponent={Recharge} />
+        <Route path={'RechargeMind'} getComponent={RechargeMind} />
       </Route>
     </Router>
     )

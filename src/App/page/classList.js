@@ -9,7 +9,7 @@ import wx from 'weixin-js-sdk';
 import formate from '../utils/formate';
 import { subjectCourses, createOrder } from '../api/subject';
 import { userOrdeRing, userInfo } from '../api/classes'
-import { topUpBuyCourse } from '../api/index';
+import { topUpBuyCourse, getToken } from '../api/index';
 import computed from '../utils/computed';
 
 const {
@@ -25,6 +25,8 @@ const {
     PopContainer
   } = Components;
 const { sessions, storage } = utils;
+const reditUrl = "https://avocadomethod.cn/dist/index.html#/ClassList";
+const appId = 'wx9a7768b6cd7f33d0';
   
 class ClassList extends BaseView {
     constructor(props) {
@@ -36,13 +38,65 @@ class ClassList extends BaseView {
           dateArr: [],
           loadText: '加载中',
           selectDay: '',
+          subjectId: obg.subjectId,
           courseTypeId: obg.courseTypeId,
           userInfoMation: {}
       };
     }
     _viewAppear(){
-      this.initClander();
+      let obg = UrlSearch();
+      let userInfo = storage.getStorage('userInfo')
+      let userId = storage.getStorage('userId');
+      if(obg.code&&obg.code!==''){
+        if(userInfo&&userInfo!==''&&obg.clean){
+          storage.removeStorage('userInfo');
+          storage.removeStorage('userId');
+        }
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          this.getUserinfo(obg.code);
+        }
+      }else{
+        if(!(userInfo&&userInfo.nickName&&userInfo.nickName!=='')){
+          let parmes = '?';
+          let keys = Object.keys(obg);
+          let values = Object.values(obg);
+          console.log('obg',obg);
+          for(let i=0;i<keys.length;i++){
+            parmes = parmes + keys[i] + '=' + values[i] 
+            if((i+1)!==keys.length){
+              parmes = parmes + '&'
+            }
+          }
+          let newreditUrl = encodeURIComponent(reditUrl+parmes);
+          console.log(newreditUrl);
+          window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${newreditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
+        } else {
+          this.getUserInfoMation();
+        }
+      }
       this.getUserInfoMation();
+      this.initClander();
+      
+    }
+
+    getUserinfo(code){
+      const self = this;
+      getToken({code: code}).then((data)=>{
+        console.log(data);
+       if(JSON.stringify(data)!=='{}'){
+          storage.setStorage('userInfo', data);
+          storage.setStorage('userId', data.id);
+          // self.getMyClass(data.id);
+          // self.getCourseRatio(data.id);
+          // self.registry();
+          self.setState({
+            userInfo: data,
+            userId: data.id
+          })
+        }
+      }).catch((err)=>{
+        Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
     }
   
     initClander(){
@@ -97,17 +151,17 @@ class ClassList extends BaseView {
     getList(){
       let obg = UrlSearch();
       const self = this;
-      const { selectDay, courseTypeId } = this.state;
+      const { selectDay, subjectId, courseTypeId } = this.state;
       Loade.show();
       subjectCourses({
-        subjectId:obg.subjectId,
+        subjectId: subjectId,
         datetime: selectDay.dateTime,
         courseTypeId: courseTypeId,
         // difficulty: obg.difficulty
       }).then((res)=>{
+        Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         let data = res.result;
-        Loade.hide();
         if(JSON.stringify(data)!=='{}'){
           let loadText = '加载中';
           if(data.length==0){
@@ -358,6 +412,7 @@ class ClassList extends BaseView {
         }
         // self.undefindOrder()
       }).catch((err)=>{
+        console.log(err);
         Toaster.toaster({ type: 'error', content: '系统错误', time: 3000 });
         Loade.hide();
       })
@@ -368,12 +423,14 @@ class ClassList extends BaseView {
       const { userInfoMation } = this.state;
       let disCount = userInfoMation.memberDiscount ? computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)) : Number(it.price);
       let disCountDom = userInfoMation.memberDiscount ? `${formate.formateMoney(computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)))} 元`: '无折扣';
-      let rest = 0
+      let rest = 0;
+
       if(userInfoMation.isMember==0) {
         if(userInfoMation.balance >= disCount) {
           rest = 0
         } else if(userInfoMation.balance < disCount) {
-          rest = computed.subtr(Number(disCount), Number(userInfoMation.balance))
+          // rest = disCount- userInfoMation.balance;
+          rest = Number(it.price);
         }
         if(userInfoMation.balance == 0) {
           rest = disCount

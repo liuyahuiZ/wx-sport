@@ -66,7 +66,9 @@ class TimeRunner extends Component {
     })
     setTimeout(function() { 
         self.timer(self);
-        self.runner();
+        if(second%5==0){
+          self.runner();
+        }
     },100);
   }
 
@@ -80,6 +82,7 @@ class TimeRunner extends Component {
 
 
   setData(obg){
+    console.log('obg',obg);
     this.setState(obg)
   }
   splitStr(second){
