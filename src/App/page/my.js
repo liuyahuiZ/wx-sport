@@ -66,7 +66,7 @@ class OcrDoc extends Component {
       }
       this.getUserInfoMation();
       this.getUserMoves();
-      console.log('userId', userId);
+      // console.log('userId', userId);
     }
 
     componentWillReceiveProps(nextProps){
@@ -92,7 +92,7 @@ class OcrDoc extends Component {
             userInfoMation: data
           })
         }
-        console.log(res);
+        // console.log(res);
       }).catch((e)=>{
         console.log(e);
       })
@@ -109,14 +109,14 @@ class OcrDoc extends Component {
         self.setState({
           userMoveArr: data
         })
-        console.log(res);
+        // console.log(res);
       }).catch((e)=>{
         console.log(e);
       })
     }
     
     getMyClass(userId){
-      console.log(userId);
+      // console.log(userId);
       const self = this;
       Loade.show();
       myClass({userId: userId}).then((res)=>{
@@ -163,7 +163,7 @@ class OcrDoc extends Component {
     getUserinfo(code){
       const self = this;
       getToken({code: code}).then((data)=>{
-        console.log(data);
+        // console.log(data);
        if(JSON.stringify(data)!=='{}'){
           storage.setStorage('userInfo', data);
           storage.setStorage('userId', data.id);
@@ -181,16 +181,11 @@ class OcrDoc extends Component {
     }
 
     checkUser(){
-      console.log(storage.getStorage('userInfo'));
       if (storage.getStorage('userInfo')) {
         // this.goLink('/PersonalFiles');
       } else {
         window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${reditUrl}&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect`;
       }
-    }
-
-    switchChange(date){
-        console.log(date);
     }
 
     submitClick(){
@@ -251,16 +246,17 @@ class OcrDoc extends Component {
     submitMove(){
       const { userMoveArr } = this.state;
       let userId = storage.getStorage('userId')
-      console.log(userMoveArr);
       if(userMoveArr.length>0){
         let newArr = []
         for(let i=0;i<userMoveArr.length;i++){
           newArr[i] = {
             "name": userMoveArr[i].text,
             "userId": userId,
-            "weight": userMoveArr[i].value
+            "weight": userMoveArr[i].value,
+            "unit": userMoveArr[i].unit
           }
         }
+        console.log(newArr);
         userMovesUpdate(newArr).then((res)=>{
           Loade.hide();
           if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
@@ -368,15 +364,18 @@ class OcrDoc extends Component {
         }]
 
         const movesDom = userMoveArr && userMoveArr.length > 0 ? userMoveArr.map((itm,idx)=>{
-          return (<div className="images-33 float-left bg-1B1B1B padding-all" key={`${idx}-ke`}>
+          return (<div className="images-33 float-left padding-all" key={`${idx}-ke`}>
             <Row className="text-align-center">
             <Col className="textclolor-white">{itm.text}</Col>
-            <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-9eea6a">
+            <Col className="border-radius-5f overflow-hide bg-262626 textcolor-9eea6a margin-top-2">
+              <Row>
+                <Col span={12}>
               <Input
                 placeholder="请输入"
                 value={itm.value}
-                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#9eea6a","textAlign":"center"}}
+                innerStyle={{"backgroundColor":"#262626","color":"#9eea6a","textAlign":"right","height":"1.5rem","border":"none"}}
                 maxLength={100}
+                type="number"
                 onChange={(e,t,v)=>{
                     // self.setValue('weight',v)
                     let allMove = userMoveArr;
@@ -386,7 +385,9 @@ class OcrDoc extends Component {
                       // upMoves: newMove
                     })
                 }}
-                />
+                /></Col>
+                <Col span={12} className="font-size-small line-height-1f5 text-align-left padding-left-3">{itm.unit}</Col>
+                </Row>
             </Col></Row>
           </div>)
         }) : <div className="text-align-center textclolor-white line-height-2r">暂无数据</div>;
@@ -436,17 +437,16 @@ class OcrDoc extends Component {
               </Col>
               <Col className='padding-all bg-1B1B1B margin-top-3 border-radius-5f line-height-2r' onChange={()=>{self.goLink('/Registor')}}>
                   <Row>
-                    <Col className="textclolor-white" span={6}>身高</Col>
-                    <Col className="textclolor-white" span={18}>{userInfoMation.height||0}</Col>
-                  </Row>
-                  <Row>
-                    <Col className="textclolor-white" span={6}>体重</Col>
-                    <Col className="textclolor-white" span={18}>{userInfoMation.weight||0}</Col>
-                  </Row>
-                  <Row>
                     <Col className="textclolor-white" span={6}>年龄</Col>
-                    <Col className="textclolor-white" span={18}>{userInfoMation.age||0}</Col>
+                    <Col className="textclolor-white" span={18}>{userInfoMation.age||0}岁</Col>
                   </Row>
+                  <Row>
+                    <Col className="textclolor-white" span={6}>身高</Col>
+                    <Col className="textclolor-white" span={6}>{userInfoMation.height||0} 厘米</Col>
+                    <Col className="textclolor-white" span={4}>体重</Col>
+                    <Col className="textclolor-white" span={8}>{userInfoMation.weight||0} 公斤</Col>
+                  </Row>
+                
                   <Row>
                     <Col className="textclolor-white" span={6}>伤病历史</Col>
                     <Col className="textclolor-white" span={18}>{userInfoMation.injuryHistory||'无'}</Col>
@@ -456,13 +456,18 @@ class OcrDoc extends Component {
                     <Col className="textclolor-white" span={18}>{userInfoMation.exercise||'无'}</Col>
                   </Row>
               </Col>
-              <Col className=' bg-1B1B1B margin-top-3 border-radius-5f'>
+              <Col className=' bg-1B1B1B margin-top-3 border-radius-5f overflow-hide'>
               <Row className="bg-0D0D0D line-height-2r"><Col className="textclolor-white">测试动作成绩</Col></Row>
-              <Row className="padding-all">
+              <Row className="bg-1B1B1B">
                 <Col>
                 {movesDom}
                 </Col>
-                <Col>
+              </Row>
+                {/* <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
+                  this.tabChange(v);
+                }} /> */}
+              </Col>
+              <Col className="margin-top-1r margin-bottom-1r">
                   <Row justify="center">
                     <Col span={14}>
                       <Buttons 
@@ -476,11 +481,6 @@ class OcrDoc extends Component {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
-                {/* <Tab options={tabOptions} active={this.state.resourceKey} onChange={(v) => {
-                  this.tabChange(v);
-                }} /> */}
-              </Col>
               <Col span={24} className="bg-1B1B1B margin-top-2 border-radius-5f">
                 <Item
                     leftContent={{text: (<Row><Col span={5}>

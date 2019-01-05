@@ -111,3 +111,38 @@ export function teacherSignInPage(req){
         })
     })
 }
+
+export function refundChange(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `refund/change`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function refundQry(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `refund/qry`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+export function refundRef(req){
+    return new Promise((resolve, reject)=>{
+        fetch(config.API_URL+ `refund/refund`,{ method: 'GET', data: req})
+        .then(data => {
+            resolve(data)
+        }).catch(error => {
+            reject(error);
+        })
+    })
+}
+
+

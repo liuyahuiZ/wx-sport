@@ -142,13 +142,23 @@ class Carousel extends Component {
   move() {
     const arr = this.props.options;
     let dotNum = this.state.dotNum;
+    const self = this;
+    
     setInterval(() => {
-      this.changeActive(arr[dotNum].tabName);
-      dotNum += 1;
-      if (dotNum === arr.length) {
-        dotNum = 0;
+      try{
+        if(arr[dotNum]&&arr[dotNum].tabName) {
+          self.changeActive(arr[dotNum].tabName);
+          dotNum += 1;
+          if (dotNum === arr.length) {
+            dotNum = 0;
+          }
+        }
+      }catch(err){
+        console.log(err);
       }
-    }, 4000);
+    }, 5000);
+    
+    
   }
   changeActive(itm) {
     const arr = this.state.options;

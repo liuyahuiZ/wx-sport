@@ -224,7 +224,6 @@ class Recharge extends BaseView {
           <section className="padding-all bg-000 minheight-100">
             <Row >
               <Col span={24} >
-              <TransAnimal >
               <Row justify="center" className="padding-all-1r bg-1B1B1B border-radius-5f overflow-hide relative">
                   {/* <Col span={12} className="text-align-left">
                     <Icon iconName={'quote '} size={'150%'} iconColor={'#fff'}   />
@@ -271,13 +270,19 @@ class Recharge extends BaseView {
                     </Row>
                   </Col>
                   <Col><Row gutter={16}>{templateDom}</Row></Col>
-                  <Col className={"textclolor-black-low line-height-3r text-align-center"} onClick={()=>{
+                  {/* <Col className={"textclolor-black-low line-height-3r text-align-center"} onClick={()=>{
                     self.goLink('/RechargeMind')
                   }}>
                     《充值须知》
-                  </Col>
+                  </Col> */}
+                  <Col>
+                  <div className="textcolor-515151 text-align-center line-height-3r width-100 font-size-default line-height-2r margin-top-2r">充值须知</div>
+                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f">1、本充值卡金额适用于“牛油果”线上所有可购项目，含特价项目；</div>
+                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">2、本充值卡客户在购买线上项目时，系统默认优先使用充值卡充值金额支付；</div>
+                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">3、本充值卡余额不支持转移，但可申请退款；退款时，仅可原支付途径退回充值卡内充值金额，赠送金额即时清零不可退；</div>
+                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">4、如需“退款”，请微信联系人工服务。</div>
+                </Col>
                 </Row>
-                </TransAnimal>
               </Col>
            
               <Col className="margin-top-1r">

@@ -39,6 +39,7 @@ class MyClassDetail extends BaseView {
             coursePlanDetails: {}
           },
           keepTime: storage.getStorage('keepTime'),
+          hideVideo: false,
       };
     }
     _viewAppear(){
@@ -178,7 +179,8 @@ class MyClassDetail extends BaseView {
       const self = this;
       const {keepTime} = this.state;
       this.setState({
-        mvVideo: itm.description
+        mvVideo: itm.description,
+        hideVideo: true,
       },()=>{
         if(keepTime&&keepTime!==''&&self.$$TimeRunner){
           setTimeout(()=>{
@@ -189,9 +191,9 @@ class MyClassDetail extends BaseView {
     }
 
     render() {
-        const {detailData, status, itmStatus, mvVideo} = this.state;
+        const {detailData, status, itmStatus, mvVideo, hideVideo} = this.state;
         const self = this;
-        console.log('detailData', detailData);
+
         const carouselMap = detailData&&detailData.imgUrlList ?  
         detailData.imgUrlList.map((itm, idx)=>{
           return { tabName: idx, content: (<img alt="text" src={itm} />), isActive: false } 
@@ -238,7 +240,7 @@ class MyClassDetail extends BaseView {
                   </Col>
                   {itm.restTime !==0 ? <Col className="bg-000 line-height-3r"> 
                   <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
-                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
+                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f padding-left-1r padding-right-1r">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
                   <span className="textclolor-black-low">每个动作之间休息时间</span>
                   </Col> : <div />}
                 </Row>}>
@@ -262,7 +264,7 @@ class MyClassDetail extends BaseView {
                   <Col>
                   <Row className="padding-all bg-000">
                       <Col span={12} className="font-size-default textclolor-white ">{detailData.courseName}</Col>
-                      <Col span={10} className="textclolor-white text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#fff'} /> {detailData.name} </Col>
+                      <Col span={12} className="textclolor-white font-size-small text-align-right"><Icon iconName={'android-time '} size={'120%'} iconColor={'#fff'} /> {detailData.name} </Col>
                   </Row>
                   </Col>
                   <Col className="bg-1B1B1B">
@@ -301,18 +303,19 @@ class MyClassDetail extends BaseView {
               </Col>
               <Col className="padding-all margin-top-2 border-radius-5f overflow-hide bg-1B1B1B ">
                 <Row>
-                  <Col span={4} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
-                  <Col span={10} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
-                  <Col span={4} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
-                  <Col span={10} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
+                  <Col span={8} className={"textclolor-black-low text-align-center font-size-small"}>动作总数</Col>
+                  <Col span={8} className={"textclolor-black-low text-align-center font-size-small"}>训练时间</Col>
+                  <Col span={8} className={"textclolor-black-low text-align-center font-size-small"}>有氧运动</Col>
+                  <Col span={8} className={"textcolor-9eea6a text-align-center font-size-normal"}>{detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseMoveNum||0}</Col>
+                  <Col span={8} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.exerciseTime||0)}</Col>
+                  <Col span={8} className={"textcolor-9eea6a text-align-center font-size-normal"}>{ formate.minute(detailData&&detailData.coursePlanSummaryDto&&detailData.coursePlanSummaryDto.aerobicsExerciseTime||0)}</Col>
                 </Row>
               </Col>
               <Col>{coursePlanActionsDom}</Col>
             </Row>
             <Row className="fixed bottom-0 bg-000 zindex-10 width-100 padding-all left-0">
-            { mvVideo&&mvVideo!='' ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
+            { mvVideo&&hideVideo&&mvVideo!='' ? <Col className="text-align-right" onClick={()=>{self.setState({hideVideo: false})}}><Icon iconName={'android-close '} size={'120%'} iconColor={'#fff'} /></Col> : <div />}
+            { mvVideo&&hideVideo&&mvVideo!='' ? <Col className="margin-top-3 heighr-10 border-radius-5f overflow-hide">
                 <video controls="controls" className="width-100" poster="http://static1.keepcdn.com/2017/11/10/15/1510299685255_315x315.jpg" 
                 src={mvVideo} id="audioPlay" ref={(r) => { this.$$videos = r; }}  x5-playsinline="" playsinline="" webkit-playsinline=""  />
               </Col>: <div />}
@@ -331,7 +334,7 @@ class MyClassDetail extends BaseView {
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     this.$$TimeRunner.stop();
-                    this.$$videos.pause();
+                    if(hideVideo){ this.$$videos.pause(); }
                     let keepTime = this.$$TimeRunner.getData();
                     storage.setStorage('keepTime', keepTime);
                     self.setValue('itmStatus', false)
@@ -343,7 +346,8 @@ class MyClassDetail extends BaseView {
                 style={{backgroundColor: '#9eea6a', color:'#333'}}
                 onClick={()=>{
                   this.$$TimeRunner.start();
-                  this.$$videos.play();
+                  if(hideVideo){ this.$$videos.play(); }
+                  
                   self.setValue('itmStatus', true)
                 }}
               />}
@@ -370,7 +374,7 @@ class MyClassDetail extends BaseView {
                   onClick={()=>{
                     console.log(this.$$TimeRunner);
                     this.$$TimeRunner.start();
-                    this.$$videos.play();
+                    if(hideVideo){ this.$$videos.play(); }
                     this.startClass()
                   }}
                 />

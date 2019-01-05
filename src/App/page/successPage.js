@@ -122,7 +122,7 @@ class Success extends BaseView {
                 </Row>
                 <Row className="border-bottom border-color-333">
                   <Col span={4}>时间：</Col>
-                  <Col span={20} className="text-align-right">{detail.startTime}-{detail.endTime}</Col>
+                  <Col span={20} className="text-align-right">{detail&&detail.startDate&&detail.startDate.split(' ')[0]} {detail.startTime}-{detail.endTime}</Col>
                 </Row>
               </Col>
               <Col className="margin-top-5r">

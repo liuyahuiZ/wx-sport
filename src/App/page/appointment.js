@@ -53,9 +53,11 @@ class Appointment extends Component {
         myClass({
             userId: userId
         }).then((res)=>{
-            if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+            if(res.code<=0) { 
+                //Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); 
+            return; 
+            }
             let data = res.result;
-            console.log(data);
             if(data&&JSON.stringify(data)!=='{}'){
                 let loadText = '加载中'
                 if(data.myCourses.length==0){   
@@ -100,24 +102,25 @@ class Appointment extends Component {
                     <Col span={8} className="zindex-10 text-align-left">
                         <Row>
                             <Col className="font-size-small">训练天数</Col>
-                            <Col className="font-size-largeM font-weight-700">{itm.trainingDays}</Col>
+                            <Col className="font-size-largeM font-weight-700 text-align-left ">
+                            <span className="relative margin-left-1r">{itm.trainingDays}</span></Col>
                         </Row>
                     </Col>
-                    <Col span={8} className="zindex-10 text-align-center">
+                    <Col span={9} className="zindex-10 text-align-center">
                         <Row>
                             <Col className="font-size-small">完成比例</Col>
                             <Col className="font-size-largeM font-weight-700">{computed.accMul(itm.completePercent||0, 100).toFixed(0)}%</Col>
                         </Row>
                     </Col>
-                    <Col span={8} className="zindex-10 text-align-right">
+                    <Col span={7} className="zindex-10 text-align-right">
                         <Row>
                             <Col className="font-size-small">训练时常/分钟</Col>
-                            <Col className="font-size-largeM font-weight-700">{`${parseInt(itm.trainingMinutes/60)}`}</Col>
+                            <Col className="font-size-largeM font-weight-700 text-align-center">{`${parseInt(itm.trainingMinutes/60)}`}</Col>
                         </Row>
                     </Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9"></div>
-                <div className="width-100 absolute-left heightp-100 zindex-6 bg bg3" />
+                <div className={`width-100 absolute-left heightp-100 zindex-6 bg bgp${(idx+1)%3}`} />
             </div>)
         }) : <Row ><Col className="text-align-center font-size-small textclolor-white line-height-2r">{loadText}</Col></Row>;
         return(
@@ -155,7 +158,7 @@ class Appointment extends Component {
             <Row content="flex-start">
                 <Col span={1} className="line-height-2r "></Col>
                 <Col span={22} className="font-size-default textclolor-white line-height-2r font-weight-700">计划记录</Col>
-                <Col className="bg-1B1B1B padding-all">
+                <Col className="bg-1B1B1B padding-all-1">
                     {appintArrDom}
                 </Col>
             </Row>

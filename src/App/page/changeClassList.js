@@ -7,7 +7,7 @@ import BaseView from '../core/app';
 import moment from 'moment';
 import wx from 'weixin-js-sdk';
 import formate from '../utils/formate';
-import { subjectCourses, createOrder } from '../api/subject';
+import { subjectCourses, createOrder, refundChange } from '../api/subject';
 import { userOrdeRing, userInfo } from '../api/classes'
 import { topUpBuyCourse, getToken } from '../api/index';
 import computed from '../utils/computed';
@@ -28,7 +28,7 @@ const { sessions, storage } = utils;
 const reditUrl = "https://avocadomethod.cn/dist/index.html#/ClassList";
 const appId = 'wx9a7768b6cd7f33d0';
   
-class ClassList extends BaseView {
+class ChangeClassList extends BaseView {
     constructor(props) {
       super(props);
       let obg = UrlSearch();
@@ -328,183 +328,39 @@ class ClassList extends BaseView {
       });
     }
 
-    undefindOrder(it){
-      const { subjectId } = this.state;
-      const self = this;
-      let userId = storage.getStorage('userId');
-      let authCode = storage.getStorage('authCode');
-      let obg = UrlSearch();
-      console.log(authCode);
-      Loade.show();
-      createOrder({
-        "authCode": authCode,
-        "clientIP": '192.168.3.1',
-        "subjectId": subjectId,
-        "userId": userId,
-        "courseId": it.courseId
-      }).then((res)=>{
-        Loade.hide();
-        console.log(res);
-        if(!res.prepayId) { Toaster.toaster({ type: 'error', content: '调用支付失败,请稍后重试', time: 3000 }); return; }
-        self.bought(res, it);
-      }).catch((err)=>{
-        Loade.hide();
-        console.log(res);
-      })
-      sessions.setStorage('nowCourse', it);
-    }
 
-    bought(res, it){
-      const self = this;
-      let obg = UrlSearch();
-      wx.chooseWXPay({
-        timestamp: res.timeStamp,
-        nonceStr: res.nonceStr,
-        package: 'prepay_id='+res.prepayId,
-        signType: 'MD5', // 注意：新版支付接口使用 MD5 加密
-        paySign: res.paySign,
-        success: function (respon) {
-          Toaster.toaster({ type: 'error', content: '购买成功', time: 3000 });
-          self.goLink('/Success', Object.assign({},{
-            "type": 'appoint',
-            "courseId": it.courseId
-          }) )
-        }
-      });
-    }
-
-    lestBought(it){
-      Loade.show();
-      let userId = storage.getStorage('userId');
-      const self = this;
-      topUpBuyCourse({
-        "userId": userId,
-        "courseId": it.courseId
-      }).then((res)=>{
-        Loade.hide();
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-        Toaster.toaster({ type: 'error', content: '购买成功', time: 3000 });
-        self.goLink('/Success', Object.assign({},{
-          "type": 'appoint',
-          "courseId": it.courseId
-        }) )
-      }).catch((err)=>{
-        Loade.hide();
-        console.log(res);
-      })
-    }
 
     ordeRing(it){
       // console.log(it);
       let obg = UrlSearch();
       const self = this;
       const { userInfoMation } = this.state;
-      if(userInfoMation&&(!userInfoMation.phoneNo)) {
-        self.goLink('/Registor')
-        return ;
-      }
       Loade.show();
-      userOrdeRing({
+      refundChange({
+        orderId: obg.orderId,
         courseId: it.courseId
       }).then((res)=>{
         Loade.hide();
         if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
         if(res.result) {
-          self.doBought(it);
-        } else{
-          Toaster.toaster({ type: 'error', content: '预约已满', time: 3000 }); return;
+            Modal.alert({ title: '',
+            content: (<div className="text-align-center">{res.result}</div>),
+            btn: {
+              text: '确定',
+              type: 'link',
+              style: { 'height': '2rem', 'margin': '0', 'borderRadius': '0'}
+            }, 
+            type: 'large'
+          },
+          () => { hashHistory.goBack() });
         }
-        // self.undefindOrder()
       }).catch((err)=>{
         console.log(err);
         Toaster.toaster({ type: 'error', content: '系统错误', time: 3000 });
         Loade.hide();
       })
     }
-    doBought(it){
-      console.log(it);
-      const self = this;
-      const { userInfoMation } = this.state;
-      let disCount = userInfoMation.memberDiscount ? computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)) : Number(it.price);
-      let disCountDom = userInfoMation.memberDiscount ? `${formate.formateMoney(computed.accMul(Number(userInfoMation.memberDiscount),Number(it.price)))} 元`: '无折扣';
-      let rest = 0;
-
-      if(userInfoMation.isMember==0) {
-        if(userInfoMation.balance >= disCount) {
-          rest = 0
-        } else if(userInfoMation.balance < disCount) {
-          // rest = disCount- userInfoMation.balance;
-          rest = Number(it.price);
-        }
-        if(userInfoMation.balance == 0) {
-          rest = disCount
-        }
-      } else {
-        rest = it.price
-      }
-      PopContainer.confirm({
-        content: (<div className="bg-0D0D0D">
-          <Row className="border-bottom border-color-e5e5e5 bg-101111 border-radius-5f bg-0D0D0D">
-            <Col span={4} className={'text-align-center'} onClick={() => { PopContainer.closeAll() }} >
-                <Icon iconName={"android-close"} size={'180%'} iconColor={'#fff'} />
-            </Col>
-            <Col span={16} className={'text-align-center line-height-3r'}></Col>
-            <Col>
-              <Row className={"padding-all-1r line-height-3r"}>
-                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
-                  <Row>
-                    <Col span={12}>总价：</Col>
-                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(it.price)}元</Col>
-                  </Row>
-                </Col>
-                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
-                  <Row>
-                    <Col span={12}>会员卡折后价：</Col>
-                    <Col span={12} className={"text-align-right"}>{disCountDom}</Col>
-                  </Row>
-                </Col>
-                <Col className={"border-bottom border-color-333 textclolor-black-low"}>
-                  <Row>
-                    <Col span={12}>剩余额度</Col>
-                    <Col span={12} className={"text-align-right"}>{formate.formateMoney(userInfoMation.balance||0)}元</Col>
-                  </Row>
-                </Col>
-                <Col className={"text-align-center font-size-small textclolor-black-low"}>还需支付</Col>
-                <Col className={"text-align-center font-size-huge textcolor-9eea6a font-weight-700"}>¥{formate.formateMoney(rest)}</Col>
-              </Row>
-              <Row className={"padding-all-1r"}>
-                <Col span={24} className="font-size-default textclolor-white">温馨提示</Col>
-                <Col span={24} className="font-size-small textclolor-black-low ">1. AM9课程开课前6小时免费取消课程；</Col>
-                <Col span={24} className="font-size-small textclolor-black-low ">2. “计划执行日”需要先参加完入门课后才能预约；</Col>
-                <Col span={24} className="font-size-small textclolor-black-low ">3. “计划执行日”开课前6小时可免费更换时间一次；</Col>
-                {/* <Col span={24} className="font-size-small textclolor-black-low ">1. 入门课开课12小时前免费取消预约，支持全额退款；</Col>
-                <Col span={24} className="font-size-small textclolor-black-low ">2. 入门课开课12小时后取消预约，不支持全额退款；</Col>
-                <Col span={24} className="font-size-small textclolor-black-low ">3. 入门课需提前15分钟到场，迟到15分钟不能再参加，不支持全额退款</Col> */}
-                <Col className="margin-top-2">
-                 <Buttons
-                  text={`确认付款`}
-                  type={'primary'}
-                  size={'large'}
-                  style={{backgroundColor: '#9eea6a', color:'#333'}}
-                  onClick={()=>{
-                    PopContainer.closeAll();
-                    if(rest>0){
-                      self.undefindOrder(it)
-                    }else {
-                      //todo 扣除余额
-                      self.lestBought(it);
-                    }
-                    
-                  }}
-                /></Col>
-              </Row>
-            </Col>
-          </Row>
-          </div>),
-      type: 'bottom',
-      containerStyle: { top: '3rem'},
-      });
-    }
+    
 
 
     render() {
@@ -580,9 +436,18 @@ class ClassList extends BaseView {
               <Col>
               {classListDom}
               </Col>
+              <Col>
+                <Row className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B padding-all-2r">
+                  {/* <Col className="font-size-7 textclolor-black-low text-align-center">开课前24小时前有一次免费更改入门课的机会</Col>
+                  <Col className="font-size-7 textclolor-black-low text-align-center">第二次更改时间或开课前24小时内需支付课程原价的20%改期费</Col> */}
+                  <Col className="font-size-7 textclolor-black-low text-align-center">
+                  {classList&&classList[0]&&classList[0].tip&&classList[0].tip.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${classList[0].tip}</p>`}} /> : classList&&classList[0]&&classList[0].tip}
+                  </Col>
+                </Row>
+              </Col>
             </Row>
           </section>
         );
     }
 }
-export default ClassList;
+export default ChangeClassList;

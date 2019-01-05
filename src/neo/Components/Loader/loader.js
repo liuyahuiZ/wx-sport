@@ -29,7 +29,27 @@ class Loader extends Component {
       contbg = (<div style={styles.boxbg} onClick={() => { this.hide(); }}></div>);
       cell = (
         <div style={styles.loadContainer}>
-          <div className="spinner"></div>
+          {/* <div className="spinner"></div> */}
+          <div className="spinner-b">
+            <div className="spinner-b-container container1">
+              <div className="circle1"></div>
+              <div className="circle2"></div>
+              <div className="circle3"></div>
+              <div className="circle4"></div>
+            </div>
+            <div className="spinner-b-container container2">
+              <div className="circle1"></div>
+              <div className="circle2"></div>
+              <div className="circle3"></div>
+              <div className="circle4"></div>
+            </div>
+            <div className="spinner-b-container container3">
+              <div className="circle1"></div>
+              <div className="circle2"></div>
+              <div className="circle3"></div>
+              <div className="circle4"></div>
+            </div>
+          </div>
         </div>
       );
     }

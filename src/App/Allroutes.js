@@ -197,6 +197,25 @@ const RechargeMind = (location, cb) => {
   },'RechargeMind')
 };
 
+const ChangeClassList = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/changeClassList').default)
+  },'ChangeClassList')
+};
+
+const TeacherFail = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/teacherFail').default)
+  },'TeacherFail')
+};
+
+
+const RefundPage = (location, cb) => {
+  require.ensure([], require => {
+      cb(null, require('./page/refundPage').default)
+  },'RefundPage')
+};
+
 // const PicturePoster = (location, cb) => {
 //   require.ensure([], require => {
 //       cb(null, require('./page/picturePoster').default)
@@ -248,6 +267,9 @@ class MyRouter extends Component{
         <Route path={'StudentPlanRecode'} getComponent={StudentPlanRecode} />
         <Route path={'Recharge'} getComponent={Recharge} />
         <Route path={'RechargeMind'} getComponent={RechargeMind} />
+        <Route path={'ChangeClassList'} getComponent={ChangeClassList} />
+        <Route path={'TeacherFail'} getComponent={TeacherFail} />
+        <Route path={'RefundPage'} getComponent={RefundPage} />
       </Route>
     </Router>
     )

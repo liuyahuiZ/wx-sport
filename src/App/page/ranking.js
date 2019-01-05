@@ -17,7 +17,7 @@ const {
     LoadMore
   } = Components;
   
-class OcrDoc extends Component {
+class Ranking extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -57,7 +57,9 @@ class OcrDoc extends Component {
     getMark(){
       const self = this;
       userMarkRate({limit: 4}).then((res)=>{
-        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        if(res.code<=0) { //Toaster.toaster({ type: 'error', content: res.msg, time: 3000 });
+         return; 
+        }
         let data = res.result;
         if(res.code>0&&res.result) {
           self.setState({
@@ -79,8 +81,7 @@ class OcrDoc extends Component {
         }}>
             <Col span={6} className="">
             <div className="middle-round overflow-hide border-radius-9r">
-              <img className='middle-round'
-              src={itm.img_url}
+              <img className='middle-round' src={itm.img_url}
             />
             </div>
             </Col>
@@ -111,7 +112,7 @@ class OcrDoc extends Component {
                 <Row justify="center" className="padding-all-1r bg-000 border-radius-5f overflow-hide relative">
                   <Col className="text-align-center margin-top-1r zindex-10">
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide">
-                        <img src={ markList.length>0&&markList[0].img_url} className="width-100" />
+                        <img src={ markList.length>0 ? markList[0].img_url : ''} className="width-100" />
                         <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                     </div>
                   </Col>
@@ -139,4 +140,4 @@ class OcrDoc extends Component {
         );
     }
 }
-export default OcrDoc;
+export default Ranking;

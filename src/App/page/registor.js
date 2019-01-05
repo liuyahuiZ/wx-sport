@@ -7,7 +7,9 @@ import BaseView from '../core/app';
 import { UrlSearch } from '../utils';
 import valid from '../utils/validate';
 import { userMark, userUpdInfo, sendCheckCode } from '../api/classes';
-import Code from './component/code'
+import Code from './component/code';
+import DatePicker from 'react-mobile-datepicker';
+import moment from 'moment';
 
 const {
     Buttons,
@@ -39,7 +41,9 @@ class Registor extends BaseView {
           expeirence: '',
           year: '',
           month: '',
-          day: ''
+          day: '',
+          time: new Date(),
+          isOpen: false,
       };
     }
 
@@ -99,7 +103,7 @@ class Registor extends BaseView {
       let userId = storage.getStorage('userId');
       let date = new Date;
       let nowYear = date.getFullYear()
-      const { height, weight, birthday, phone, history, expeirence, active, year, month, day, msgCode } = this.state;
+      const { height, weight, birthday, phone, history, expeirence, active, year, month, day, msgCode, time } = this.state;
       if(!height&&height==='') {
           Toaster.toaster({ type: 'error', position: 'top', content: '请输入身高', time: 3000 }, true);
           return false;
@@ -108,7 +112,7 @@ class Registor extends BaseView {
         Toaster.toaster({ type: 'error', position: 'top', content: '请输入体重', time: 3000 }, true);
         return false;
       }
-      if(!year&&year==='') {
+      if(!time&&time==='') {
         Toaster.toaster({ type: 'error', position: 'top', content: '请输入生日', time: 3000 }, true);
         return false;
       }
@@ -136,7 +140,7 @@ class Registor extends BaseView {
       Loade.show();
       userUpdInfo({
         id: userId,
-        age: (nowYear - year),
+        age: (nowYear - time.getFullYear() || 1970),
         height: height,
         weight: weight,
         injuryHistory : history,
@@ -161,7 +165,7 @@ class Registor extends BaseView {
         
 
     render() {
-        const { userInfo, height, weight, birthday, phone, active, history, expeirence, year, month, day, msgCode } = this.state;
+        const { userInfo, height, weight, birthday, phone, active, history, expeirence, year, month, day, msgCode, time } = this.state;
         const self = this;
 
         return(
@@ -199,41 +203,48 @@ class Registor extends BaseView {
                 </TransAnimal>
               </Col>
              
-              <Col span={20} className="bg-1B1B1B margin-top-2 border-radius-5f opacity-8">
-                <Row justify="center">
+              <Col span={22} className="bg-1B1B1B margin-top-2 border-radius-5f opacity-8">
+                <Row >
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">身高</Col>
-                    <Col span={16}>
+                    <Col span={10}>
                     <Input
                         placeholder="请输入身高"
                         value={height}
+                        type={"number"}
                         innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
-                        maxLength={100}
+                        maxLength={10}
                         onChange={(e,t,v)=>{
                             self.setValue('height',v)
                         }}
                         />
                     </Col>
+                    <Col span={4} className="textclolor-white line-height-3r text-align-left">厘米</Col>
                 </Row>
-                <Row justify="center">
+                <Row >
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">体重</Col>
-                    <Col span={16}>
+                    <Col span={10}>
                     <Input
                         placeholder="请输入体重"
                         value={weight}
+                        type={"number"}
                         innerStyle={{"backgroundColor":"#262626","color":"#fff"}}
-                        maxLength={100}
+                        maxLength={10}
                         onChange={(e,t,v)=>{
                             self.setValue('weight',v)
                         }}
                         />
                     </Col>
+                    <Col span={4} className="textclolor-white line-height-3r text-align-left">公斤</Col>
                 </Row>
                 <Row justify="center">
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">生日</Col>
-                    <Col span={8}>
+                    <Col span={16} className="textclolor-white line-height-3r text-align-left" onClick={()=>{
+                        self.setState({ isOpen: true });
+                    }}>{  time ? moment(time).format('YYYY-MM-DD') : '请输入年月日'}</Col>
+                    {/* <Col span={8}>
                     <Input
                         placeholder="请输入年"
                         value={year}
@@ -265,7 +276,7 @@ class Registor extends BaseView {
                             self.setValue('day',v)
                         }}
                         />
-                    </Col>
+                    </Col> */}
                 </Row>
                 
                 <Row justify="center">
@@ -313,7 +324,7 @@ class Registor extends BaseView {
                         />
                     </Col>
                 </Row>
-                <Row justify="center">
+                <Row >
                     <Col span={2} />
                     <Col span={6} className="textclolor-white line-height-3r text-align-left">验证码</Col>
                     <Col span={8}>
@@ -335,7 +346,7 @@ class Registor extends BaseView {
                 </Row>
               </Col>
               
-              <Col className="margin-top-2r" span={20}>
+              <Col className="margin-top-2r margin-bottom-1r" span={22}>
                 <Buttons
                   text="注 册"
                   type={'primary'}
@@ -349,6 +360,17 @@ class Registor extends BaseView {
         
 
             </Row>
+            <DatePicker
+                    value={this.state.time}
+                    isOpen={this.state.isOpen}
+                    onSelect={(time)=>{
+                        console.log(time);
+                        console.log(time.getFullYear())
+                        self.setState({ time: time, isOpen: false });
+                    }}
+                    onCancel={()=>{
+                        self.setState({isOpen: false });
+                    }} />
           </section>
         );
     }

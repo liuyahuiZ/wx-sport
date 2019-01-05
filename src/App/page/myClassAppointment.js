@@ -9,6 +9,7 @@ import { getToken } from '../api/index';
 import { courseDetail, courseMoves, courseMovesUpdate } from '../api/classes';
 import wx from 'weixin-js-sdk';
 import selectStyle from '../../neo/Components/Select/selectStyle';
+import QRCode from 'qrcode';
 
 const {
     Buttons,
@@ -32,7 +33,8 @@ class OcrDoc extends BaseView {
       this.state = {
           detailData: {},
           courseMovesArr: {},
-          upMoves:[]
+          upMoves:[],
+          qrCode: ''
       };
     }
 
@@ -40,6 +42,7 @@ class OcrDoc extends BaseView {
       this.checkRedct();
       this.getClassDetail();
       this.getCourseMoves();
+      this.rendImg();
     }
 
     checkRedct(){
@@ -151,7 +154,8 @@ class OcrDoc extends BaseView {
             "courseId": obg.id,
             "name": courseMovesArr[i].text,
             "userId": userId,
-            "weight": courseMovesArr[i].value
+            "weight": courseMovesArr[i].value,
+            "unit": courseMovesArr[i].unit
           }
         }
         courseMovesUpdate(newArr).then((res)=>{
@@ -174,23 +178,45 @@ class OcrDoc extends BaseView {
         })
       }
     }
+    rendImg(){
+      let userInfo = storage.getStorage('userInfo')
+      const self = this;
+      let opts = {
+        errorCorrectionLevel: 'H',
+        type: 'image/jpeg',
+        margin: 1,
+        rendererOpts: {
+          quality: 1
+        }
+      }
+      QRCode.toDataURL(userInfo.phoneNo||userInfo.wechatPid, opts, function (err, url) {
+        // console.log(url);
+        self.setState({
+          qrCode: url
+        })
+      })
+    }
     render() {
-        const {detailData, courseMovesArr, upMoves} = this.state;
+        const {detailData, courseMovesArr, upMoves, qrCode} = this.state;
         const self = this;
         let obg = UrlSearch();
         let userInfo = storage.getStorage('userInfo')
         console.log(userInfo);
+    
         let userId = obg.coachId ? obg.coachId: storage.getStorage('userId');
         let startDate = detailData.startDate ? detailData.startDate.split(' ')[0] : ''
         const movesDom = courseMovesArr && courseMovesArr.length > 0 ? courseMovesArr.map((itm,idx)=>{
           return (<div className="images-33 float-left bg-1B1B1B " key={`${idx}-ke`}>
             <Row className="text-align-center">
-            <Col className="textclolor-white">{itm.text}</Col>
+            <Col className="textclolor-white font-size-small text-overflow">{itm.text}</Col>
             <Col className="border-radius-5f padding-all overflow-hide bg-262626 textcolor-9eea6a">
-              <Input
+            <Row>
+                <Col span={12}>
+                <Input
                 placeholder="请输入"
                 value={itm.value}
-                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#9eea6a","textAlign":"center"}}
+                type="number"
+                innerStyle={{"backgroundColor":"#262626","border":"none","color":"#9eea6a","textAlign":"right"}}
                 maxLength={100}
                 onChange={(e,t,v)=>{
                     // self.setValue('weight',v)
@@ -208,7 +234,9 @@ class OcrDoc extends BaseView {
                       // upMoves: newMove
                     })
                 }}
-                />
+                /></Col>
+                <Col span={12} className="font-size-small line-height-3r text-align-left padding-left-3">{itm.unit}</Col>
+                </Row>
             </Col></Row>
           </div>)
         }) : <div className="text-align-center textclolor-white line-height-2r">暂无数据</div>
@@ -219,9 +247,12 @@ class OcrDoc extends BaseView {
                 <Row className="padding-all" justify="center" >
                   <Col className="zindex-10 text-align-center font-size-normal textclolor-white">{detailData.title}</Col>
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low">{startDate} {detailData.startTime}-{detailData.endTime}</Col>
-                  <Col span={8} className="zindex-10 margin-top-2">
-                  {userInfo&&userInfo.wechatPid ? <img className="width-100" src={`http://avocadomethod.cn:2019/files?text=${userInfo.phoneNo||userInfo.wechatPid}`} /> : ''}</Col>
-                  {/* <Col className="zindex-10 text-align-center font-size-small textclolor-black-low margin-top-2">该二维码用于开门</Col> */}
+                  <Col span={12} className="zindex-10 margin-top-2">
+                  {/* <img className="width-100" src={`http://avocadomethod.cn:2019/files?text=${userInfo.phoneNo||userInfo.wechatPid}`} />  */}
+                  {userInfo&&userInfo.wechatPid ? 
+                  <img className="width-100" src={qrCode} /> 
+                  : ''}</Col>
+                  <Col className="zindex-10 text-align-center font-size-small textclolor-black-low margin-top-2">该二维码用于开门</Col>
                   <Col className="zindex-10 text-align-center font-size-small textclolor-black-low"></Col>
                 </Row>
                 <div className="width-100 bg-000 opacity-6 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>

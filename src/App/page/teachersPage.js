@@ -8,6 +8,7 @@ import { UrlSearch } from '../utils';
 import moment from 'moment';
 import { teacherInfo } from '../api/subject';
 import { getToken } from '../api/index';
+import { userInfo } from '../api/classes';
 
 const {
     Buttons,
@@ -61,8 +62,8 @@ class Teachers extends BaseView {
       }
       if((userId&&userId!=='')){
         // this.getMyClass(userId);
-        this.checkTeacher();
         this.getMyClass(userId);
+        this.getUserInfoMation();
         // this.getCourseRatio(userId);
       }
     }
@@ -92,6 +93,27 @@ class Teachers extends BaseView {
         }
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
+    }
+
+    getUserInfoMation(){
+      let userId = storage.getStorage('userId');
+      const self = this;
+      userInfo({
+        userId: userId
+      }).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        if(res.code>0&&data){
+          self.setState({
+            userInfo: data
+          },()=>{
+            self.checkTeacher();
+          })
+        }
+        console.log(res);
+      }).catch((e)=>{
+        console.log(e);
       })
     }
 
@@ -130,7 +152,7 @@ class Teachers extends BaseView {
       let userInfo =  storage.getStorage('userInfo')
       if (userInfo) {
         if(userInfo.userType==0){
-          window.location.href='https://jinshuju.net/f/r15c2C'
+         this.goLink('TeacherFail')
         }
       }
       

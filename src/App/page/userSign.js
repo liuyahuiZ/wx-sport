@@ -7,6 +7,7 @@ import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { signedList, getToken } from '../api/index';
 import { courseDetail } from '../api/classes';
+import { refundRef, refundQry } from '../api/subject';
 import wx from 'weixin-js-sdk';
 
 const {
@@ -18,7 +19,7 @@ const {
     Col,
     Icon,
     Carousel,
-    Loade
+    Loade, Modal
 } = Components;  
 const { sessions, storage } = utils;
 
@@ -33,12 +34,37 @@ class UserSignd extends BaseView {
           },
           courseDetial: {
             coach: ''
-          }
+          },
+          canChange: true,
+          canRefund: true,
       };
     }
 
     _viewAppear(){
       this.getCourseDetail();
+      this.getRefundQry();
+    }
+
+    getRefundQry(){
+      let obg = UrlSearch();
+      const self = this;
+      Loade.show();
+      refundQry({orderId: obg.orderId}).then((res)=>{
+        console.log(res);
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        if(res.result){
+          self.setState({
+            canChange: res.result.canChange,
+            canRefund: res.result.canRefund,
+          })
+        }
+        
+      }).catch((e)=>{
+        Loade.hide();
+        Toaster.toaster({ type: 'error', content: e, time: 3000 });
+        console.log(e)
+      })
     }
 
     getCourseDetail(){
@@ -70,23 +96,6 @@ class UserSignd extends BaseView {
       }
     }
 
-    doSign(){
-        let obg = UrlSearch();
-        let userId = storage.getStorage('userId');
-        const self = this;
-        if(!obg.courseId) return;
-        Loade.show();
-        userSign({courseId: obg.courseId, userId: userId}).then((res)=>{
-            Loade.hide();
-            if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
-            Toaster.toaster({ type: 'error', content: '签到成功!', time: 3000 });
-            self.goLink('/TeacherRate', { teacherId: obg.teacherId, courseId: obg.courseId}); 
-        }).catch((e)=>{
-            Loade.hide();
-            Toaster.toaster({ type: 'error', content: e, time: 3000 });
-            console.log(e)
-        })
-    }
     openMap(latitude, longitude){
       console.log(latitude, longitude);
       wx.openLocation({
@@ -99,11 +108,28 @@ class UserSignd extends BaseView {
       });
     }
 
+    cancelClass(){
+      let obg = UrlSearch();
+      const { courseDetial } = this.state;
+      const self = this;
+      Loade.show();
+      refundRef({orderId: obg.orderId}).then((res)=>{
+        Loade.hide();
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        sessions.setStorage('refundInfo', res.result)
+        self.goLink('/refundPage',{subjectId: courseDetial.subjectId, courseTypeId: courseDetial.courseTypeId, orderId: obg.orderId})
+      }).catch((e)=>{
+        Loade.hide();
+        Toaster.toaster({ type: 'error', content: e, time: 3000 });
+        console.log(e)
+      })
+    }
+
     render() {
-        const {detailData, userInfo, courseDetial} = this.state;
+        const {detailData, userInfo, courseDetial, canChange, canRefund} = this.state;
         let obg = UrlSearch();
         const self = this;
-        let startDate = detailData.course.startDate ? detailData.course.startDate.split(' ')[0] : ''
+        let startDate = courseDetial.startDate ? courseDetial.startDate.split(' ')[0] : ''
         return(
           <section className="padding-all bg-000">
             <Row className="minheight-100" justify="center" align="center" content="flex-start">
@@ -133,7 +159,7 @@ class UserSignd extends BaseView {
                       <Col span={24} className="margin-top-2 border-bottom border-color-333" >
                         <Row className="line-height-2r">
                           <Col span={3} className="font-size-default textclolor-white"><Icon iconName={'android-time '} size={'140%'} iconColor={'#fff'} /></Col>
-                          <Col span={20} className="font-size-small textclolor-white ">时间：{courseDetial.startDate}</Col>
+                          <Col span={20} className="font-size-small textclolor-white ">时间：{startDate} {courseDetial.startTime}-{courseDetial.endTime}</Col>
                         </Row>
                       </Col>
                       <Col span={24} className="margin-top-2" >
@@ -164,26 +190,44 @@ class UserSignd extends BaseView {
               
 
               <Col className="margin-top-3">
-                <Buttons
+                {canRefund ? <Buttons
                   text="取消课程"
                   type={'primary'}
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    
+                    Modal.formConfirm({ title: '',
+                    content: (
+                      '确定取消该课程吗?'
+                    ),
+                    style: '',
+                    btnConStyle: 'center',
+                    btnSure: {
+                      text: '确认',
+                      type: 'link',
+                      style: { 'height': '2rem'}
+                    },
+                    btnCancle: {
+                      text: '取消',
+                      type: 'link',
+                      style: { 'height': '2rem'}
+                    }
+                  },
+                  (id, callback) => { callback(id); self.cancelClass() },
+                  (id, callback) => { callback(id); });
                   }}
-                />
+                /> : ''}
               </Col>
               <Col className="margin-top-3">
-                <Buttons
+                {canChange ? <Buttons
                   text="课程改期"
                   type={'primary'}
                   size={'large'}
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
-                    
+                    self.goLink('/ChangeClassList',{subjectId: courseDetial.subjectId, courseTypeId: courseDetial.courseTypeId, orderId: obg.orderId})
                   }}
-                />
+                /> : ''}
               </Col>
               <Col className="margin-top-3">
                 <Buttons
