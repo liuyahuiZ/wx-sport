@@ -6,7 +6,7 @@ import fetch from '../servise/fetch';
 import { UrlSearch } from '../utils';
 import BaseView from '../core/app';
 import { getToken } from '../api/index';
-import { courseDetail, courseMoves, courseMovesUpdate } from '../api/classes';
+import { courseDetail, courseMoves, userInfo, courseMovesUpdate } from '../api/classes';
 import wx from 'weixin-js-sdk';
 import selectStyle from '../../neo/Components/Select/selectStyle';
 import QRCode from 'qrcode';
@@ -42,7 +42,7 @@ class OcrDoc extends BaseView {
       this.checkRedct();
       this.getClassDetail();
       this.getCourseMoves();
-      this.rendImg();
+      this.getUserInfoMation();
     }
 
     checkRedct(){
@@ -81,6 +81,26 @@ class OcrDoc extends BaseView {
         }
       }).catch((err)=>{
         Toaster.toaster({ type: 'error', content: err, time: 3000 });
+      })
+    }
+
+    getUserInfoMation(){
+      let userId = storage.getStorage('userId');
+      const self = this;
+      userInfo({
+        userId: userId
+      }).then((res)=>{
+        if(res.code<=0) { Toaster.toaster({ type: 'error', content: res.msg, time: 3000 }); return; }
+        let data = res.result;
+        if(res.code>0&&data){
+          self.rendImg(data);
+          self.setState({
+            userInfo: data
+          })
+        }
+        // console.log(res);
+      }).catch((e)=>{
+        console.log(e);
       })
     }
 
@@ -178,8 +198,7 @@ class OcrDoc extends BaseView {
         })
       }
     }
-    rendImg(){
-      let userInfo = storage.getStorage('userInfo')
+    rendImg(data){
       const self = this;
       let opts = {
         errorCorrectionLevel: 'H',
@@ -189,7 +208,7 @@ class OcrDoc extends BaseView {
           quality: 1
         }
       }
-      QRCode.toDataURL(userInfo.phoneNo||userInfo.wechatPid, opts, function (err, url) {
+      QRCode.toDataURL(data.phoneNo||data.wechatPid, opts, function (err, url) {
         // console.log(url);
         self.setState({
           qrCode: url

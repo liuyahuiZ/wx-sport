@@ -43,7 +43,7 @@ module.exports = {
             names: ['vendor'],
             filename: 'vendor.js',
             chunks: "all",
-            minChunks: 2
+            minChunks: 4
         }
       }
     }),

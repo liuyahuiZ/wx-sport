@@ -526,7 +526,7 @@ class ClassList extends BaseView {
                     <img className="width-100" alt="text" src={it.coachImgUrl} />
                   </div>
                 </Col>
-                <Col className="margin-top-3" span={14}>
+                <Col className="margin-top-3 padding-right-1" span={14}>
                   <Row >
                     <Col className="zindex-10 font-size-default textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
                     <Col className="zindex-10 font-size-7 textclolor-black-low">

@@ -405,10 +405,9 @@ class OcrDoc extends Component {
                     <Icon iconName={'android-settings '} size={'150%'} iconColor={'#fff'}   />
                   </Col> */}
 
-                  <Col className="margin-top-1r text-align-center zindex-10" onClick={()=>{ this.checkUser()}}>
+                  <Col className="text-align-center zindex-10" onClick={()=>{ this.checkUser()}}>
                     <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                        <img src={userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                      { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
@@ -431,7 +430,7 @@ class OcrDoc extends Component {
                     </Row>
                   </Col>
                   <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>
-                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bgx" />
+                  <div className="width-100 absolute-left zindex-6 heightp-100 bg bgx filter-3" />
                 </Row>
                 </TransAnimal>
               </Col>

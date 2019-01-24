@@ -130,6 +130,7 @@ class TeacherRate extends BaseView {
         jjwt: jjwt.value,
         ywjd: ywjd.value,
         courseId: obg.courseId,
+        orderId: obg.orderId,
         onlineDate: time
       }).then((res)=>{
         Loade.hide();
@@ -191,8 +192,7 @@ class TeacherRate extends BaseView {
                 <Row justify="center" className="padding-all-1r bg-000 border-radius-5f  overflow-hide relative">
                   <Col className="zindex-10 text-align-center margin-top-1r">
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r  overflow-hide">
-                        <img src={userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                    { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col className="zindex-10 text-align-center margin-top-1r">

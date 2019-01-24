@@ -138,8 +138,7 @@ class Appointment extends Component {
                   </Col>
                   <Col span={8} className="text-align-center zindex-10">
                     <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide">
-                        <img src={ userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                        { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col span={8}>

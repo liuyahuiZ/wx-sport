@@ -382,7 +382,7 @@ class ChangeClassList extends BaseView {
                     <img className="width-100" alt="text" src={it.coachImgUrl} />
                   </div>
                 </Col>
-                <Col className="margin-top-3" span={14}>
+                <Col className="margin-top-3 padding-right-1" span={14}>
                   <Row >
                     <Col className="zindex-10 font-size-default textclolor-white">{it.title} ({it.currentPeople||0}/{it.maxPeople||0})</Col>
                     <Col className="zindex-10 font-size-7 textclolor-black-low">
@@ -440,7 +440,7 @@ class ChangeClassList extends BaseView {
                 <Row className="margin-top-2 border-radius-5f overflow-hide bg-1B1B1B padding-all-2r">
                   {/* <Col className="font-size-7 textclolor-black-low text-align-center">开课前24小时前有一次免费更改入门课的机会</Col>
                   <Col className="font-size-7 textclolor-black-low text-align-center">第二次更改时间或开课前24小时内需支付课程原价的20%改期费</Col> */}
-                  <Col className="font-size-7 textclolor-black-low text-align-center">
+                  <Col className="font-size-7 textclolor-black-low text-align-left">
                   {classList&&classList[0]&&classList[0].tip&&classList[0].tip.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: `<p>${classList[0].tip}</p>`}} /> : classList&&classList[0]&&classList[0].tip}
                   </Col>
                 </Row>

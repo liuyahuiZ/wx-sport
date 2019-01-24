@@ -122,8 +122,7 @@ class PersonalFiles extends BaseView {
 
                   <Col className="margin-top-1r text-align-center zindex-10" >
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                        <img src={userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                    { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">

@@ -176,8 +176,7 @@ class Registor extends BaseView {
                 <Row justify="center" className="padding-all-1r overflow-hide relative">
                   <Col className="zindex-10 text-align-center margin-top-1r">
                     <div className="middle-round-6 border-radius-round bg-gray display-inline-block line-height-4r  overflow-hide">
-                        <img src={userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                    { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col className="zindex-10 text-align-center margin-top-1r">

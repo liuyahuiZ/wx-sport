@@ -125,8 +125,7 @@ class AllImgPoster extends BaseView {
                 <Col className="text-align-center zindex-10 textclolor-white">训练天数{query.practiceDays}天</Col>
                 <Col className="margin-top-3r text-align-center zindex-10" >
                   <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                      <img src={userInfo.imgUrl} className="width-100" />
-                      <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                      { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                   </div>
                 </Col>
                 <div className="width-100 bg-000 opacity-2 heightp-100 absolute-left zindex-9 border-all border-color-000"></div>

@@ -150,7 +150,6 @@ class UserSignd extends BaseView {
                           <Col span={6}>
                           <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide relative" >
                               <img src={courseDetial.coach.imgUrl} className="width-100" />
-                              <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
                           </div>
                           </Col>
                           <Col span={12} className="textclolor-white line-height-3r">{courseDetial.coach.nickName}</Col>
@@ -182,7 +181,7 @@ class UserSignd extends BaseView {
                       <div className="font-size-small textclolor-black-low">
                       {/* {courseDetial.careful} */}
                       {/* {courseDetial&&courseDetial.prepare&&courseDetial.prepare.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: courseDetial.prepare}} /> : courseDetial.prepare} */}
-                      {courseDetial&&courseDetial.careful&&courseDetial.careful.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: courseDetial.careful}} /> : courseDetial.careful}
+                      {courseDetial&&courseDetial.prepare&&courseDetial.prepare.indexOf('</') > 0 ? <div dangerouslySetInnerHTML={{__html: courseDetial.prepare}} /> : courseDetial.prepare}
                       </div>
                   </Col>
                 </Row>

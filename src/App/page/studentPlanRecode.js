@@ -206,7 +206,7 @@ class StudentPlanRecode extends BaseView {
               </Col>
               {itm.restTime !==0 ? <Col className="bg-000 line-height-3r"> 
                   <Icon iconName={'android-time '} size={'130%'} iconColor={'#fff'} /> 
-                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f padding-left-1r padding-right-1r">{parseInt((itm&&itm.restTime)/60)||0}:{parseInt((itm&&itm.restTime)%60)||0}</span>
+                  <span className="textclolor-333 font-size-normal margin-right-1 bg-8EBF66 border-radius-5f padding-left-1r padding-right-1r">{ formate.minute(itm&&itm.restTime) }</span>
                   <span className="textclolor-black-low">每个动作之间休息时间</span>
                   </Col> : <div />}
             </Row>

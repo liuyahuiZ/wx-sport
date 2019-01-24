@@ -234,8 +234,7 @@ class Recharge extends BaseView {
 
                   <Col className="margin-top-1r text-align-center zindex-10" >
                     <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide" >
-                        <img src={userInfo.imgUrl} className="width-100" />
-                        <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                    { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                     </div>
                   </Col>
                   <Col className="text-align-center margin-top-1r zindex-10">
@@ -276,11 +275,11 @@ class Recharge extends BaseView {
                     《充值须知》
                   </Col> */}
                   <Col>
-                  <div className="textcolor-515151 text-align-center line-height-3r width-100 font-size-default line-height-2r margin-top-2r">充值须知</div>
-                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f">1、本充值卡金额适用于“牛油果”线上所有可购项目，含特价项目；</div>
-                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">2、本充值卡客户在购买线上项目时，系统默认优先使用充值卡充值金额支付；</div>
-                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">3、本充值卡余额不支持转移，但可申请退款；退款时，仅可原支付途径退回充值卡内充值金额，赠送金额即时清零不可退；</div>
-                  <div className="textcolor-515151 width-100 font-size-small text-align-left line-height-1f ">4、如需“退款”，请微信联系人工服务。</div>
+                  <div className="textclolor-black-low text-align-center line-height-3r width-100 font-size-default line-height-2r margin-top-2r">充值须知</div>
+                  <div className="textclolor-black-low width-100 font-size-small text-align-left line-height-1f">1、本充值卡金额适用于“牛油果”线上所有可购项目，含特价项目；</div>
+                  <div className="textclolor-black-low width-100 font-size-small text-align-left line-height-1f ">2、本充值卡客户在购买线上项目时，系统默认优先使用充值卡充值金额支付；</div>
+                  <div className="textclolor-black-low width-100 font-size-small text-align-left line-height-1f ">3、本充值卡余额不支持转移，但可申请退款；退款时，仅可原支付途径退回充值卡内充值金额，赠送金额即时清零不可退；</div>
+                  <div className="textclolor-black-low width-100 font-size-small text-align-left line-height-1f ">4、如需“退款”，请微信联系人工服务。</div>
                 </Col>
                 </Row>
               </Col>

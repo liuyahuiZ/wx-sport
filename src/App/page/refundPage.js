@@ -53,8 +53,7 @@ class RefundPage extends BaseView {
                 <Row justify="center" align="center">
                   <Col className=" text-align-center zindex-10 " >
                       <div className="middle-round-5 border-radius-round bg-gray display-inline-block line-height-4r overflow-hide relative" >
-                          <img src={userInfo.imgUrl} className="width-100" />
-                          <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                      { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                       </div>
                   </Col>
                   <Col className='text-align-center textclolor-white font-size-big'>{info.courseTitle||'xxx'}</Col>

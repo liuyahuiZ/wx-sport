@@ -88,14 +88,12 @@ class Success extends BaseView {
 
         return(
           <section className="padding-all bg-000 minheight-100">
-            <TransAnimal >
               <Row className="padding-all-1r bg-1B1B1B border-radius-5f overflow-hide relative">
               <Col span={24} className="margin-top-1r">
                 <Row justify="center" align="center">
                   <Col className=" text-align-center zindex-10 " >
                       <div className="middle-round border-radius-round bg-gray display-inline-block line-height-4r overflow-hide relative" >
-                          <img src={userInfo.imgUrl} className="width-100" />
-                          <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />
+                      { userInfo&&userInfo.imgUrl ? <img src={userInfo.imgUrl} className="width-100" />  : <Icon iconName={'social-octocat '} size={'180%'} iconColor={'#fff'} />}
                           {
                             type == 'registor' ? <Icon iconName='checkmark-circled' className="nopadding" size={'150%'} iconColor={'#9eea6a'} 
                             style={{'top':'0.2rem', 'position':'absolute','right': '1.4rem', 'zIndex': '10'}} /> 
@@ -133,7 +131,8 @@ class Success extends BaseView {
                   style={{backgroundColor: '#9eea6a', color:'#333'}}
                   onClick={()=>{
                     if(type=='registor') {
-                      hashHistory.goBack();
+                      // hashHistory.goBack();
+                      this.goLink('/Tab');
                     }else{
                       this.goLink('UserSign',{
                         courseId: obg.courseId
@@ -143,7 +142,6 @@ class Success extends BaseView {
                 />
               </Col>
             </Row>
-            </TransAnimal>
           </section>
         );
     }

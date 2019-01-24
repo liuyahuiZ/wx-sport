@@ -148,23 +148,23 @@ class OcrDoc extends BaseView {
         }) : [];
         return(
           <section className="padding-all bg-000">
-            <Row className="margin-bottom-8r heighth-90 overflow-y-scroll" justify="center" content="flex-start">
+            <Row className=" heighth-80 overflow-y-scroll" justify="center" content="flex-start">
               <Col>
                 <Carousel options={carouselMap} containerStyle={{borderRadius: '0.5rem', height:'10rem'}} dotDefaultStyle={{width: '5px'}} dotActuveStyle={{}} showDotsText={false} dragAble />
               </Col>
 
               <Col span={24} className="margin-top-2 border-radius-5f overflow-hide bg-0D0D0D ">
                 <Row content="flex-start">
-                  <Col span={2} className="line-height-4r ">
+                  <Col span={2} className="line-height-3r ">
                   <Icon iconName={'ios-heart-outline '} size={'150%'} iconColor={'#fff'} /> 
-                      {/* <span className="icon icon-working-small margin-top-1fr"></span> */}
+                      {/* <span className="icon icon-working-small margin-top-f8r"></span> */}
                   </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">养身计划</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-3r font-weight-700">养身计划</Col>
                   <Col className="bg-1B1B1B padding-all">
                     {bodyPlanDom}
                   </Col>
-                  <Col span={2} className="line-height-4r "><Icon iconName={'android-list '} size={'150%'} iconColor={'#fff'} /> </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">训练计划简介</Col>
+                  <Col span={2} className="line-height-3r "><Icon iconName={'android-list '} size={'150%'} iconColor={'#fff'} /> </Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-3r font-weight-700">训练计划简介</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col span={24} className="font-size-small textclolor-black-low margin-bottom-3 ">
@@ -200,11 +200,11 @@ class OcrDoc extends BaseView {
                       </Col> */}
                     </Row>
                   </Col>
-                  <Col span={2} className="line-height-4r ">
+                  <Col span={2} className="line-height-3r ">
                   {/* <Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} />  */}
-                    <span className="icon icon-focus-small margin-top-1fr"></span>
+                    <span className="icon icon-focus-small margin-top-f8r"></span>
                   </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">注意事项</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-3r font-weight-700">注意事项</Col>
                   <Col className="bg-1B1B1B padding-all">
                     <Row>
                       <Col className="font-size-small textclolor-black-low ">
@@ -213,18 +213,18 @@ class OcrDoc extends BaseView {
                     </Row>
                   </Col>
                   
-                  <Col span={2} className="line-height-4r ">
+                  <Col span={2} className="line-height-3r ">
                    {/* <Icon iconName={'android-radio-button-on '} size={'150%'} iconColor={'#fff'} />  */}
-                   <span className="icon icon-working-small margin-top-1fr"></span>
+                   <span className="icon icon-working-small margin-top-f8r"></span>
                   </Col>
-                  <Col span={22} className="font-size-normal textclolor-white line-height-4r font-weight-700">健身步骤</Col>
+                  <Col span={22} className="font-size-normal textclolor-white line-height-3r font-weight-700">健身步骤</Col>
                   <Col className="bg-1B1B1B padding-all">
                     { stepDom }
                   </Col>
                 </Row>
               </Col>
             </Row>
-            <Row className="fixed bottom-0 bg-000 zindex-10 width-100 padding-all left-0">
+            <Row className="fixed bottom-0 bg-000 zindex-10 width-100 padding-all left-0 heighth-20">
               <Col>
                 <Row>
                         <Col span={3}><Checkbox
@@ -236,9 +236,9 @@ class OcrDoc extends BaseView {
                         }}
                         ref={(r) => { this.$$checkbox1 = r; }}
                         /></Col>
-                        <Col span={21} className="textclolor-black-low line-height-2r font-size-small" onClick={()=>{
+                        <Col span={21} className="textclolor-black-low line-height-1r font-size-small" >购买训练计划前，请先阅读 <span className="underline" onClick={()=>{
                           this.goLink('/ParqPage')
-                        }}>购买训练计划前，请先阅读 <span className="underline">《健身风险PAR-Q表》</span> 并且清楚本人没有存在内容的运动风险</Col>
+                        }}>《健身风险PAR-Q表》</span> 并且清楚本人没有存在内容的运动风险</Col>
                 </Row>
               </Col>
               <Col className="margin-top-3">
